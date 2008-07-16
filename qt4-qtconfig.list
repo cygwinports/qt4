@@ -1,0 +1,5 @@
+usr/bin/qtconfig-qt4
+usr/lib/qt4/bin/qtconfig.exe
+usr/share/applications/qtconfig-qt4.desktop
+usr/share/pixmaps/qtconfig-qt4.png
+usr/share/qt4/translations/qtconfig_*

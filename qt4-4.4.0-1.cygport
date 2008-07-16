@@ -1,0 +1,162 @@
+DESCRIPTION="Qt C++ application framework"
+HOMEPAGE="http://www.trolltech.com/products/qt/"
+ORIG_PN="qt-x11-opensource-src"
+#SRC_URI="ftp://ftp.trolltech.com/qt/source/${ORIG_PN}-${PV}.tar.bz2"
+SRC_URI="mirror://gentoo/${ORIG_PN}-${PV}.tar.bz2"
+PATCH_URI="
+	4.4.0-clucene.patch
+	4.4.0-dlopen.patch
+	4.4.0-mkspecs.patch
+	4.4.0-not-windows.patch
+	4.4.0-odbc32.patch
+	4.4.0-qmake.patch
+	4.4.0-static-const.patch
+	4.4.0-webkit.patch
+"
+
+QPLATFORM="cygwin-g++"
+QPREFIX="/usr/lib/qt${PV_MAJ}"
+QBINDIR="${QPREFIX}/bin"
+QINCLUDEDIR="/usr/include/qt${PV_MAJ}"
+QLIBDIR="${QPREFIX}/lib"
+QPLUGINDIR="/usr/lib/qt${PV_MAJ}/plugins"
+QDATADIR="/usr/share/qt${PV_MAJ}"
+QDOCDIR="${QDATADIR}/doc"
+QTRANSLATIONSDIR="${QDATADIR}/translations"
+QEXAMPLESDIR="${QPREFIX}/examples"
+QDEMOSDIR="${QPREFIX}/demos"
+QSYSCONFDIR="/etc/qt${PV_MAJ}"
+
+src_compile() {
+	cd ${B}
+
+	export CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
+
+	${S}/configure \
+		-prefix ${QPREFIX} \
+		-bindir ${QBINDIR} \
+		-headerdir ${QINCLUDEDIR} \
+		-libdir ${QLIBDIR} \
+		-plugindir ${QPLUGINDIR} \
+		-datadir ${QDATADIR} \
+		-docdir ${QDOCDIR} \
+		-sysconfdir ${QSYSCONFDIR} \
+		-translationdir ${QTRANSLATIONSDIR} \
+		-examplesdir ${QEXAMPLESDIR} \
+		-demosdir ${QDEMOSDIR} \
+		-confirm-license \
+		-platform ${QPLATFORM} \
+		-xplatform ${QPLATFORM} \
+		-release -no-debug -shared -fast \
+		-no-largefile \
+		-exceptions \
+		-accessibility \
+		-stl \
+		-no-sql-ibase \
+		-plugin-sql-odbc \
+		-plugin-sql-sqlite -plugin-sql-sqlite2 -system-sqlite \
+		-plugin-sql-mysql -I/usr/include/mysql -L/usr/lib/mysql \
+		-plugin-sql-psql -I/usr/include/postgresql/server \
+		-glib -qdbus -qt3support \
+		-system-zlib -qt-gif \
+		-system-libtiff -system-libpng -system-libmng -system-libjpeg \
+		-openssl-linked \
+		-dbus-linked \
+		-no-rpath \
+		-continue -verbose \
+		-optimized-qmake \
+		-no-nis -no-cups -iconv -no-pch \
+		-system-nas-sound \
+		-opengl -sm -xshape -no-xinerama -xcursor -xfixes -xrandr -xrender -fontconfig -xkb \
+		-no-separate-debug-info \
+		-no-tablet \
+		-little-endian \
+		|| error "configure failed"
+
+	cygmake
+}
+
+src_install() {
+	local x
+
+	cd ${B}
+
+	make INSTALL_ROOT=${D} install
+
+#	keepdir ${QSYSCONFDIR}
+
+	inform "Fixing installation directories"
+	dodir /usr/bin
+	mv ${D}${QLIBDIR}/*.dll ${D}/usr/bin
+
+	# fix pkg-config metadata
+	sed -e "s|\-L${B}/lib ||g" \
+		-i ${D}${QLIBDIR}/pkgconfig/*.pc
+	mv ${D}${QLIBDIR}/pkgconfig/ ${D}/usr/lib/
+
+	# fix libtool libs
+	sed -e '/^dlname/ s|cyg|../../../bin/cyg|' \
+		-e "s|${B}/lib|${QLIBDIR}|g" \
+		-e "s|old_library=.*|old_library=''|" \
+		-i ${D}${QLIBDIR}/*.la
+
+	# these are provided by both 3.x and 4.x
+	for x in assistant designer linguist lrelease lupdate \
+	         moc qmake qtconfig uic
+	do
+		dosym ../lib/qt${PV_MAJ}/bin/${x}.exe /usr/bin/${x}-${PN}
+	done
+
+	# These are new in 4.x
+	for x in assistant_adp pixeltool qcollectiongenerator qdbus \
+	         qdbus{cpp2xml,viewer,xml2cpp} qhelp{converter,generator} \
+	         qt3to4 qtdemo rcc uic3
+	do
+		dosym ../lib/qt${PV_MAJ}/bin/${x}.exe /usr/bin/${x}
+	done
+
+	newicon ${S}/tools/assistant/tools/assistant/images/assistant.png assistant-${PN}.png
+	newicon ${S}/tools/designer/src/designer/images/designer.png designer-${PN}.png
+	newicon ${S}/tools/linguist/linguist/images/appicon.png linguist-${PN}.png
+	newicon ${S}/tools/qtconfig/images/appicon.png qtconfig-${PN}.png
+
+	make_desktop_entry assistant-${PN} "Qt${PV_MAJ} Assistant" \
+		assistant-${PN}.png "Development;Documentation;Qt"
+	make_desktop_entry designer-${PN} "Qt${PV_MAJ} Designer" \
+		designer-${PN}.png "Development;GUIDesigner;Qt"
+	make_desktop_entry linguist-${PN} "Qt${PV_MAJ} Linguist" \
+		linguist-${PN}.png "Development;Translation;Qt"
+	make_desktop_entry qtconfig-${PN} "Qt${PV_MAJ} Configuration" \
+		qtconfig-${PN}.png "Settings;DesktopSettings;Qt"
+
+	dodir /etc/profile.d
+	cat > ${D}/etc/profile.d/libQtCore${PV_MAJ}-dev.sh <<-_EOF
+		export QMAKESPEC=${QPLATFORM}
+		_EOF
+	cat > ${D}/etc/profile.d/libQtCore${PV_MAJ}-dev.csh <<-_EOF
+		setenv QMAKESPEC ${QPLATFORM}
+		_EOF
+
+	dodoc ${S}/changes-${PV} ${S}/GPL_* ${S}/LICENSE.* ${S}/OPENSOURCE-NOTICE.TXT
+}
+
+PKG_NAMES="${PN}"
+PKG_CONTENTS[0]=	# empty
+
+for lib in Qt3Support QtAssistantClient QtCore QtDBus QtDesigner QtGui \
+           QtHelp QtNetwork QtOpenGL QtScript QtSql QtSvg QtTest QtWebKit \
+           QtXml QtXmlPatterns phonon
+do
+	PKG_NAMES+=" lib${lib}${PV_MAJ} lib${lib}${PV_MAJ}-dev"
+done
+
+for app in dev-tools doc qtconfig qtdemo
+do
+	PKG_NAMES+=" ${PN}-${app}"
+done
+
+PKG_IGNORE="${QTRANSLATIONSDIR#/}/qvfb_*"
+
+# webkit is in 3rdparty
+DIFF_EXCLUDES="demos doc examples clucene freetype harfbuzz kdebase kdelibs
+               libjpeg libmng libpng libtiff sqlite wintab zlib"

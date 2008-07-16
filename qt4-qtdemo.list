@@ -1,0 +1,9 @@
+usr/bin/qtdemo
+usr/lib/qt4/bin/qtdemo.exe
+usr/lib/qt4/demos/
+usr/lib/qt4/examples/
+usr/lib/qt4/plugins/designer/cygarthurplugin.dll
+usr/lib/qt4/plugins/designer/cygcontainerextension.dll
+usr/lib/qt4/plugins/designer/cygcustomwidgetplugin.dll
+usr/lib/qt4/plugins/designer/cygtaskmenuextension.dll
+usr/lib/qt4/plugins/designer/cygworldtimeclockplugin.dll

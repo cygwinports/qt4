@@ -1,0 +1,9 @@
+category: KDE X11
+requires: cygwin libfreetype26 libGL1 libQtCore4 libQtGui4 libX11_6
+external-source: qt4
+sdesc: "Qt4 OpenGL library (runtime)"
+ldesc: "Qt is a cross-platform application framework for desktop and 
+embedded development. Qt enables programmers to create advanced GUI 
+applications once and deploy them to Windows, Mac OS X and Linux without 
+rewriting the source code. Companies using Qt can leverage software 
+investments made on one platform across many others."
