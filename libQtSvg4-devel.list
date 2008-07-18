@@ -1,0 +1,8 @@
+usr/include/qt4/Qt/QtSvg
+usr/include/qt4/Qt/qgraphicssvgitem.h
+usr/include/qt4/Qt/qsvggenerator.h
+usr/include/qt4/Qt/qsvgrenderer.h
+usr/include/qt4/Qt/qsvgwidget.h
+usr/include/qt4/QtSvg/
+usr/lib/pkgconfig/QtSvg.pc
+usr/lib/qt4/lib/libQtSvg.*

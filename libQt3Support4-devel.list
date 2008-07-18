@@ -1,0 +1,8 @@
+usr/bin/uic3
+usr/include/qt4/Qt/Qt3Support
+usr/include/qt4/Qt/q3*.h
+usr/include/qt4/Qt/qiconset.h
+usr/include/qt4/Qt3Support/
+usr/lib/pkgconfig/Qt3Support.pc
+usr/lib/qt4/bin/uic3.exe
+usr/lib/qt4/lib/libQt3Support.*

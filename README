@@ -67,41 +67,41 @@ Build instructions:
   cygport ./qt4-4.4.0-X.cygport all
 
 This will create:
-  /usr/src/libQt3Support4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQt3Support4-devel-4.4.0-X.tar.bz2
   /usr/src/libQt3Support4-4.4.0-X.tar.bz2
-  /usr/src/libQtAssistantClient4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtAssistantClient4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtAssistantClient4-4.4.0-X.tar.bz2
-  /usr/src/libQtCore4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtCore4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtCore4-4.4.0-X.tar.bz2
-  /usr/src/libQtDBus4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtDBus4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtDBus4-4.4.0-X.tar.bz2
-  /usr/src/libQtDesigner4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtDesigner4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtDesigner4-4.4.0-X.tar.bz2
-  /usr/src/libQtGui4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtGui4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtGui4-4.4.0-X.tar.bz2
-  /usr/src/libQtHelp4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtHelp4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtHelp4-4.4.0-X.tar.bz2
-  /usr/src/libQtNetwork4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtNetwork4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtNetwork4-4.4.0-X.tar.bz2
-  /usr/src/libQtOpenGL4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtOpenGL4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtOpenGL4-4.4.0-X.tar.bz2
-  /usr/src/libQtScript4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtScript4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtScript4-4.4.0-X.tar.bz2
-  /usr/src/libQtSql4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtSql4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtSql4-4.4.0-X.tar.bz2
-  /usr/src/libQtSvg4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtSvg4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtSvg4-4.4.0-X.tar.bz2
-  /usr/src/libQtTest4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtTest4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtTest4-4.4.0-X.tar.bz2
-  /usr/src/libQtWebKit4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtWebKit4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtWebKit4-4.4.0-X.tar.bz2
-  /usr/src/libQtXml4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtXml4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtXml4-4.4.0-X.tar.bz2
-  /usr/src/libQtXmlPatterns4-dev-4.4.0-X.tar.bz2
+  /usr/src/libQtXmlPatterns4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtXmlPatterns4-4.4.0-X.tar.bz2
-  /usr/src/libphonon4-dev-4.4.0-X.tar.bz2
+  /usr/src/libphonon4-devel-4.4.0-X.tar.bz2
   /usr/src/libphonon4-4.4.0-X.tar.bz2
-  /usr/src/qt4-dev-tools-4.4.0-X.tar.bz2
+  /usr/src/qt4-devel-tools-4.4.0-X.tar.bz2
   /usr/src/qt4-doc-4.4.0-X.tar.bz2
   /usr/src/qt4-qtconfig-4.4.0-X.tar.bz2
   /usr/src/qt4-qtdemo-4.4.0-X.tar.bz2

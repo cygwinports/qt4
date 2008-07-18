@@ -1,0 +1,9 @@
+usr/bin/qdbuscpp2xml
+usr/bin/qdbusxml2cpp
+usr/include/qt4/Qt/QtDBus
+usr/include/qt4/Qt/qdbus*.h
+usr/include/qt4/QtDBus/
+usr/lib/pkgconfig/QtDBus.pc
+usr/lib/qt4/bin/qdbuscpp2xml.exe
+usr/lib/qt4/bin/qdbusxml2cpp.exe
+usr/lib/qt4/lib/libQtDBus.*

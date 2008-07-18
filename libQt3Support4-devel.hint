@@ -1,0 +1,9 @@
+category: KDE X11
+requires: cygwin libQt3Support4 libQtCore4-devel libQtGui4-devel libQtNetwork4-devel libQtSql4-devel libQtXml4-devel minires-devel
+external-source: qt4
+sdesc: "Qt4 Qt3Support library (libdevel)"
+ldesc: "Qt is a cross-platform application framework for desktop and 
+embedded development. Qt enables programmers to create advanced GUI 
+applications once and deploy them to Windows, Mac OS X and Linux without 
+rewriting the source code. Companies using Qt can leverage software 
+investments made on one platform across many others."

@@ -130,10 +130,10 @@ src_install() {
 		qtconfig-${PN}.png "Settings;DesktopSettings;Qt"
 
 	dodir /etc/profile.d
-	cat > ${D}/etc/profile.d/libQtCore${PV_MAJ}-dev.sh <<-_EOF
+	cat > ${D}/etc/profile.d/libQtCore${PV_MAJ}-devel.sh <<-_EOF
 		export QMAKESPEC=${QPLATFORM}
 		_EOF
-	cat > ${D}/etc/profile.d/libQtCore${PV_MAJ}-dev.csh <<-_EOF
+	cat > ${D}/etc/profile.d/libQtCore${PV_MAJ}-devel.csh <<-_EOF
 		setenv QMAKESPEC ${QPLATFORM}
 		_EOF
 
@@ -147,10 +147,10 @@ for lib in Qt3Support QtAssistantClient QtCore QtDBus QtDesigner QtGui \
            QtHelp QtNetwork QtOpenGL QtScript QtSql QtSvg QtTest QtWebKit \
            QtXml QtXmlPatterns phonon
 do
-	PKG_NAMES+=" lib${lib}${PV_MAJ} lib${lib}${PV_MAJ}-dev"
+	PKG_NAMES+=" lib${lib}${PV_MAJ} lib${lib}${PV_MAJ}-devel"
 done
 
-for app in dev-tools doc qtconfig qtdemo
+for app in devel-tools doc qtconfig qtdemo
 do
 	PKG_NAMES+=" ${PN}-${app}"
 done

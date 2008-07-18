@@ -1,0 +1,9 @@
+category: KDE Graphics
+requires: cygwin libQtSvg4 libQtCore4-devel libQtGui4-devel
+external-source: qt4
+sdesc: "Qt4 SVG library (libdevel)"
+ldesc: "Qt is a cross-platform application framework for desktop and 
+embedded development. Qt enables programmers to create advanced GUI 
+applications once and deploy them to Windows, Mac OS X and Linux without 
+rewriting the source code. Companies using Qt can leverage software 
+investments made on one platform across many others."
