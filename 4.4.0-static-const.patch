@@ -165,3 +165,24 @@ diff -urN -x CYGWIN-PATCHES -x 'aclocal.m4~' -x aclocal.m4t -x autom4te.cache -x
  };
  
  QT_END_NAMESPACE
+diff -urN origsrc/qt-x11-opensource-src-4.4.0/tools/qdbus/qdbuscpp2xml/qdbuscpp2xml.cpp src/qt-x11-opensource-src-4.4.0/tools/qdbus/qdbuscpp2xml/qdbuscpp2xml.cpp
+--- origsrc/qt-x11-opensource-src-4.4.0/tools/qdbus/qdbuscpp2xml/qdbuscpp2xml.cpp	2008-04-28 08:11:21.000000000 -0500
++++ src/qt-x11-opensource-src-4.4.0/tools/qdbus/qdbuscpp2xml/qdbuscpp2xml.cpp	2008-07-21 11:44:02.937500000 -0500
+@@ -251,7 +251,7 @@
+ 
+     while (!input->atEnd()) {
+         QByteArray line = readLine();
+-        if (line.startsWith("static const uint qt_meta_data_")) {
++        if (line.startsWith("QT_STATIC_CONST uint qt_meta_data_")) {
+             // start of new class data
+             uint *data;
+             loadIntData(data);
+@@ -261,7 +261,7 @@
+                 line = readLine();
+                 if (input->atEnd())
+                     parseError();
+-            } while (!line.startsWith("static const char qt_meta_stringdata_"));
++            } while (!line.startsWith("QT_STATIC_CONST char qt_meta_stringdata_"));
+ 
+             char *stringdata;
+             loadStringData(stringdata);
