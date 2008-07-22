@@ -32,6 +32,9 @@ src_compile() {
 
 	export CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 
+	# -exceptions: required for QtXmlPatterns
+	# -no-largefile: Cygwin's open() and friends are 64-bit w/o O_LARGEFILE
+	# -no-phonon: phonon-4.2 (kdesupport) is required for KDE 4.1
 	${S}/configure \
 		-prefix ${QPREFIX} \
 		-bindir ${QBINDIR} \
@@ -52,12 +55,12 @@ src_compile() {
 		-exceptions \
 		-accessibility \
 		-stl \
+		-glib -qdbus -qt3support -no-phonon \
 		-no-sql-ibase \
 		-plugin-sql-odbc \
 		-plugin-sql-sqlite -plugin-sql-sqlite2 -system-sqlite \
 		-plugin-sql-mysql -I/usr/include/mysql -L/usr/lib/mysql \
-		-plugin-sql-psql -I/usr/include/postgresql/server \
-		-glib -qdbus -qt3support \
+		-plugin-sql-psql \
 		-system-zlib -qt-gif \
 		-system-libtiff -system-libpng -system-libmng -system-libjpeg \
 		-openssl-linked \
@@ -145,7 +148,7 @@ PKG_CONTENTS[0]=	# empty
 
 for lib in Qt3Support QtAssistantClient QtCore QtDBus QtDesigner QtGui \
            QtHelp QtNetwork QtOpenGL QtScript QtSql QtSvg QtTest QtWebKit \
-           QtXml QtXmlPatterns phonon
+           QtXml QtXmlPatterns
 do
 	PKG_NAMES+=" lib${lib}${PV_MAJ} lib${lib}${PV_MAJ}-devel"
 done

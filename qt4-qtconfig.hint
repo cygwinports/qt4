@@ -1,5 +1,5 @@
 category: KDE X11
-requires: cygwin glib2 gstreamer010 libphonon4 libQt3Support4 libQtCore4 libQtGui4
+requires: cygwin libQt3Support4 libQtCore4 libQtGui4
 external-source: qt4
 sdesc: "Qt4 desktop configuration app"
 ldesc: "Qt is a cross-platform application framework for desktop and 

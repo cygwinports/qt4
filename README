@@ -9,8 +9,6 @@ made on one platform across many others.
 Runtime requirements:
   cygwin-1.5.25-15
   glib2-2.16.4-1
-  gstreamer010-0.10.20-1
-  gstreamer010-plugins-base-0.10.20-1
   libaudio2-1.9.1-1
   libdbus1_3-1.2.1-1
   libfontconfig1-2.6.0-1
@@ -99,8 +97,6 @@ This will create:
   /usr/src/libQtXml4-4.4.0-X.tar.bz2
   /usr/src/libQtXmlPatterns4-devel-4.4.0-X.tar.bz2
   /usr/src/libQtXmlPatterns4-4.4.0-X.tar.bz2
-  /usr/src/libphonon4-devel-4.4.0-X.tar.bz2
-  /usr/src/libphonon4-4.4.0-X.tar.bz2
   /usr/src/qt4-devel-tools-4.4.0-X.tar.bz2
   /usr/src/qt4-doc-4.4.0-X.tar.bz2
   /usr/src/qt4-qtconfig-4.4.0-X.tar.bz2
