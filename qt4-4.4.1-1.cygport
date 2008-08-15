@@ -15,16 +15,16 @@ PATCH_URI="
 "
 
 QPLATFORM="cygwin-g++"
-QPREFIX="/usr/lib/qt${PV_MAJ}"
-QBINDIR="${QPREFIX}/bin"
+QPREFIX="/usr"
+QBINDIR="/usr/lib/qt${PV_MAJ}/bin"
 QINCLUDEDIR="/usr/include/qt${PV_MAJ}"
-QLIBDIR="${QPREFIX}/lib"
+QLIBDIR="/usr/lib/qt${PV_MAJ}/lib"
 QPLUGINDIR="/usr/lib/qt${PV_MAJ}/plugins"
 QDATADIR="/usr/share/qt${PV_MAJ}"
 QDOCDIR="${QDATADIR}/doc"
 QTRANSLATIONSDIR="${QDATADIR}/translations"
-QEXAMPLESDIR="${QPREFIX}/examples"
-QDEMOSDIR="${QPREFIX}/demos"
+QEXAMPLESDIR="/usr/lib/qt${PV_MAJ}/examples"
+QDEMOSDIR="/usr/lib/qt${PV_MAJ}/demos"
 QSYSCONFDIR="/etc/qt${PV_MAJ}"
 
 src_compile() {
@@ -55,7 +55,7 @@ src_compile() {
 		-exceptions \
 		-accessibility \
 		-stl \
-		-glib -qdbus -qt3support -no-phonon \
+		-glib -qdbus -qt3support -no-phonon -assistant-webkit \
 		-no-sql-ibase \
 		-plugin-sql-odbc \
 		-plugin-sql-sqlite -plugin-sql-sqlite2 -system-sqlite \
@@ -113,10 +113,12 @@ src_install() {
 	# These are new in 4.x
 	for x in assistant_adp pixeltool qcollectiongenerator qdbus \
 	         qdbus{cpp2xml,viewer,xml2cpp} qhelp{converter,generator} \
-	         qt3to4 qtdemo rcc uic3
+	         qt3to4 qtdemo rcc uic3 xmlpatterns
 	do
 		dosym ../lib/qt${PV_MAJ}/bin/${x}.exe /usr/bin/${x}
 	done
+
+	dosym ../../include/qt${PV_MAJ} /usr/lib/qt${PV_MAJ}/include
 
 	newicon ${S}/tools/assistant/tools/assistant/images/assistant.png assistant-${PN}.png
 	newicon ${S}/tools/designer/src/designer/images/designer.png designer-${PN}.png
