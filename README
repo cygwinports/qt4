@@ -8,18 +8,18 @@ made on one platform across many others.
 
 Runtime requirements:
   cygwin-1.5.25-15
-  glib2-2.16.4-1
+  glib2-2.16.5-1
   libaudio2-1.9.1-1
-  libdbus1_3-1.2.1-1
+  libdbus1_3-1.2.3-1
   libfontconfig1-2.6.0-1
   libfreetype26-2.3.7-1
-  libGL1-7.0.3-1
+  libGL1-7.0.4-1
   libICE6-1.0.4-1
   libiconv2-1.11-1
   libjpeg62-6b-12
   libmng1-1.0.10-1
   libmysqlclient15-5.0.51-1
-  libpng12-1.2.29-1
+  libpng12-1.2.31-1
   libpq5-8.2.9-1
   libSM6-1.0.3-1
   libsqlite0-2.8.17-3
@@ -37,16 +37,16 @@ Runtime requirements:
 
 Build requirements:
 (besides corresponding -devel packages)
-  binutils-20080523-2
+  binutils-20080624-2
   bison-2.3-1
-  cygport-0.3.13-1
+  cygport-0.4.0-1
   flex-2.5.35-1
   gawk-3.1.6-1
   gcc-core-3.4.4-3
   gcc-g++-3.4.4-3
   make-3.81-1
   makedepend-1.0.1-1
-  pkg-config-0.21-1
+  pkg-config-0.23a-2
   sed-4.1.5-2
 
 Canonical website:
@@ -58,55 +58,61 @@ Canonical download:
 -------------------------------------------
 
 Build instructions:
-  unpack qt4-4.4.0-X-src.tar.bz2
+  unpack qt4-4.4.2-X-src.tar.bz2
     if you use setup to install this src package, it will be
 	 unpacked under /usr/src automatically
   cd /usr/src
-  cygport ./qt4-4.4.0-X.cygport all
+  cygport ./qt4-4.4.2-X.cygport all
 
 This will create:
-  /usr/src/libQt3Support4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQt3Support4-4.4.0-X.tar.bz2
-  /usr/src/libQtAssistantClient4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtAssistantClient4-4.4.0-X.tar.bz2
-  /usr/src/libQtCore4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtCore4-4.4.0-X.tar.bz2
-  /usr/src/libQtDBus4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtDBus4-4.4.0-X.tar.bz2
-  /usr/src/libQtDesigner4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtDesigner4-4.4.0-X.tar.bz2
-  /usr/src/libQtGui4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtGui4-4.4.0-X.tar.bz2
-  /usr/src/libQtHelp4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtHelp4-4.4.0-X.tar.bz2
-  /usr/src/libQtNetwork4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtNetwork4-4.4.0-X.tar.bz2
-  /usr/src/libQtOpenGL4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtOpenGL4-4.4.0-X.tar.bz2
-  /usr/src/libQtScript4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtScript4-4.4.0-X.tar.bz2
-  /usr/src/libQtSql4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtSql4-4.4.0-X.tar.bz2
-  /usr/src/libQtSvg4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtSvg4-4.4.0-X.tar.bz2
-  /usr/src/libQtTest4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtTest4-4.4.0-X.tar.bz2
-  /usr/src/libQtWebKit4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtWebKit4-4.4.0-X.tar.bz2
-  /usr/src/libQtXml4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtXml4-4.4.0-X.tar.bz2
-  /usr/src/libQtXmlPatterns4-devel-4.4.0-X.tar.bz2
-  /usr/src/libQtXmlPatterns4-4.4.0-X.tar.bz2
-  /usr/src/qt4-devel-tools-4.4.0-X.tar.bz2
-  /usr/src/qt4-doc-4.4.0-X.tar.bz2
-  /usr/src/qt4-qtconfig-4.4.0-X.tar.bz2
-  /usr/src/qt4-qtdemo-4.4.0-X.tar.bz2
-  /usr/src/qt4-4.4.0-X-src.tar.bz2
-  /usr/src/qt4-4.4.0-X.tar.bz2
+  /usr/src/libQt3Support4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQt3Support4-4.4.2-X.tar.bz2
+  /usr/src/libQtAssistantClient4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtAssistantClient4-4.4.2-X.tar.bz2
+  /usr/src/libQtCore4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtCore4-4.4.2-X.tar.bz2
+  /usr/src/libQtDBus4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtDBus4-4.4.2-X.tar.bz2
+  /usr/src/libQtDesigner4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtDesigner4-4.4.2-X.tar.bz2
+  /usr/src/libQtGui4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtGui4-4.4.2-X.tar.bz2
+  /usr/src/libQtHelp4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtHelp4-4.4.2-X.tar.bz2
+  /usr/src/libQtNetwork4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtNetwork4-4.4.2-X.tar.bz2
+  /usr/src/libQtOpenGL4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtOpenGL4-4.4.2-X.tar.bz2
+  /usr/src/libQtScript4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtScript4-4.4.2-X.tar.bz2
+  /usr/src/libQtSql4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtSql4-4.4.2-X.tar.bz2
+  /usr/src/libQtSvg4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtSvg4-4.4.2-X.tar.bz2
+  /usr/src/libQtTest4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtTest4-4.4.2-X.tar.bz2
+  /usr/src/libQtWebKit4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtWebKit4-4.4.2-X.tar.bz2
+  /usr/src/libQtXml4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtXml4-4.4.2-X.tar.bz2
+  /usr/src/libQtXmlPatterns4-devel-4.4.2-X.tar.bz2
+  /usr/src/libQtXmlPatterns4-4.4.2-X.tar.bz2
+  /usr/src/qt4-devel-tools-4.4.2-X.tar.bz2
+  /usr/src/qt4-doc-4.4.2-X.tar.bz2
+  /usr/src/qt4-qtconfig-4.4.2-X.tar.bz2
+  /usr/src/qt4-qtdemo-4.4.2-X.tar.bz2
+  /usr/src/qt4-4.4.2-X-src.tar.bz2
+  /usr/src/qt4-4.4.2-X.tar.bz2
 
 -------------------------------------------
 
 Port Notes:
+
+----- version 4.4.2-1 -----
+Version bump.
+
+----- version 4.4.1-1 -----
+Version bump.
 
 ----- version 4.4.0-1 -----
 Initial release of 4.x branch for Cygwin.
