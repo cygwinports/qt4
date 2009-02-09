@@ -1,8 +1,8 @@
 DESCRIPTION="Qt C++ application framework"
 HOMEPAGE="http://www.trolltech.com/products/qt/"
 ORIG_PN="qt-x11-opensource-src"
-#SRC_URI="ftp://ftp.trolltech.com/qt/source/${ORIG_PN}-${PV}.tar.bz2"
-SRC_URI="mirror://gentoo/${ORIG_PN}-${PV}.tar.bz2"
+SRC_URI="ftp://ftp.trolltech.com/qt/source/${ORIG_PN}-${PV}.tar.bz2"
+#SRC_URI="mirror://gentoo/${ORIG_PN}-${PV}.tar.bz2"
 PATCH_URI="
 	4.4.0-clucene.patch
 	4.4.0-dlopen.patch
@@ -70,7 +70,7 @@ src_compile() {
 		-optimized-qmake \
 		-no-nis -no-cups -iconv -no-pch \
 		-system-nas-sound \
-		-opengl -sm -xshape -no-xinerama -xcursor -xfixes -xrandr -xrender -fontconfig -xkb \
+		-opengl -sm -xshape -xinerama -xcursor -xfixes -xrandr -xrender -fontconfig -xkb \
 		-no-separate-debug-info \
 		-no-tablet \
 		-little-endian \
@@ -94,6 +94,7 @@ src_install() {
 
 	# fix pkg-config metadata
 	sed -e "s|\-L${B}/lib ||g" \
+		-e "/c_location=/ s|=.*/bin/|=${QBINDIR}/|g" \
 		-i ${D}${QLIBDIR}/pkgconfig/*.pc
 	mv ${D}${QLIBDIR}/pkgconfig/ ${D}/usr/lib/
 

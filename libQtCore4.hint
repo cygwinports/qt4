@@ -1,5 +1,5 @@
 category: KDE Libs
-requires: cygwin glib2 libiconv2 zlib
+requires: cygwin libglib2.0_0 libiconv2 zlib
 external-source: qt4
 sdesc: "Qt4 Core library (runtime)"
 ldesc: "Qt is a cross-platform application framework for desktop and 
