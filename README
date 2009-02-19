@@ -108,6 +108,9 @@ This will create:
 
 Port Notes:
 
+----- version 4.4.3-2 -----
+Added patches from KDE qt-copy as used in Gentoo.
+
 ----- version 4.4.3-1 -----
 Version bump.  Enabled Xinerama support.
 
