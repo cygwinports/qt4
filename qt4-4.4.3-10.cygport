@@ -2,7 +2,6 @@ DESCRIPTION="Qt C++ application framework"
 HOMEPAGE="http://www.trolltech.com/products/qt/"
 ORIG_PN="qt-x11-opensource-src"
 SRC_URI="ftp://ftp.trolltech.com/qt/source/${ORIG_PN}-${PV}.tar.bz2"
-#SRC_URI="mirror://gentoo/${ORIG_PN}-${PV}.tar.bz2"
 PATCH_URI="
 	mirror://portage/x11-libs/qt-core/files/0167-fix-group-reading.diff
 	mirror://portage/x11-libs/qt-core/files/0253-qmake_correct_path_separators.diff
@@ -28,7 +27,6 @@ PATCH_URI="
 	mirror://portage/x11-libs/qt-gui/files/0266-fix-focusChain1.diff
 	mirror://portage/x11-libs/qt-gui/files/0267-fix-focusChain2.diff
 	mirror://portage/x11-libs/qt-webkit/files/0249-webkit-stale-frame-pointer.diff
-	4.4.0-clucene.patch
 	4.4.0-dlopen.patch
 	4.4.0-mkspecs.patch
 	4.4.0-not-windows.patch
@@ -58,7 +56,7 @@ src_compile() {
 
 	# -exceptions: required for QtXmlPatterns
 	# -no-largefile: Cygwin's open() and friends are 64-bit w/o O_LARGEFILE
-	# -no-phonon: phonon-4.2 (kdesupport) is required for KDE 4.1
+	# -no-phonon: phonon-4.3 (kdesupport) is required for KDE 4.2
 	${S}/configure \
 		-prefix ${QPREFIX} \
 		-bindir ${QBINDIR} \
@@ -82,8 +80,8 @@ src_compile() {
 		-glib -qdbus -qt3support -no-phonon -assistant-webkit \
 		-no-sql-ibase \
 		-plugin-sql-odbc \
-		-plugin-sql-sqlite -plugin-sql-sqlite2 -system-sqlite \
-		-plugin-sql-mysql -I/usr/include/mysql -L/usr/lib/mysql \
+		-plugin-sql-sqlite -no-sql-sqlite2 -system-sqlite \
+		-no-sql-mysql \
 		-plugin-sql-psql \
 		-system-zlib -qt-gif \
 		-system-libtiff -system-libpng -system-libmng -system-libjpeg \
@@ -109,8 +107,6 @@ src_install() {
 	cd ${B}
 
 	make INSTALL_ROOT=${D} install
-
-#	keepdir ${QSYSCONFDIR}
 
 	inform "Fixing installation directories"
 	dodir /usr/bin
@@ -171,7 +167,6 @@ src_install() {
 }
 
 PKG_NAMES="${PN}"
-PKG_CONTENTS[0]=	# empty
 
 for lib in Qt3Support QtAssistantClient QtCore QtDBus QtDesigner QtGui \
            QtHelp QtNetwork QtOpenGL QtScript QtSql QtSvg QtTest QtWebKit \
@@ -189,4 +184,4 @@ PKG_IGNORE="${QTRANSLATIONSDIR#/}/qvfb_*"
 
 # webkit is in 3rdparty
 DIFF_EXCLUDES="demos doc examples clucene freetype harfbuzz kdebase kdelibs
-               libjpeg libmng libpng libtiff sqlite wintab zlib"
+               libjpeg libmng libpng libtiff sqlite wintab zlib Makefile WebKitBuild"

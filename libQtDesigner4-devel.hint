@@ -1,5 +1,5 @@
-category: KDE X11
-requires: cygwin libQtDesigner4 libQtCore4-devel libQtGui4-devel libQtScript4-devel libQtXml4-devel
+category: KDE
+requires: cygwin libQtDesigner4 libQtCore4-devel libQtGui4-devel libQtScript4-devel libQtXml4-devel libstdc++6-devel
 external-source: qt4
 sdesc: "Qt4 Designer library (libdevel)"
 ldesc: "Qt is a cross-platform application framework for desktop and 

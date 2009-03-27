@@ -1,5 +1,5 @@
-category: KDE X11
-requires: cygwin libQtGui4 libaudio-devel libfontconfig-devel libfreetype-devel libglib2.0-devel libICE-devel libpng12-devel libQtCore4-devel libSM-devel libX11-devel libXcursor-devel libXext-devel libXfixes-devel libXinerama-devel libXrandr-devel libXrender-devel zlib
+category: KDE
+requires: cygwin libQtGui4 libaudio-devel libfontconfig-devel libfreetype-devel libglib2.0-devel libICE-devel libpng12-devel libQtCore4-devel libSM-devel libX11-devel libXcursor-devel libXext-devel libXfixes-devel libXinerama-devel libXrandr-devel libXrender-devel zlib-devel libstdc++6-devel
 external-source: qt4
 sdesc: "Qt4 Gui library (libdevel)"
 ldesc: "Qt is a cross-platform application framework for desktop and 

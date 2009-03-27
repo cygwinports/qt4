@@ -1,5 +1,5 @@
-category: KDE X11
-requires: cygwin libQtOpenGL4 libQtCore4-devel libQtGui4-devel libX11-devel libfreetype-devel libGL-devel
+category: KDE
+requires: cygwin libQtOpenGL4 libQtCore4-devel libQtGui4-devel libX11-devel libfreetype-devel libGL-devel libstdc++6-devel
 external-source: qt4
 sdesc: "Qt4 OpenGL library (libdevel)"
 ldesc: "Qt is a cross-platform application framework for desktop and 

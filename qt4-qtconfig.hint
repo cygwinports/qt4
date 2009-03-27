@@ -1,4 +1,4 @@
-category: KDE X11
+category: KDE
 requires: cygwin libQt3Support4 libQtCore4 libQtGui4
 external-source: qt4
 sdesc: "Qt4 desktop configuration app"

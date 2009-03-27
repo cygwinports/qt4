@@ -41,14 +41,7 @@
  QMAKE_CYGWIN_SHLIB	= 1
  QMAKE_CYGWIN_EXE	= 1
   
-@@ -65,13 +65,14 @@
- QMAKE_LIBS_OPENGL	= -lGLU -lGL
- QMAKE_LIBS_OPENGL_QT	= -lGL
- QMAKE_LIBS_THREAD	= -lpthread
-+QMAKE_LIBS_COMPAT	= -lresolv
- 
- QMAKE_MOC		= $$[QT_INSTALL_BINS]/moc
- QMAKE_UIC		= $$[QT_INSTALL_BINS]/uic
+@@ -71,7 +71,7 @@
  
  QMAKE_AR		= ar cqs
  QMAKE_OBJCOPY           = objcopy

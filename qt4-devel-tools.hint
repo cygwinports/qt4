@@ -1,4 +1,4 @@
-category: KDE X11 Devel
+category: KDE Devel
 requires: cygwin libQtCore4 libQtDBus4 libQtDesigner4 libQtGui4 libQtHelp4 libQtNetwork4 libQtWebKit4 libQtXml4 libQtXmlPatterns4
 external-source: qt4
 sdesc: "Qt4 Assistant, Designer, and Linguist"

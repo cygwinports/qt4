@@ -1,5 +1,5 @@
-category: KDE Graphics
-requires: cygwin libQtSvg4 libQtCore4-devel libQtGui4-devel
+category: KDE
+requires: cygwin libQtSvg4 libQtCore4-devel libQtGui4-devel libstdc++6-devel
 external-source: qt4
 sdesc: "Qt4 SVG library (libdevel)"
 ldesc: "Qt is a cross-platform application framework for desktop and 

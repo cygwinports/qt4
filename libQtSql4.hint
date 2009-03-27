@@ -1,5 +1,5 @@
-category: KDE Database
-requires: cygwin libQtCore4 libmysqlclient15 libpq5 libsqlite0 libsqlite3_0 
+category: KDE
+requires: cygwin libQtCore4 libpq5 libsqlite3_0 libgcc1 libstdc++6
 external-source: qt4
 sdesc: "Qt4 Sql library (runtime)"
 ldesc: "Qt is a cross-platform application framework for desktop and 
