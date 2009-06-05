@@ -3,37 +3,14 @@ HOMEPAGE="http://www.trolltech.com/products/qt/"
 ORIG_PN="qt-x11-opensource-src"
 SRC_URI="ftp://ftp.trolltech.com/qt/source/${ORIG_PN}-${PV}.tar.bz2"
 PATCH_URI="
-	mirror://portage/x11-libs/qt-core/files/0167-fix-group-reading.diff
-	mirror://portage/x11-libs/qt-core/files/0253-qmake_correct_path_separators.diff
-	mirror://portage/x11-libs/qt-core/files/0257-qurl-validate-speedup.diff
-	mirror://portage/x11-libs/qt-gui/files/0195-compositing-properties.diff
-	mirror://portage/x11-libs/qt-gui/files/0203-qtexthtmlparser-link-color.diff
-	mirror://portage/x11-libs/qt-gui/files/0224-fast-qpixmap-fill.diff
-	mirror://portage/x11-libs/qt-gui/files/0225-invalidate-tabbar-geometry-on-refresh.patch
-	mirror://portage/x11-libs/qt-gui/files/0226-qtreeview-column_resize_when_needed.diff
-	mirror://portage/x11-libs/qt-gui/files/0238-fix-qt-qttabbar-size.diff
-	mirror://portage/x11-libs/qt-gui/files/0245-fix-randr-changes-detecting.diff
-	mirror://portage/x11-libs/qt-gui/files/0248-fix-qwidget-scroll-slowness.diff
-	mirror://portage/x11-libs/qt-gui/files/0254-fix-qgraphicsproxywidget-deletion-crash.diff
-	mirror://portage/x11-libs/qt-gui/files/0255-qtreeview-selection-columns-hidden.diff
-	mirror://portage/x11-libs/qt-gui/files/0256-fix-recursive-backingstore-sync-crash.diff
-	mirror://portage/x11-libs/qt-gui/files/0258-windowsxpstyle-qbrush.diff
-	mirror://portage/x11-libs/qt-gui/files/0260-fix-qgraphicswidget-deletionclearFocus.diff
-	mirror://portage/x11-libs/qt-gui/files/0261-sync-before-reset-errorhandler.patch
-	mirror://portage/x11-libs/qt-gui/files/0262-fix-treeview-animation-crash.diff
-	mirror://portage/x11-libs/qt-gui/files/0263-fix-fontconfig-handling.diff
-	mirror://portage/x11-libs/qt-gui/files/0264-fix-zero-height-qpixmap-isnull.diff
-	mirror://portage/x11-libs/qt-gui/files/0265-fix-formlayoutcrash.diff
-	mirror://portage/x11-libs/qt-gui/files/0266-fix-focusChain1.diff
-	mirror://portage/x11-libs/qt-gui/files/0267-fix-focusChain2.diff
-	mirror://portage/x11-libs/qt-webkit/files/0249-webkit-stale-frame-pointer.diff
-	4.4.0-dlopen.patch
-	4.4.0-mkspecs.patch
+	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
+	4.5.1-dlopen.patch
+	4.5.1-mkspecs.patch
 	4.4.0-not-windows.patch
 	4.4.0-odbc32.patch
-	4.4.0-qmake.patch
-	4.4.0-static-const.patch
-	4.4.0-webkit.patch
+	4.5.1-gtkstyle.patch
+	4.5.1-qmake.patch
+	4.5.1-webkit.patch
 "
 
 QPLATFORM="cygwin-g++"
@@ -53,10 +30,10 @@ src_compile() {
 	cd ${B}
 
 	export CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
+	export CC="${CC% *}"
 
 	# -exceptions: required for QtXmlPatterns
 	# -no-largefile: Cygwin's open() and friends are 64-bit w/o O_LARGEFILE
-	# -no-phonon: phonon-4.3 (kdesupport) is required for KDE 4.2
 	${S}/configure \
 		-prefix ${QPREFIX} \
 		-bindir ${QBINDIR} \
@@ -70,6 +47,7 @@ src_compile() {
 		-examplesdir ${QEXAMPLESDIR} \
 		-demosdir ${QDEMOSDIR} \
 		-confirm-license \
+		-opensource \
 		-platform ${QPLATFORM} \
 		-xplatform ${QPLATFORM} \
 		-release -no-debug -shared -fast \
@@ -77,11 +55,11 @@ src_compile() {
 		-exceptions \
 		-accessibility \
 		-stl \
-		-glib -qdbus -qt3support -no-phonon -assistant-webkit \
+		-glib -qdbus -qt3support -phonon -gtkstyle \
 		-no-sql-ibase \
 		-plugin-sql-odbc \
 		-plugin-sql-sqlite -no-sql-sqlite2 -system-sqlite \
-		-no-sql-mysql \
+		-plugin-sql-mysql -mysql_config /usr/bin/mysql_config \
 		-plugin-sql-psql \
 		-system-zlib -qt-gif \
 		-system-libtiff -system-libpng -system-libmng -system-libjpeg \
@@ -90,12 +68,12 @@ src_compile() {
 		-no-rpath \
 		-continue -verbose \
 		-optimized-qmake \
-		-no-nis -no-cups -iconv -no-pch \
+		-no-nis -no-cups -no-iconv -no-pch \
 		-system-nas-sound \
-		-opengl -sm -xshape -xinerama -xcursor -xfixes -xrandr -xrender -fontconfig -xkb \
+		-opengl -sm -xshape -xinerama -xinput -xcursor -xfixes -xrandr -xrender -fontconfig -xkb \
 		-no-separate-debug-info \
-		-no-tablet \
 		-little-endian \
+		-no-reduce-exports \
 		|| error "configure failed"
 
 	cygmake
@@ -107,6 +85,10 @@ src_install() {
 	cd ${B}
 
 	make INSTALL_ROOT=${D} install
+
+	# needed for qtcreator
+	exeinto ${QBINDIR}
+	doexe tools/qdoc3/qdoc3.exe
 
 	inform "Fixing installation directories"
 	dodir /usr/bin
@@ -133,7 +115,7 @@ src_install() {
 
 	# These are new in 4.x
 	for x in assistant_adp pixeltool qcollectiongenerator qdbus \
-	         qdbus{cpp2xml,viewer,xml2cpp} qhelp{converter,generator} \
+	         qdbus{cpp2xml,viewer,xml2cpp} qdoc3 qhelp{converter,generator} \
 	         qt3to4 qtdemo rcc uic3 xmlpatterns
 	do
 		dosym ../lib/qt${PV_MAJ}/bin/${x}.exe /usr/bin/${x}
@@ -170,7 +152,7 @@ PKG_NAMES="${PN}"
 
 for lib in Qt3Support QtAssistantClient QtCore QtDBus QtDesigner QtGui \
            QtHelp QtNetwork QtOpenGL QtScript QtSql QtSvg QtTest QtWebKit \
-           QtXml QtXmlPatterns
+           QtXml QtXmlPatterns phonon
 do
 	PKG_NAMES+=" lib${lib}${PV_MAJ} lib${lib}${PV_MAJ}-devel"
 done

@@ -5,6 +5,7 @@ usr/bin/linguist-qt4
 usr/bin/pixeltool
 usr/bin/qcollectiongenerator
 usr/bin/qdbusviewer
+usr/bin/qdoc3
 usr/bin/qhelpconverter
 usr/bin/qhelpgenerator
 usr/bin/xmlpatterns
@@ -15,6 +16,7 @@ usr/lib/qt4/bin/linguist.exe
 usr/lib/qt4/bin/pixeltool.exe
 usr/lib/qt4/bin/qcollectiongenerator.exe
 usr/lib/qt4/bin/qdbusviewer.exe
+usr/lib/qt4/bin/qdoc3.exe
 usr/lib/qt4/bin/qhelpconverter.exe
 usr/lib/qt4/bin/qhelpgenerator.exe
 usr/lib/qt4/bin/xmlpatterns.exe

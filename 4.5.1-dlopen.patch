@@ -25,3 +25,14 @@
  #else
          if (!fullVersion.isEmpty()) {
              suffixes << QString::fromLatin1(".so.%1").arg(fullVersion);
+--- origsrc/qt-x11-opensource-src-4.5.1/src/corelib/io/qprocess_unix.cpp	2009-04-21 18:57:41.000000000 -0500
++++ src/qt-x11-opensource-src-4.5.1/src/corelib/io/qprocess_unix.cpp	2009-06-02 03:45:49.703763800 -0500
+@@ -538,6 +538,8 @@ static char **_q_dupEnvironment(const QS
+     // copy it over.
+ #if defined(Q_OS_MAC)
+     static const char libraryPath[] = "DYLD_LIBRARY_PATH";
++#elif defined(Q_OS_CYGWIN)
++    static const char libraryPath[] = "PATH";
+ #else
+     static const char libraryPath[] = "LD_LIBRARY_PATH";
+ #endif

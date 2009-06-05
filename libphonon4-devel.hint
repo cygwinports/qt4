@@ -1,0 +1,5 @@
+category: Audio Video KDE
+requires: cygwin libphonon4 libQtCore4-devel libQtDBus4-devel libQtGui4-devel libstdc++6-devel
+external-source: qt4
+sdesc: "Qt4 multimedia abstraction layer (libdevel)"
+ldesc: "Qt4/KDE4 multimedia engine with support for multiple backends"
