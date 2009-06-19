@@ -1,7 +1,7 @@
-category: KDE Devel
-requires: cygwin libphonon4 libQt3Support4 libQtCore4 libQtDBus4 libQtDesigner4 libQtGui4 libQtHelp4 libQtNetwork4 libQtWebKit4 libQtXml4 libQtXmlPatterns4
+category: KDE
+requires: cygwin libQtScriptTools4 libQtCore4-devel libQtGui4-devel libQtScript4-devel libstdc++6-devel
 external-source: qt4
-sdesc: "Qt4 Assistant, Designer, and Linguist"
+sdesc: "Qt4 ScriptTools library (libdevel)"
 ldesc: "Qt is a cross-platform application framework for desktop and 
 embedded development. Qt enables programmers to create advanced GUI 
 applications once and deploy them to Windows, Mac OS X and Linux without 

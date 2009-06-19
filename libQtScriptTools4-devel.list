@@ -1,0 +1,5 @@
+usr/include/qt4/Qt/QtScriptTools
+usr/include/qt4/Qt/qscriptenginedebugger.h
+usr/include/qt4/QtScriptTools/
+usr/lib/pkgconfig/QtScriptTools.pc
+usr/lib/qt4/lib/libQtScriptTools.*

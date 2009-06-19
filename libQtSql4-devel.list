@@ -1,11 +1,6 @@
 usr/include/qt4/Qt/QtSql
 usr/include/qt4/Qt/qsql.h
-usr/include/qt4/Qt/qsql_ibase.h
-usr/include/qt4/Qt/qsql_mysql.h
-usr/include/qt4/Qt/qsql_odbc.h
-usr/include/qt4/Qt/qsql_psql.h
-usr/include/qt4/Qt/qsql_sqlite.h
-usr/include/qt4/Qt/qsql_sqlite2.h
+usr/include/qt4/Qt/qsql_*.h
 usr/include/qt4/Qt/qsqldatabase.h
 usr/include/qt4/Qt/qsqldriver.h
 usr/include/qt4/Qt/qsqldriverplugin.h

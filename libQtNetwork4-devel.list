@@ -1,4 +1,5 @@
 usr/include/qt4/Qt/QtNetwork
+usr/include/qt4/Qt/qabstractnetworkcache.h
 usr/include/qt4/Qt/qabstractsocket.h
 usr/include/qt4/Qt/qauthenticator.h
 usr/include/qt4/Qt/qftp.h
@@ -9,6 +10,7 @@ usr/include/qt4/Qt/qlocalserver.h
 usr/include/qt4/Qt/qlocalsocket.h
 usr/include/qt4/Qt/qnetworkaccessmanager.h
 usr/include/qt4/Qt/qnetworkcookie.h
+usr/include/qt4/Qt/qnetworkdiskcache.h
 usr/include/qt4/Qt/qnetworkinterface.h
 usr/include/qt4/Qt/qnetworkproxy.h
 usr/include/qt4/Qt/qnetworkreply.h

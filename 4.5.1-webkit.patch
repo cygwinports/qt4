@@ -36,6 +36,17 @@
      // offset 0x18 from the FS segment register gives a pointer to
      // the thread information block for the current thread
      NT_TIB* pTib;
+--- origsrc/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/JavaScriptCore/jit/JIT.cpp	2009-04-21 18:57:38.000000000 -0500
++++ src/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/JavaScriptCore/jit/JIT.cpp	2009-06-09 22:43:18.027956100 -0500
+@@ -49,7 +49,7 @@ COMPILE_ASSERT(STUB_ARGS_callFrame == 0x
+ 
+ #if COMPILER(GCC) && PLATFORM(X86)
+ 
+-#if PLATFORM(DARWIN)
++#if PLATFORM(DARWIN) || PLATFORM(CYGWIN)
+ #define SYMBOL_STRING(name) "_" #name
+ #else
+ #define SYMBOL_STRING(name) #name
 --- origsrc/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/JavaScriptCore/runtime/DateMath.h	2009-04-21 18:57:38.000000000 -0500
 +++ src/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/JavaScriptCore/runtime/DateMath.h	2009-04-29 22:27:13.967125000 -0500
 @@ -113,7 +113,7 @@ struct GregorianDateTime : Noncopyable {
@@ -80,6 +91,15 @@
     || PLATFORM(FREEBSD)    \
     || PLATFORM(S60)        \
     || PLATFORM(NETBSD)     \
+@@ -446,7 +454,7 @@
+     #define ENABLE_JIT_OPTIMIZE_PROPERTY_ACCESS 1
+     #define WTF_USE_ALTERNATE_JSIMMEDIATE 1
+ /* The JIT is tested & working on x86 Mac */
+-#elif PLATFORM(X86) && PLATFORM(MAC)
++#elif PLATFORM(X86) && (PLATFORM(MAC) || PLATFORM(CYGWIN))
+     #define ENABLE_JIT 1
+     #define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
+     #define ENABLE_JIT_OPTIMIZE_CALL 1
 --- qt4-4.5.1-1/origsrc/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/WebCore/plugins/PluginDatabase.cpp	2009-05-28 02:13:03.931817400 -0500
 +++ qt4-4.5.1-1/src/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/WebCore/plugins/PluginDatabase.cpp	2009-05-28 02:12:49.322981800 -0500
 @@ -351,7 +351,9 @@ void PluginDatabase::getPluginPathsInDir

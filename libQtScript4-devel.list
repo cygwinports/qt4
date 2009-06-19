@@ -1,3 +1,4 @@
+--exclude=qscriptenginedebugger.h
 usr/include/qt4/Qt/QtScript
 usr/include/qt4/Qt/qscript*.h
 usr/include/qt4/QtScript/

@@ -18,7 +18,7 @@
 -    if(ret.isEmpty())
 -        ret = project->first("TARGET");
 +    if(ret.isEmpty()) {
-+        if(!project->isEmpty("QMAKE_CYGWIN_SHLIB"))
++        if(!project->isEmpty("QMAKE_CYGWIN_SHLIB") && !project->isActiveConfig("staticlib"))
 +            ret = project->first("L_TARGET");
 +        else
 +            ret = project->first("TARGET");
@@ -191,7 +191,7 @@
  {
 -    QString ret = var("TARGET");
 +    QString ret;
-+    if (!project->isEmpty("QMAKE_CYGWIN_SHLIB"))
++    if (!project->isEmpty("QMAKE_CYGWIN_SHLIB") && !project->isActiveConfig("staticlib"))
 +        ret = var("L_TARGET");
 +    else
 +        ret = var("TARGET");

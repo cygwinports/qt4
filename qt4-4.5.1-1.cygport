@@ -4,11 +4,13 @@ ORIG_PN="qt-x11-opensource-src"
 SRC_URI="ftp://ftp.trolltech.com/qt/source/${ORIG_PN}-${PV}.tar.bz2"
 PATCH_URI="
 	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
+	mirror://portage/x11-libs/qt-gui/files/qt-gui-4.5.1-0282-fix-qpixmapcache-leak.diff
 	4.5.1-dlopen.patch
 	4.5.1-mkspecs.patch
 	4.4.0-not-windows.patch
 	4.4.0-odbc32.patch
 	4.5.1-gtkstyle.patch
+	4.5.1-iconv.patch
 	4.5.1-qmake.patch
 	4.5.1-webkit.patch
 "
@@ -29,11 +31,12 @@ QSYSCONFDIR="/etc/qt${PV_MAJ}"
 src_compile() {
 	cd ${B}
 
-	export CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 	export CC="${CC% *}"
 
 	# -exceptions: required for QtXmlPatterns
+	# -no-gtkstyle: crashes (the standalone version works great though)
 	# -no-largefile: Cygwin's open() and friends are 64-bit w/o O_LARGEFILE
+	# -phonon: we build it but don't install it (KDE phonon is used instead)
 	${S}/configure \
 		-prefix ${QPREFIX} \
 		-bindir ${QBINDIR} \
@@ -55,12 +58,13 @@ src_compile() {
 		-exceptions \
 		-accessibility \
 		-stl \
-		-glib -qdbus -qt3support -phonon -gtkstyle \
+		-glib -qdbus -qt3support -phonon -no-gtkstyle \
 		-no-sql-ibase \
+		-plugin-sql-mysql -mysql_config /usr/bin/mysql_config \
 		-plugin-sql-odbc \
 		-plugin-sql-sqlite -no-sql-sqlite2 -system-sqlite \
-		-plugin-sql-mysql -mysql_config /usr/bin/mysql_config \
 		-plugin-sql-psql \
+		-plugin-sql-tds \
 		-system-zlib -qt-gif \
 		-system-libtiff -system-libpng -system-libmng -system-libjpeg \
 		-openssl-linked \
@@ -84,7 +88,11 @@ src_install() {
 
 	cd ${B}
 
-	make INSTALL_ROOT=${D} install
+	cygmake INSTALL_ROOT=${D} install
+	# we need to use KDE phonon instead of this one for KDE4
+	# do NOT uninstall the designer plugin, as KDE phonon does not provide it
+	cygmake INSTALL_ROOT=${D} uninstall -C src/phonon
+	cygmake INSTALL_ROOT=${D} uninstall -C src/plugins/phonon
 
 	# needed for qtcreator
 	exeinto ${QBINDIR}
@@ -114,7 +122,7 @@ src_install() {
 	done
 
 	# These are new in 4.x
-	for x in assistant_adp pixeltool qcollectiongenerator qdbus \
+	for x in assistant_adp lconvert pixeltool qcollectiongenerator qdbus \
 	         qdbus{cpp2xml,viewer,xml2cpp} qdoc3 qhelp{converter,generator} \
 	         qt3to4 qtdemo rcc uic3 xmlpatterns
 	do
@@ -151,8 +159,8 @@ src_install() {
 PKG_NAMES="${PN}"
 
 for lib in Qt3Support QtAssistantClient QtCore QtDBus QtDesigner QtGui \
-           QtHelp QtNetwork QtOpenGL QtScript QtSql QtSvg QtTest QtWebKit \
-           QtXml QtXmlPatterns phonon
+           QtHelp QtNetwork QtOpenGL QtScript QtScriptTools QtSql QtSvg \
+           QtTest QtWebKit QtXml QtXmlPatterns
 do
 	PKG_NAMES+=" lib${lib}${PV_MAJ} lib${lib}${PV_MAJ}-devel"
 done

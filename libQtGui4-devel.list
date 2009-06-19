@@ -74,6 +74,7 @@ usr/include/qt4/Qt/qgraphicsview.h
 usr/include/qt4/Qt/qgraphicswidget.h
 usr/include/qt4/Qt/qgridlayout.h
 usr/include/qt4/Qt/qgroupbox.h
+usr/include/qt4/Qt/qgtkstyle.h
 usr/include/qt4/Qt/qheaderview.h
 usr/include/qt4/Qt/qicon.h
 usr/include/qt4/Qt/qiconengine.h
@@ -169,6 +170,7 @@ usr/include/qt4/Qt/qtextbrowser.h
 usr/include/qt4/Qt/qtextcursor.h
 usr/include/qt4/Qt/qtextdocument.h
 usr/include/qt4/Qt/qtextdocumentfragment.h
+usr/include/qt4/Qt/qtextdocumentwriter.h
 usr/include/qt4/Qt/qtextedit.h
 usr/include/qt4/Qt/qtextformat.h
 usr/include/qt4/Qt/qtextlayout.h

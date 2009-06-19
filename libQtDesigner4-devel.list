@@ -1,5 +1,6 @@
 usr/include/qt4/QtDesigner/
 usr/include/qt4/QtUiTools/
 usr/lib/pkgconfig/QtDesigner*.pc
+usr/lib/pkgconfig/QtUiTools.pc
 usr/lib/qt4/lib/libQtDesigner*
 usr/lib/qt4/lib/libQtUiTools.*

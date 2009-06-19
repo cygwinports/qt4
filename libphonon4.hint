@@ -1,5 +1,0 @@
-category: Audio Video KDE
-requires: cygwin libQtCore4 libQtDBus4 libQtGui4 libgcc1 libstdc++6
-external-source: qt4
-sdesc: "Qt4 multimedia abstraction layer (runtime)"
-ldesc: "Qt4/KDE4 multimedia engine with support for multiple backends"

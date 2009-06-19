@@ -20,6 +20,9 @@ usr/lib/qt4/bin/qdoc3.exe
 usr/lib/qt4/bin/qhelpconverter.exe
 usr/lib/qt4/bin/qhelpgenerator.exe
 usr/lib/qt4/bin/xmlpatterns.exe
+usr/lib/qt4/plugins/designer/cygphononwidgets.dll
+usr/lib/qt4/plugins/designer/cygqt3supportwidgets.dll
+usr/lib/qt4/plugins/designer/cygqwebview.dll
 usr/share/applications/assistant-qt4.desktop
 usr/share/applications/designer-qt4.desktop
 usr/share/applications/linguist-qt4.desktop
