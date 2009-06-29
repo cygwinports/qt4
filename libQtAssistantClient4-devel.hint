@@ -1,5 +1,5 @@
 category: KDE
-requires: cygwin libQtAssistantClient4 libQtCore4-devel libQtNetwork4-devel libstdc++6-devel
+requires: libQtAssistantClient4 libQtCore4-devel libQtNetwork4-devel libstdc++6-devel
 external-source: qt4
 sdesc: "Qt4 AssistantClient library (libdevel)"
 ldesc: "Qt is a cross-platform application framework for desktop and 
