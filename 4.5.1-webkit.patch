@@ -100,8 +100,8 @@
      #define ENABLE_JIT 1
      #define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
      #define ENABLE_JIT_OPTIMIZE_CALL 1
---- qt4-4.5.1-1/origsrc/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/WebCore/plugins/PluginDatabase.cpp	2009-05-28 02:13:03.931817400 -0500
-+++ qt4-4.5.1-1/src/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/WebCore/plugins/PluginDatabase.cpp	2009-05-28 02:12:49.322981800 -0500
+--- origsrc/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/WebCore/plugins/PluginDatabase.cpp	2009-05-28 02:13:03.931817400 -0500
++++ src/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/WebCore/plugins/PluginDatabase.cpp	2009-05-28 02:12:49.322981800 -0500
 @@ -351,7 +351,9 @@ void PluginDatabase::getPluginPathsInDir
      // FIXME: This should be a case insensitive set.
      HashSet<String> uniqueFilenames;

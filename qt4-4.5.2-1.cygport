@@ -4,16 +4,15 @@ ORIG_PN="qt-x11-opensource-src"
 SRC_URI="ftp://ftp.trolltech.com/qt/source/${ORIG_PN}-${PV}.tar.bz2"
 PATCH_URI="
 	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
-	mirror://portage/x11-libs/qt-gui/files/qt-gui-4.5.1-0282-fix-qpixmapcache-leak.diff
 	4.5.1-dlopen.patch
 	4.5.1-mkspecs.patch
 	4.4.0-not-windows.patch
 	4.4.0-odbc32.patch
-	4.5.1-gtkstyle.patch
 	4.5.1-iconv.patch
 	4.5.1-qmake.patch
 	4.5.1-webkit.patch
 "
+#	4.5.1-gtkstyle.patch
 
 QPLATFORM="cygwin-g++"
 QPREFIX="/usr"
@@ -72,7 +71,7 @@ src_compile() {
 		-no-rpath \
 		-continue -verbose \
 		-optimized-qmake \
-		-no-nis -no-cups -no-iconv -no-pch \
+		-no-nis -no-cups -iconv -no-pch \
 		-system-nas-sound \
 		-opengl -sm -xshape -xinerama -xinput -xcursor -xfixes -xrandr -xrender -fontconfig -xkb \
 		-no-separate-debug-info \

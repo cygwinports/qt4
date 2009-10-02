@@ -1,11 +1,11 @@
---- origsrc/qt-x11-opensource-src-4.5.1/src/corelib/codecs/qtextcodec.cpp	2009-04-21 18:57:41.000000000 -0500
-+++ src/qt-x11-opensource-src-4.5.1/src/corelib/codecs/qtextcodec.cpp	2009-06-15 03:50:51.739537900 -0500
-@@ -529,7 +529,7 @@ static void setupLocaleMapper()
+--- origsrc/qt-x11-opensource-src-4.5.2/src/corelib/codecs/qtextcodec.cpp	2009-06-28 01:02:24.552706500 -0500
++++ src/qt-x11-opensource-src-4.5.2/src/corelib/codecs/qtextcodec.cpp	2009-06-28 14:15:46.041072100 -0500
+@@ -525,7 +525,7 @@ static void setupLocaleMapper()
+     localeMapper = QTextCodec::codecForName("System");
+ #else
+ 
+-#ifndef QT_NO_ICONV
++#if !defined(QT_NO_ICONV) && !defined(Q_OS_CYGWIN)
      localeMapper = QTextCodec::codecForName("System");
  #endif
  
--#if defined (_XOPEN_UNIX) && !defined(Q_OS_QNX6) && !defined(Q_OS_OSF)
-+#if defined (_XOPEN_UNIX) && !defined(Q_OS_CYGWIN) && !defined(Q_OS_QNX6) && !defined(Q_OS_OSF)
-     if (!localeMapper) {
-         char *charset = nl_langinfo (CODESET);
-         if (charset)
