@@ -1,17 +1,18 @@
 DESCRIPTION="Qt C++ application framework"
 HOMEPAGE="http://www.trolltech.com/products/qt/"
 ORIG_PN="qt-x11-opensource-src"
-SRC_URI="ftp://ftp.trolltech.com/qt/source/${ORIG_PN}-${PV}.tar.bz2"
+SRC_URI="ftp://ftp.trolltech.com/qt/source/${ORIG_PN}-${PV}.tar.gz"
 PATCH_URI="
 	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
 	4.5.1-dlopen.patch
 	4.5.1-mkspecs.patch
 	4.4.0-not-windows.patch
-	4.4.0-odbc32.patch
 	4.5.1-iconv.patch
 	4.5.1-qmake.patch
 	4.5.1-webkit.patch
+	4.5.3-glib-mainloop-compat.patch
 "
+#	4.4.0-odbc32.patch
 #	4.5.1-gtkstyle.patch
 
 QPLATFORM="cygwin-g++"
@@ -27,10 +28,10 @@ QEXAMPLESDIR="/usr/lib/qt${PV_MAJ}/examples"
 QDEMOSDIR="/usr/lib/qt${PV_MAJ}/demos"
 QSYSCONFDIR="/etc/qt${PV_MAJ}"
 
+export PATH="${B}/bin:${B}/lib:$PATH"
+
 src_compile() {
 	cd ${B}
-
-	export CC="${CC% *}"
 
 	# -exceptions: required for QtXmlPatterns
 	# -no-gtkstyle: crashes (the standalone version works great though)
@@ -60,7 +61,7 @@ src_compile() {
 		-glib -qdbus -qt3support -phonon -no-gtkstyle \
 		-no-sql-ibase \
 		-plugin-sql-mysql -mysql_config /usr/bin/mysql_config \
-		-plugin-sql-odbc \
+		-no-sql-odbc \
 		-plugin-sql-sqlite -no-sql-sqlite2 -system-sqlite \
 		-plugin-sql-psql \
 		-plugin-sql-tds \
@@ -80,6 +81,8 @@ src_compile() {
 		|| error "configure failed"
 
 	cygmake
+
+	./bin/lrelease ${S}/translations/*.ts
 }
 
 src_install() {
@@ -96,6 +99,9 @@ src_install() {
 	# needed for qtcreator
 	exeinto ${QBINDIR}
 	doexe tools/qdoc3/qdoc3.exe
+
+	insinto ${QTRANSLATIONSDIR}
+	doins ${S}/translations/*.qm
 
 	inform "Fixing installation directories"
 	dodir /usr/bin

@@ -1,5 +1,5 @@
 category: KDE
-requires: libGL1 libphonon4 libQt3Support4 libQtAssistantClient4 libQtCore4 libQtDBus4 libQtDesigner4 libQtGui4 libQtHelp4 libQtNetwork4 libQtOpenGL4 libQtScript4 libQtScriptTools4 libQtSql4 libQtSvg4 libQtTest4 libQtWebKit4 libQtXml4 libQtXmlPatterns4
+requires: libGL1 libGLU1 libphonon4 libQt3Support4 libQtAssistantClient4 libQtCore4 libQtDBus4 libQtDesigner4 libQtGui4 libQtHelp4 libQtNetwork4 libQtOpenGL4 libQtScript4 libQtScriptTools4 libQtSql4 libQtSvg4 libQtTest4 libQtWebKit4 libQtXml4 libQtXmlPatterns4
 external-source: qt4
 sdesc: "Qt4 demos and examples"
 ldesc: "Qt is a cross-platform application framework for desktop and 

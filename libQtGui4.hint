@@ -1,5 +1,5 @@
 category: KDE
-requires: libaudio2 libfontconfig1 libfreetype6 libglib2.0_0 libICE6 libjpeg62 libmng1 libpng12 libtiff5 libQtCore4 libSM6 libX11_6 libXcursor1 libXext6 libXfixes3 libXinerama1 libXrandr2 libXrender1 zlib0 libgcc1 libstdc++6
+requires: libaudio2 libfontconfig1 libfreetype6 libglib2.0_0 libICE6 libjpeg7 libmng1 libpng12 libtiff5 libQtCore4 libSM6 libX11_6 libXcursor1 libXext6 libXfixes3 libXinerama1 libXrandr2 libXrender1 zlib0 libgcc1 libstdc++6
 external-source: qt4
 sdesc: "Qt4 Gui library (runtime)"
 ldesc: "Qt is a cross-platform application framework for desktop and 
