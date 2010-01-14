@@ -3,3 +3,4 @@ usr/include/qt4/Qt/qweb*.h
 usr/include/qt4/QtWebKit/
 usr/lib/pkgconfig/QtWebKit.pc
 usr/lib/qt4/lib/libQtWebKit.*
+usr/lib/qt4/plugins/designer/cygqwebview.dll

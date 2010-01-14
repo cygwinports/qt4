@@ -1,5 +1,5 @@
 category: KDE
-requires: libQt3Support4 libQtCore4-devel libQtGui4-devel libQtNetwork4-devel libQtSql4-devel libQtXml4-devel libstdc++6-devel
+requires: libQt3Support4 libQtCore4-devel libQtGui4-devel libQtNetwork4-devel libQtSql4-devel libQtXml4-devel
 external-source: qt4
 sdesc: "Qt4 Qt3Support library (libdevel)"
 ldesc: "Qt is a cross-platform application framework for desktop and 

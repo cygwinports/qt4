@@ -1,5 +1,5 @@
 category: KDE
-requires: libQtDBus4 libdbus1-devel libQtCore4-devel libQtXml4-devel libstdc++6-devel
+requires: libQtDBus4 libdbus1-devel libQtCore4-devel libQtXml4-devel
 external-source: qt4
 sdesc: "Qt4 DBus library (libdevel)"
 ldesc: "Qt is a cross-platform application framework for desktop and 

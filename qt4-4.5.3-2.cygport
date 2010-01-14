@@ -73,9 +73,9 @@ src_compile() {
 		-exceptions \
 		-accessibility \
 		-stl \
-		-glib -qdbus -qt3support -no-phonon -no-gtkstyle \
+		-glib -qdbus -qt3support -phonon -no-gtkstyle \
 		-no-sql-ibase \
-		-no-sql-mysql \
+		-plugin-sql-mysql -mysql_config /usr/bin/mysql_config \
 		-no-sql-odbc \
 		-plugin-sql-sqlite -no-sql-sqlite2 -system-sqlite \
 		-plugin-sql-psql \
@@ -107,6 +107,10 @@ src_install() {
 	cd ${B}
 
 	cygmake INSTALL_ROOT=${D} install
+	# we need to use KDE phonon instead of this one for KDE4
+	# do NOT uninstall the designer plugin, as KDE phonon does not provide it
+	cygmake INSTALL_ROOT=${D} uninstall -C src/phonon
+	cygmake INSTALL_ROOT=${D} uninstall -C src/plugins/phonon
 
 	insinto ${QTRANSLATIONSDIR}
 	doins ${S}/translations/*.qm

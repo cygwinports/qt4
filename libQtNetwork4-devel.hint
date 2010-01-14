@@ -1,5 +1,5 @@
 category: KDE
-requires: libQtNetwork4 libQtCore4-devel openssl-devel zlib-devel libstdc++6-devel
+requires: libQtNetwork4 libQtCore4-devel openssl-devel zlib-devel
 external-source: qt4
 sdesc: "Qt4 Network library (libdevel)"
 ldesc: "Qt is a cross-platform application framework for desktop and 

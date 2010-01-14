@@ -6,3 +6,4 @@ usr/include/qt4/Qt3Support/
 usr/lib/pkgconfig/Qt3Support.pc
 usr/lib/qt4/bin/uic3.exe
 usr/lib/qt4/lib/libQt3Support.*
+usr/lib/qt4/plugins/designer/cygqt3supportwidgets.dll

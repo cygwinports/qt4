@@ -1,0 +1,85 @@
+Index: README
+===================================================================
+--- README	(revision 8126)
++++ README	(working copy)
+@@ -16,10 +16,13 @@
+   libGL1-7.5.2-1
+   libglib2.0_0-2.22.2-1
+   libGLU1-7.5.2-1
++  libgstreamer0.10_0-0.10.25-1
+   libICE6-1.0.6-1
+   libiconv2-1.13.1-1
+   libjpeg7-7-10
+   libmng1-1.0.10-1
++  libmysqlclient16-5.1.39-1
++  libphonon4-4.3.1-2
+   libpng12-1.2.35-10
+   libpq5-8.2.11-1
+   libSM6-1.1.1-1
+Index: libQtSql4.hint
+===================================================================
+--- libQtSql4.hint	(revision 8126)
++++ libQtSql4.hint	(working copy)
+@@ -1,5 +1,5 @@
+ category: KDE
+-requires: libQtCore4 libpq5 libsqlite3_0 libgcc1 libstdc++6
++requires: libQtCore4 libmysqlclient16 libpq5 libsqlite3_0 libgcc1 libstdc++6
+ external-source: qt4
+ sdesc: "Qt4 Sql library (runtime)"
+ ldesc: "Qt is a cross-platform application framework for desktop and 
+Index: libQtWebKit4-devel.hint
+===================================================================
+--- libQtWebKit4-devel.hint	(revision 7025)
++++ libQtWebKit4-devel.hint	(working copy)
+@@ -1,5 +1,5 @@
+ category: KDE Web
+-requires: libQtWebKit4 libQtCore4-devel libQtGui4-devel libQtNetwork4-devel libsqlite3-devel
++requires: libQtWebKit4 libphonon4-devel libQtCore4-devel libQtGui4-devel libQtNetwork4-devel libsqlite3-devel
+ external-source: qt4
+ sdesc: "Qt4 Webkit library (libdevel)"
+ ldesc: "Qt is a cross-platform application framework for desktop and 
+Index: libQtWebKit4.hint
+===================================================================
+--- libQtWebKit4.hint	(revision 7025)
++++ libQtWebKit4.hint	(working copy)
+@@ -1,5 +1,5 @@
+ category: KDE Web
+-requires: libQtCore4 libQtGui4 libQtNetwork4 libsqlite3_0 libgcc1 libstdc++6
++requires: libphonon4 libQtCore4 libQtGui4 libQtNetwork4 libsqlite3_0 libgcc1 libstdc++6
+ external-source: qt4
+ sdesc: "Qt4 Webkit library (runtime)"
+ ldesc: "Qt is a cross-platform application framework for desktop and 
+Index: qt4-devel-tools.list
+===================================================================
+--- qt4-devel-tools.list	(revision 7025)
++++ qt4-devel-tools.list	(working copy)
+@@ -20,6 +20,7 @@
+ usr/lib/qt4/bin/qhelpconverter.exe
+ usr/lib/qt4/bin/qhelpgenerator.exe
+ usr/lib/qt4/bin/xmlpatterns.exe
++usr/lib/qt4/plugins/designer/cygphononwidgets.dll
+ usr/share/applications/assistant-qt4.desktop
+ usr/share/applications/designer-qt4.desktop
+ usr/share/applications/linguist-qt4.desktop
+Index: qt4-qtconfig.hint
+===================================================================
+--- qt4-qtconfig.hint	(revision 8126)
++++ qt4-qtconfig.hint	(working copy)
+@@ -1,5 +1,5 @@
+ category: KDE
+-requires: libgcc1 libQt3Support4 libQtCore4 libQtGui4 libstdc++6
++requires: libgcc1 libgstreamer0.10_0 libphonon4 libQt3Support4 libQtCore4 libQtGui4 libstdc++6
+ external-source: qt4
+ sdesc: "Qt4 desktop configuration app"
+ ldesc: "Qt is a cross-platform application framework for desktop and 
+Index: qt4-qtdemo.hint
+===================================================================
+--- qt4-qtdemo.hint	(revision 8126)
++++ qt4-qtdemo.hint	(working copy)
+@@ -1,5 +1,5 @@
+ category: KDE
+-requires: libgcc1 libGL1 libGLU1 libQt3Support4 libQtAssistantClient4 libQtCore4 libQtDBus4 libQtDesigner4 libQtGui4 libQtHelp4 libQtNetwork4 libQtOpenGL4 libQtScript4 libQtScriptTools4 libQtSql4 libQtSvg4 libQtTest4 libQtWebKit4 libQtXml4 libQtXmlPatterns4 libstdc++6
++requires: libgcc1 libGL1 libGLU1 libphonon4 libQt3Support4 libQtAssistantClient4 libQtCore4 libQtDBus4 libQtDesigner4 libQtGui4 libQtHelp4 libQtNetwork4 libQtOpenGL4 libQtScript4 libQtScriptTools4 libQtSql4 libQtSvg4 libQtTest4 libQtWebKit4 libQtXml4 libQtXmlPatterns4 libstdc++6
+ external-source: qt4
+ sdesc: "Qt4 demos and examples"
+ ldesc: "Qt is a cross-platform application framework for desktop and 

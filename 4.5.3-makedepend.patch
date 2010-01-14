@@ -1,0 +1,13 @@
+Running makedepend through the entire tree takes hours.
+
+--- origsrc/qt-x11-opensource-src-4.5.3/configure	2009-09-29 06:01:31.000000000 -0500
++++ src/qt-x11-opensource-src-4.5.3/configure	2009-11-26 18:48:33.770794600 -0600
+@@ -4222,7 +4222,7 @@ if true; then ###[ '!' -f "$outpath/bin/
+             -e "s,@QMAKE_QTOBJS@,$EXTRA_OBJS,g" -e "s,@QMAKE_QTSRCS@,$EXTRA_SRCS,g" \
+ 	    -e "s,@QMAKESPEC@,$QMAKESPEC,g" "$in_mkfile" >>"$mkfile"
+ 
+-        if "$WHICH" makedepend >/dev/null 2>&1 && grep 'depend:' "$mkfile" >/dev/null 2>&1; then
++        if false && "$WHICH" makedepend >/dev/null 2>&1 && grep 'depend:' "$mkfile" >/dev/null 2>&1; then
+             (cd "$outpath/qmake" && "$MAKE" -f "$mkfile" depend) >/dev/null 2>&1
+ 	    sed "s,^.*/\([^/]*.o\):,\1:,g" "$mkfile" >"${mkfile}.tmp"
+ 	    mv "${mkfile}.tmp" "${mkfile}"
