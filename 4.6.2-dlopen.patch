@@ -9,12 +9,12 @@
      return fileName.endsWith(QLatin1String(".dll"));
  #else
      QString completeSuffix = QFileInfo(fileName).completeSuffix();
---- origsrc/qt-x11-opensource-src-4.4.0/src/corelib/plugin/qlibrary_unix.cpp	2008-04-28 08:11:18.000000000 -0500
-+++ src/qt-x11-opensource-src-4.4.0/src/corelib/plugin/qlibrary_unix.cpp	2008-07-13 14:12:27.531250000 -0500
+--- origsrc/qt-x11-opensource-src-4.6.2/src/corelib/plugin/qlibrary_unix.cpp
++++ src/qt-x11-opensource-src-4.6.2/src/corelib/plugin/qlibrary_unix.cpp
 @@ -152,6 +152,13 @@
- # endif
- #elif defined(Q_OS_AIX)
-         suffixes << ".a";
+ 
+ #elif defined(Q_OS_SYMBIAN)
+         suffixes << QLatin1String(".dll");
 +#elif defined(Q_OS_CYGWIN)
 +        prefixes << QLatin1String("cyg");
 +        if (!fullVersion.isEmpty()) {

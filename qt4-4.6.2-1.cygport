@@ -1,30 +1,29 @@
 DESCRIPTION="Qt C++ application framework"
-HOMEPAGE="http://www.trolltech.com/products/qt/"
-ORIG_PN="qt-x11-opensource-src"
-SRC_URI="ftp://ftp.trolltech.com/qt/source/${ORIG_PN}-${PV}.tar.gz"
+HOMEPAGE="http://qt.nokia.com/"
+ORIG_PN="qt-everywhere-opensource-src"
+#SRC_URI="http://get.qt.nokia.com/qt/source/${ORIG_PN}-${PV}.tar.gz"
+SRC_URI=${ORIG_PN}-${PV}.tar.gz
 
-debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.5.3-4"
+debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.6.2-1"
 PATCH_URI="
-	${debian_patches}/0078-Fix-regressions-in-qeventloop-qtimer-and-qsocketnoti.patch
+	${debian_patches}/0195-compositing-properties.diff
 	${debian_patches}/0225-invalidate-tabbar-geometry-on-refresh.patch
-	${debian_patches}/0255-qtreeview-selection-columns-hidden.diff
-	${debian_patches}/0280-deserialization-custom-dbus-properties.diff
-	${debian_patches}/0288-more-x-keycodes.diff
-	${debian_patches}/0287-qmenu-respect-minwidth.diff
 	${debian_patches}/02_launch_assistant-qt4.diff
 	${debian_patches}/03_launch_moc-qt4.diff
 	${debian_patches}/04_launch_uic-qt4.diff
 	${debian_patches}/11_build_translations.diff
-	${debian_patches}/19_install_qdoc3.diff
+	${debian_patches}/15_fix_qmake_makefile_generation.diff
+	${debian_patches}/17_add_postgresql_8.3_support.diff
 	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
-	4.5.1-dlopen.patch
+	4.6.2-dlopen.patch
 	4.5.1-mkspecs.patch
-	4.4.0-not-windows.patch
+	4.6.2-not-windows.patch
 	4.5.1-iconv.patch
 	4.5.1-qmake.patch
-	4.5.1-webkit.patch
+	4.6.2-webkit.patch
 	4.5.3-makedepend.patch
 	4.5.3-qhash-ulong.patch
+	4.6.2-multimedia.patch
 "
 
 # created by debian 11_build_translations.diff
@@ -73,10 +72,10 @@ src_compile() {
 		-exceptions \
 		-accessibility \
 		-stl \
-		-glib -qdbus -qt3support -phonon -no-gtkstyle \
+		-glib -qdbus -qt3support -no-phonon -no-gtkstyle \
 		-no-sql-ibase \
-		-plugin-sql-mysql -mysql_config /usr/bin/mysql_config \
 		-no-sql-odbc \
+		-plugin-sql-mysql \
 		-plugin-sql-sqlite -no-sql-sqlite2 -system-sqlite \
 		-plugin-sql-psql \
 		-plugin-sql-tds \
@@ -107,10 +106,6 @@ src_install() {
 	cd ${B}
 
 	cygmake INSTALL_ROOT=${D} install
-	# we need to use KDE phonon instead of this one for KDE4
-	# do NOT uninstall the designer plugin, as KDE phonon does not provide it
-	cygmake INSTALL_ROOT=${D} uninstall -C src/phonon
-	cygmake INSTALL_ROOT=${D} uninstall -C src/plugins/phonon
 
 	insinto ${QTRANSLATIONSDIR}
 	doins ${S}/translations/*.qm
@@ -141,7 +136,7 @@ src_install() {
 	# These are new in 4.x
 	for x in assistant_adp lconvert pixeltool qcollectiongenerator qdbus \
 	         qdbus{cpp2xml,viewer,xml2cpp} qdoc3 qhelp{converter,generator} \
-	         qt3to4 qtdemo rcc uic3 xmlpatterns
+	         qt3to4 qtdemo rcc uic3 xmlpatterns xmlpatternsvalidator
 	do
 		dosym ../lib/qt${PV_MAJ}/bin/${x}.exe /usr/bin/${x}
 	done
@@ -176,8 +171,8 @@ src_install() {
 PKG_NAMES="${PN}"
 
 for lib in Qt3Support QtAssistantClient QtCore QtDBus QtDesigner QtGui \
-           QtHelp QtNetwork QtOpenGL QtScript QtScriptTools QtSql QtSvg \
-           QtTest QtWebKit QtXml QtXmlPatterns
+           QtHelp QtMultimedia QtNetwork QtOpenGL QtScript QtScriptTools \
+           QtSql QtSvg QtTest QtWebKit QtXml QtXmlPatterns
 do
 	PKG_NAMES+=" lib${lib}${PV_MAJ} lib${lib}${PV_MAJ}-devel"
 done
@@ -187,7 +182,16 @@ do
 	PKG_NAMES+=" ${PN}-${app}"
 done
 
-PKG_IGNORE="${QTRANSLATIONSDIR#/}/qvfb_*"
+PKG_IGNORE="
+	${QINCLUDEDIR#/}/Qt/qs60*.h
+	${QINCLUDEDIR#/}/Qt/qsymbian*.h
+	${QINCLUDEDIR#/}/Qt/qt_windows.h
+	${QINCLUDEDIR#/}/Qt/*qws*.h
+	${QINCLUDEDIR#/}/Qt/*_mac.h
+	${QINCLUDEDIR#/}/Qt/*_win.h
+	${QINCLUDEDIR#/}/Qt/*_wince.h
+	${QTRANSLATIONSDIR#/}/qvfb_*
+"
 
 # webkit is in 3rdparty
 DIFF_EXCLUDES="demos doc examples clucene freetype harfbuzz kdebase kdelibs

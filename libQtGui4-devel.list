@@ -61,6 +61,11 @@ usr/include/qt4/Qt/qfontinfo.h
 usr/include/qt4/Qt/qfontmetrics.h
 usr/include/qt4/Qt/qformlayout.h
 usr/include/qt4/Qt/qframe.h
+usr/include/qt4/Qt/qgenericmatrix.h
+usr/include/qt4/Qt/qgesture.h
+usr/include/qt4/Qt/qgesturerecognizer.h
+usr/include/qt4/Qt/qgraphicsanchorlayout.h
+usr/include/qt4/Qt/qgraphicseffect.h
 usr/include/qt4/Qt/qgraphicsgridlayout.h
 usr/include/qt4/Qt/qgraphicsitem.h
 usr/include/qt4/Qt/qgraphicsitemanimation.h
@@ -70,6 +75,7 @@ usr/include/qt4/Qt/qgraphicslinearlayout.h
 usr/include/qt4/Qt/qgraphicsproxywidget.h
 usr/include/qt4/Qt/qgraphicsscene.h
 usr/include/qt4/Qt/qgraphicssceneevent.h
+usr/include/qt4/Qt/qgraphicstransform.h
 usr/include/qt4/Qt/qgraphicsview.h
 usr/include/qt4/Qt/qgraphicswidget.h
 usr/include/qt4/Qt/qgridlayout.h
@@ -90,6 +96,7 @@ usr/include/qt4/Qt/qinputdialog.h
 usr/include/qt4/Qt/qitemdelegate.h
 usr/include/qt4/Qt/qitemeditorfactory.h
 usr/include/qt4/Qt/qitemselectionmodel.h
+usr/include/qt4/Qt/qkeyeventtransition.h
 usr/include/qt4/Qt/qkeysequence.h
 usr/include/qt4/Qt/qlabel.h
 usr/include/qt4/Qt/qlayout.h
@@ -100,6 +107,7 @@ usr/include/qt4/Qt/qlistview.h
 usr/include/qt4/Qt/qlistwidget.h
 usr/include/qt4/Qt/qmainwindow.h
 usr/include/qt4/Qt/qmatrix.h
+usr/include/qt4/Qt/qmatrix4x4.h
 usr/include/qt4/Qt/qmdiarea.h
 usr/include/qt4/Qt/qmdisubwindow.h
 usr/include/qt4/Qt/qmenu.h
@@ -108,6 +116,7 @@ usr/include/qt4/Qt/qmenudata.h
 usr/include/qt4/Qt/qmessagebox.h
 usr/include/qt4/Qt/qmime.h
 usr/include/qt4/Qt/qmotifstyle.h
+usr/include/qt4/Qt/qmouseeventtransition.h
 usr/include/qt4/Qt/qmovie.h
 usr/include/qt4/Qt/qpagesetupdialog.h
 usr/include/qt4/Qt/qpaintdevice.h
@@ -132,7 +141,9 @@ usr/include/qt4/Qt/qprintpreviewwidget.h
 usr/include/qt4/Qt/qprogressbar.h
 usr/include/qt4/Qt/qprogressdialog.h
 usr/include/qt4/Qt/qproxymodel.h
+usr/include/qt4/Qt/qproxystyle.h
 usr/include/qt4/Qt/qpushbutton.h
+usr/include/qt4/Qt/qquaternion.h
 usr/include/qt4/Qt/qradiobutton.h
 usr/include/qt4/Qt/qregion.h
 usr/include/qt4/Qt/qrgb.h
@@ -190,6 +201,10 @@ usr/include/qt4/Qt/qundogroup.h
 usr/include/qt4/Qt/qundostack.h
 usr/include/qt4/Qt/qundoview.h
 usr/include/qt4/Qt/qvalidator.h
+usr/include/qt4/Qt/qvector2d.h
+usr/include/qt4/Qt/qvector3d.h
+usr/include/qt4/Qt/qvector4d.h
+usr/include/qt4/Qt/qvfbhdr.h
 usr/include/qt4/Qt/qwhatsthis.h
 usr/include/qt4/Qt/qwidget.h
 usr/include/qt4/Qt/qwidgetaction.h

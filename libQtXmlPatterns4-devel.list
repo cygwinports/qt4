@@ -10,6 +10,8 @@ usr/include/qt4/Qt/qxmlname.h
 usr/include/qt4/Qt/qxmlnamepool.h
 usr/include/qt4/Qt/qxmlquery.h
 usr/include/qt4/Qt/qxmlresultitems.h
+usr/include/qt4/Qt/qxmlschema.h
+usr/include/qt4/Qt/qxmlschemavalidator.h
 usr/include/qt4/Qt/qxmlserializer.h
 usr/include/qt4/QtXmlPatterns/
 usr/lib/pkgconfig/QtXmlPatterns.pc

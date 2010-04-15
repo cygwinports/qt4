@@ -10,6 +10,7 @@ usr/include/qt4/Qt/qlocalserver.h
 usr/include/qt4/Qt/qlocalsocket.h
 usr/include/qt4/Qt/qnetworkaccessmanager.h
 usr/include/qt4/Qt/qnetworkcookie.h
+usr/include/qt4/Qt/qnetworkcookiejar.h
 usr/include/qt4/Qt/qnetworkdiskcache.h
 usr/include/qt4/Qt/qnetworkinterface.h
 usr/include/qt4/Qt/qnetworkproxy.h
