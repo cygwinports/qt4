@@ -1,0 +1,14 @@
+This shouldn't be necessary, but might not even be enough on slower computers
+
+--- origsrc/qt-everywhere-opensource-src-4.6.2/src/corelib/io/qprocess_unix.cpp	2010-04-28 01:30:25.807104300 -0500
++++ src/qt-everywhere-opensource-src-4.6.2/src/corelib/io/qprocess_unix.cpp	2010-05-03 19:37:28.169432400 -0500
+@@ -672,6 +672,9 @@ void QProcessPrivate::startProcess()
+     // to keep the lock held to avoid a race to catch the child.
+     processManager()->add(childPid, q);
+     pid = Q_PID(childPid);
++#if defined(Q_OS_CYGWIN)
++    usleep(250000);
++#endif
+     processManager()->unlock();
+ 
+     // parent

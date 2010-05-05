@@ -1,16 +1,14 @@
 DESCRIPTION="Qt C++ application framework"
 HOMEPAGE="http://qt.nokia.com/"
 ORIG_PN="qt-everywhere-opensource-src"
-#SRC_URI="http://get.qt.nokia.com/qt/source/${ORIG_PN}-${PV}.tar.gz"
-SRC_URI=${ORIG_PN}-${PV}.tar.gz
+SRC_URI="http://get.qt.nokia.com/qt/source/${ORIG_PN}-${PV}.tar.gz"
 
-debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.6.2-1"
+debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.6.2-4"
 PATCH_URI="
+	${debian_patches}/0001_qpixmap_load_no_modify_referenced_copies.diff
+	${debian_patches}/0002_qmake_qfileinfo_absolutepath.diff
 	${debian_patches}/0195-compositing-properties.diff
 	${debian_patches}/0225-invalidate-tabbar-geometry-on-refresh.patch
-	${debian_patches}/02_launch_assistant-qt4.diff
-	${debian_patches}/03_launch_moc-qt4.diff
-	${debian_patches}/04_launch_uic-qt4.diff
 	${debian_patches}/11_build_translations.diff
 	${debian_patches}/15_fix_qmake_makefile_generation.diff
 	${debian_patches}/17_add_postgresql_8.3_support.diff
@@ -24,6 +22,8 @@ PATCH_URI="
 	4.5.3-makedepend.patch
 	4.5.3-qhash-ulong.patch
 	4.6.2-multimedia.patch
+	4.6.2-gtkstyle.patch
+	4.6.2-qprocess-race.patch
 "
 
 # created by debian 11_build_translations.diff
@@ -48,9 +48,9 @@ src_compile() {
 	cd ${B}
 
 	# -exceptions: required for QtXmlPatterns
-	# -no-gtkstyle: crashes (the standalone version works great though)
 	# -no-largefile: Cygwin's open() and friends are 64-bit w/o O_LARGEFILE
 	# -phonon: we build it but don't install it (KDE phonon is used instead)
+	# -sql-odbc: enable when iODBC/unixODBC are available
 	${S}/configure \
 		-prefix ${QPREFIX} \
 		-bindir ${QBINDIR} \
@@ -72,13 +72,13 @@ src_compile() {
 		-exceptions \
 		-accessibility \
 		-stl \
-		-glib -qdbus -qt3support -no-phonon -no-gtkstyle \
+		-glib -qdbus -qt3support -no-phonon \
 		-no-sql-ibase \
 		-no-sql-odbc \
 		-plugin-sql-mysql \
 		-plugin-sql-sqlite -no-sql-sqlite2 -system-sqlite \
 		-plugin-sql-psql \
-		-plugin-sql-tds \
+		-no-sql-tds \
 		-system-zlib -qt-gif \
 		-system-libjpeg -system-libmng -system-libpng -system-libtiff \
 		-openssl-linked \

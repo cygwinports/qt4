@@ -212,33 +212,33 @@
     || PLATFORM(FREEBSD)    \
     || PLATFORM(S60)        \
     || PLATFORM(NETBSD)     \
-@@ -446,7 +454,7 @@
-     #define ENABLE_JIT_OPTIMIZE_PROPERTY_ACCESS 1
-     #define WTF_USE_ALTERNATE_JSIMMEDIATE 1
- /* The JIT is tested & working on x86 Mac */
--#elif PLATFORM(X86) && PLATFORM(MAC)
-+#elif PLATFORM(X86) && (PLATFORM(MAC) || PLATFORM(CYGWIN))
-     #define ENABLE_JIT 1
-     #define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
-     #define ENABLE_JIT_OPTIMIZE_CALL 1
-@@ -571,7 +571,7 @@
+@@ -559,7 +567,7 @@
  #define HAVE_SIGNAL_H 1
  #endif
- 
+
 -#if !PLATFORM(WIN_OS) && !PLATFORM(SOLARIS) && !PLATFORM(QNX) \
 +#if !PLATFORM(WIN_OS) && !PLATFORM(SOLARIS) && !PLATFORM(QNX) && !PLATFORM(CYGWIN) \
      && !PLATFORM(SYMBIAN) && !PLATFORM(HAIKU) && !COMPILER(RVCT)
  #define HAVE_TM_GMTOFF 1
  #define HAVE_TM_ZONE 1
-@@ -739,7 +739,7 @@
- #if !defined(WTF_USE_JSVALUE64) && !defined(WTF_USE_JSVALUE32) && !defined(WTF_USE_JSVALUE32_64)
- #if (PLATFORM(X86_64) && (PLATFORM(UNIX) || PLATFORM(WIN_OS))) || PLATFORM(IA64) || PLATFORM(ALPHA)
+@@ -724,7 +732,7 @@
+ #define WTF_USE_JSVALUE64 1
+ #elif PLATFORM(AIX64)
  #define WTF_USE_JSVALUE64 1
 -#elif PLATFORM(ARM) || PLATFORM(PPC64)
 +#elif PLATFORM(ARM) || PLATFORM(PPC64) || PLATFORM(CYGWIN)
  #define WTF_USE_JSVALUE32 1
  #elif PLATFORM(WIN_OS) && COMPILER(MINGW)
  /* Using JSVALUE32_64 causes padding/alignement issues for JITStubArg
+@@ -745,7 +753,7 @@ on MinGW. See https://bugs.webkit.org/sh
+ #if PLATFORM(X86_64) && PLATFORM(MAC)
+     #define ENABLE_JIT 1
+ /* The JIT is tested & working on x86 Mac */
+-#elif PLATFORM(X86) && PLATFORM(MAC)
++#elif PLATFORM(X86) && (PLATFORM(MAC) || PLATFORM(CYGWIN))
+     #define ENABLE_JIT 1
+     #define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
+ #elif PLATFORM(ARM_THUMB2) && PLATFORM(IPHONE)
 --- origsrc/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/WebCore/plugins/PluginDatabase.cpp	2009-05-28 02:13:03.931817400 -0500
 +++ src/qt-x11-opensource-src-4.5.1/src/3rdparty/webkit/WebCore/plugins/PluginDatabase.cpp	2009-05-28 02:12:49.322981800 -0500
 @@ -351,7 +351,9 @@ void PluginDatabase::getPluginPathsInDir
