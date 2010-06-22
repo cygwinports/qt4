@@ -3,10 +3,9 @@ HOMEPAGE="http://qt.nokia.com/"
 ORIG_PN="qt-everywhere-opensource-src"
 SRC_URI="mirror://qt/qt/source/${ORIG_PN}-${PV}.tar.gz"
 
-debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.6.2-4"
+debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:${PV}-1"
 PATCH_URI="
-	${debian_patches}/0001_qpixmap_load_no_modify_referenced_copies.diff
-	${debian_patches}/0002_qmake_qfileinfo_absolutepath.diff
+	${debian_patches}/0004_problem_displaying_half_width_character.diff
 	${debian_patches}/0195-compositing-properties.diff
 	${debian_patches}/0225-invalidate-tabbar-geometry-on-refresh.patch
 	${debian_patches}/11_build_translations.diff
@@ -74,11 +73,11 @@ src_compile() {
 		-stl \
 		-glib -qdbus -qt3support -no-phonon \
 		-no-sql-ibase \
-		-no-sql-odbc \
 		-plugin-sql-mysql \
-		-plugin-sql-sqlite -no-sql-sqlite2 -system-sqlite \
+		-plugin-sql-odbc \
 		-plugin-sql-psql \
-		-no-sql-tds \
+		-plugin-sql-sqlite -no-sql-sqlite2 -system-sqlite \
+		-plugin-sql-tds \
 		-system-zlib -qt-gif \
 		-system-libjpeg -system-libmng -system-libpng -system-libtiff \
 		-openssl-linked \
