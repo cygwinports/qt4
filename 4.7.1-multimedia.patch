@@ -1,0 +1,44 @@
+--- origsrc/qt-everywhere-opensource-src-4.6.2/src/multimedia/audio/audio.pri	2010-02-11 09:55:23.000000000 -0600
++++ src/qt-everywhere-opensource-src-4.6.2/src/multimedia/audio/audio.pri	2010-04-11 22:09:37.101561400 -0500
+@@ -32,7 +32,7 @@ mac {
+ 
+     LIBS += -framework ApplicationServices -framework CoreAudio -framework AudioUnit -framework AudioToolbox
+ 
+-} else:win32 {
++} else:win32|cygwin-g++ {
+ 
+     HEADERS += $$PWD/qaudioinput_win32_p.h $$PWD/qaudiooutput_win32_p.h $$PWD/qaudiodeviceinfo_win32_p.h
+     SOURCES += $$PWD/qaudiodeviceinfo_win32_p.cpp \
+--- origsrc/qt-everywhere-opensource-src-4.7.1/src/multimedia/audio/qaudioinput_win32_p.cpp	2010-11-05 20:55:19.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.7.1/src/multimedia/audio/qaudioinput_win32_p.cpp	2010-12-26 19:48:05.583762900 -0600
+@@ -79,7 +79,7 @@ QAudioInputPrivate::~QAudioInputPrivate(
+     stop();
+ }
+ 
+-void QT_WIN_CALLBACK QAudioInputPrivate::waveInProc( HWAVEIN hWaveIn, UINT uMsg,
++void CALLBACK QAudioInputPrivate::waveInProc( HWAVEIN hWaveIn, UINT uMsg,
+         DWORD dwInstance, DWORD dwParam1, DWORD dwParam2 )
+ {
+     Q_UNUSED(dwParam1)
+--- origsrc/qt-everywhere-opensource-src-4.7.1/src/multimedia/audio/qaudioinput_win32_p.h	2010-11-05 20:55:19.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.7.1/src/multimedia/audio/qaudioinput_win32_p.h	2010-12-26 19:47:33.260506500 -0600
+@@ -124,7 +124,7 @@ private:
+     int waveCurrentBlock;
+ 
+     QMutex mutex;
+-    static void QT_WIN_CALLBACK waveInProc( HWAVEIN hWaveIn, UINT uMsg,
++    static void CALLBACK waveInProc( HWAVEIN hWaveIn, UINT uMsg,
+             DWORD dwInstance, DWORD dwParam1, DWORD dwParam2 );
+ 
+     WAVEHDR* allocateBlocks(int size, int count);
+--- origsrc/qt-everywhere-opensource-src-4.7.1/src/multimedia/audio/qaudiooutput_win32_p.h	2010-11-05 20:55:19.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.7.1/src/multimedia/audio/qaudiooutput_win32_p.h	2010-12-26 19:47:08.394063200 -0600
+@@ -117,7 +117,7 @@ private:
+     qint64 totalTimeValue;
+     bool pullMode;
+     int intervalTime;
+-    static void QT_WIN_CALLBACK waveOutProc( HWAVEOUT hWaveOut, UINT uMsg,
++    static void CALLBACK waveOutProc( HWAVEOUT hWaveOut, UINT uMsg,
+             DWORD dwInstance, DWORD dwParam1, DWORD dwParam2 );
+ 
+     QMutex mutex;

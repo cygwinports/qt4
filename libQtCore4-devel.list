@@ -1,3 +1,4 @@
+--exclude=*_vxworks.h
 etc/profile.d/libQtCore4-devel.csh
 etc/profile.d/libQtCore4-devel.sh
 usr/bin/lconvert
@@ -44,6 +45,7 @@ usr/include/qt4/Qt/qdebug.h
 usr/include/qt4/Qt/qdir.h
 usr/include/qt4/Qt/qdiriterator.h
 usr/include/qt4/Qt/qeasingcurve.h
+usr/include/qt4/Qt/qelapsedtimer.h
 usr/include/qt4/Qt/qendian.h
 usr/include/qt4/Qt/qeventloop.h
 usr/include/qt4/Qt/qeventtransition.h

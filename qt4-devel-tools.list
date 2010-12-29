@@ -1,5 +1,4 @@
 usr/bin/assistant-qt4
-usr/bin/assistant_adp
 usr/bin/designer-qt4
 usr/bin/linguist-qt4
 usr/bin/pixeltool
@@ -8,10 +7,11 @@ usr/bin/qdbusviewer
 usr/bin/qdoc3
 usr/bin/qhelpconverter
 usr/bin/qhelpgenerator
+usr/bin/qmlviewer
+usr/bin/qttracereplay
 usr/bin/xmlpatterns
 usr/bin/xmlpatternsvalidator
 usr/lib/qt4/bin/assistant.exe
-usr/lib/qt4/bin/assistant_adp.exe
 usr/lib/qt4/bin/designer.exe
 usr/lib/qt4/bin/linguist.exe
 usr/lib/qt4/bin/pixeltool.exe
@@ -20,6 +20,7 @@ usr/lib/qt4/bin/qdbusviewer.exe
 usr/lib/qt4/bin/qdoc3.exe
 usr/lib/qt4/bin/qhelpconverter.exe
 usr/lib/qt4/bin/qhelpgenerator.exe
+usr/lib/qt4/bin/qmlviewer.exe
 usr/lib/qt4/bin/qttracereplay.exe
 usr/lib/qt4/bin/xmlpatterns.exe
 usr/lib/qt4/bin/xmlpatternsvalidator.exe

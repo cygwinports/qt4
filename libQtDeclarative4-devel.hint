@@ -1,7 +1,7 @@
 category: KDE
-requires: libQtAssistantClient4 libQtCore4-devel libQtNetwork4-devel
+requires: libQtDeclarative4 libQtCore4-devel libQtGui4-devel libQtNetwork4-devel libQtScript4-devel libQtSql4-devel libQtXmlPatterns4-devel
 external-source: qt4
-sdesc: "Qt4 AssistantClient library (libdevel)"
+sdesc: "Qt4 QML library (development)"
 ldesc: "Qt is a cross-platform application framework for desktop and 
 embedded development. Qt enables programmers to create advanced GUI 
 applications once and deploy them to Windows, Mac OS X and Linux without 

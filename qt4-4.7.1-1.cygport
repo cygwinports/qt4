@@ -3,24 +3,20 @@ HOMEPAGE="http://qt.nokia.com/"
 ORIG_PN="qt-everywhere-opensource-src"
 SRC_URI="mirror://qt/qt/source/${ORIG_PN}-${PV}.tar.gz"
 
-debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:${PV}-1"
+debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.7.0~rc1-1"
 PATCH_URI="
-	${debian_patches}/0004_problem_displaying_half_width_character.diff
-	${debian_patches}/0195-compositing-properties.diff
-	${debian_patches}/0225-invalidate-tabbar-geometry-on-refresh.patch
-	${debian_patches}/11_build_translations.diff
 	${debian_patches}/15_fix_qmake_makefile_generation.diff
 	${debian_patches}/17_add_postgresql_8.3_support.diff
 	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
-	4.6.2-dlopen.patch
-	4.5.1-mkspecs.patch
-	4.6.2-not-windows.patch
+	4.7.1-dlopen.patch
+	4.7.1-mkspecs.patch
+	4.7.1-not-windows.patch
 	4.5.1-iconv.patch
-	4.5.1-qmake.patch
-	4.6.2-webkit.patch
+	4.7.1-qmake.patch
+	4.7.1-webkit.patch
 	4.5.3-makedepend.patch
 	4.5.3-qhash-ulong.patch
-	4.6.2-multimedia.patch
+	4.7.1-multimedia.patch
 	4.6.2-gtkstyle.patch
 	4.6.2-qprocess-race.patch
 "
@@ -33,6 +29,7 @@ QPREFIX="/usr"
 QBINDIR="/usr/lib/qt${PV_MAJ}/bin"
 QINCLUDEDIR="/usr/include/qt${PV_MAJ}"
 QLIBDIR="/usr/lib/qt${PV_MAJ}/lib"
+QIMPORTDIR="/usr/lib/qt${PV_MAJ}/imports"
 QPLUGINDIR="/usr/lib/qt${PV_MAJ}/plugins"
 QDATADIR="/usr/share/qt${PV_MAJ}"
 QDOCDIR="${QDATADIR}/doc"
@@ -56,6 +53,7 @@ src_compile() {
 		-headerdir ${QINCLUDEDIR} \
 		-libdir ${QLIBDIR} \
 		-plugindir ${QPLUGINDIR} \
+		-importdir ${QIMPORTDIR} \
 		-datadir ${QDATADIR} \
 		-docdir ${QDOCDIR} \
 		-sysconfdir ${QSYSCONFDIR} \
@@ -95,8 +93,6 @@ src_compile() {
 		|| error "configure failed"
 
 	cygmake
-
-	./bin/lrelease ${S}/translations/*.ts
 }
 
 src_install() {
@@ -105,9 +101,6 @@ src_install() {
 	cd ${B}
 
 	cygmake INSTALL_ROOT=${D} install
-
-	insinto ${QTRANSLATIONSDIR}
-	doins ${S}/translations/*.qm
 
 	inform "Fixing installation directories"
 	dodir /usr/bin
@@ -133,9 +126,9 @@ src_install() {
 	done
 
 	# These are new in 4.x
-	for x in assistant_adp lconvert pixeltool qcollectiongenerator qdbus \
+	for x in lconvert pixeltool qcollectiongenerator qdbus \
 	         qdbus{cpp2xml,viewer,xml2cpp} qdoc3 qhelp{converter,generator} \
-	         qt3to4 qtdemo rcc uic3 xmlpatterns xmlpatternsvalidator
+	         qmlviewer qt3to4 qtdemo qttracereplay rcc uic3 xmlpatterns xmlpatternsvalidator
 	do
 		dosym ../lib/qt${PV_MAJ}/bin/${x}.exe /usr/bin/${x}
 	done
@@ -167,9 +160,7 @@ src_install() {
 	dodoc ${S}/changes-${PV} ${S}/GPL_* ${S}/LICENSE.* ${S}/OPENSOURCE-NOTICE.TXT
 }
 
-PKG_NAMES="${PN}"
-
-for lib in Qt3Support QtAssistantClient QtCore QtDBus QtDesigner QtGui \
+for lib in Qt3Support QtCore QtDBus QtDeclarative QtDesigner QtGui \
            QtHelp QtMultimedia QtNetwork QtOpenGL QtScript QtScriptTools \
            QtSql QtSvg QtTest QtWebKit QtXml QtXmlPatterns
 do
@@ -187,6 +178,7 @@ PKG_IGNORE="
 	${QINCLUDEDIR#/}/Qt/qt_windows.h
 	${QINCLUDEDIR#/}/Qt/*qws*.h
 	${QINCLUDEDIR#/}/Qt/*_mac.h
+	${QINCLUDEDIR#/}/Qt/*_vxworks.h
 	${QINCLUDEDIR#/}/Qt/*_win.h
 	${QINCLUDEDIR#/}/Qt/*_wince.h
 	${QTRANSLATIONSDIR#/}/qvfb_*

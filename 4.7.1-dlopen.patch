@@ -36,3 +36,17 @@
  #else
      static const char libraryPath[] = "LD_LIBRARY_PATH";
  #endif
+--- origsrc/qt-everywhere-opensource-src-4.7.1/src/declarative/qml/qdeclarativeimport.cpp	2010-11-05 20:55:23.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.7.1/src/declarative/qml/qdeclarativeimport.cpp	2010-12-28 05:50:10.899546600 -0600
+@@ -787,6 +787,11 @@ QString QDeclarativeImportDatabase::reso
+                          << QLatin1String("d.dll") // try a qmake-style debug build first
+ # endif
+                          << QLatin1String(".dll"));
++#elif defined(Q_OS_CYGWIN)
++    return resolvePlugin(qmldirPath, qmldirPluginPath, baseName,
++                         QStringList()
++                         << QLatin1String(".dll"),
++                         QLatin1String("cyg"));
+ #elif defined(Q_OS_SYMBIAN)
+     return resolvePlugin(qmldirPath, qmldirPluginPath, baseName,
+                          QStringList()

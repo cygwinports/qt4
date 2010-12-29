@@ -1,6 +1,6 @@
---- origsrc/qt-x11-opensource-src-4.5.1/projects.pro	2009-04-21 18:57:37.000000000 -0500
-+++ src/qt-x11-opensource-src-4.5.1/projects.pro	2009-04-29 23:17:09.560875000 -0500
-@@ -112,7 +112,7 @@ INSTALLS += translations
+--- origsrc/qt-everywhere-opensource-src-4.7.1/projects.pro	2010-12-26 23:47:35.460230200 -0600
++++ src/qt-everywhere-opensource-src-4.7.1/projects.pro	2010-12-25 21:47:53.558331100 -0600
+@@ -150,7 +150,7 @@
  
  #qmake
  qmake.path=$$[QT_INSTALL_BINS]
@@ -9,26 +9,25 @@
     qmake.files=$$QT_BUILD_TREE/bin/qmake.exe
  } else {
     qmake.files=$$QT_BUILD_TREE/bin/qmake
---- origsrc/qt-x11-opensource-src-4.5.1/qmake/generators/makefile.cpp	2009-04-21 18:57:37.000000000 -0500
-+++ src/qt-x11-opensource-src-4.5.1/qmake/generators/makefile.cpp	2009-04-29 23:13:34.123375000 -0500
-@@ -1052,8 +1052,12 @@ QString
- MakefileGenerator::prlFileName(bool fixify)
- {
-     QString ret = project->first("TARGET_PRL");;
--    if(ret.isEmpty())
--        ret = project->first("TARGET");
-+    if(ret.isEmpty()) {
-+        if(!project->isEmpty("QMAKE_CYGWIN_SHLIB") && !project->isActiveConfig("staticlib"))
-+            ret = project->first("L_TARGET");
-+        else
-+            ret = project->first("TARGET");
-+    }
-     int slsh = ret.lastIndexOf(Option::dir_sep);
-     if(slsh != -1)
-         ret = ret.right(ret.length() - slsh);
---- origsrc/qt-x11-opensource-src-4.5.1/qmake/generators/unix/unixmake.cpp	2009-04-21 18:57:37.000000000 -0500
-+++ src/qt-x11-opensource-src-4.5.1/qmake/generators/unix/unixmake.cpp	2009-04-29 23:17:09.560875000 -0500
-@@ -691,16 +691,16 @@ UnixMakefileGenerator::defaultInstall(co
+--- origsrc/qt-everywhere-opensource-src-4.7.1/qmake/generators/makefile.cpp	2010-12-25 21:26:02.821646800 -0600
++++ src/qt-everywhere-opensource-src-4.7.1/qmake/generators/makefile.cpp	2010-12-26 22:50:54.751505200 -0600
+@@ -1087,6 +1087,13 @@
+         int dot = ret.indexOf('.');
+         if(dot != -1)
+             ret.truncate(dot);
++#ifdef Q_OS_CYGWIN
++        if(ret.startsWith("cyg"))
++            ret = "lib" + ret.mid(3);
++        int dash = ret.indexOf('-');
++        if(dash != -1)
++            ret.truncate(dash);
++#endif
+         ret += Option::prl_ext;
+     }
+     if(!project->isEmpty("QMAKE_BUNDLE"))
+--- origsrc/qt-everywhere-opensource-src-4.7.1/qmake/generators/unix/unixmake.cpp	2010-12-26 23:47:35.507030300 -0600
++++ src/qt-everywhere-opensource-src-4.7.1/qmake/generators/unix/unixmake.cpp	2010-12-25 21:47:53.558331100 -0600
+@@ -695,16 +695,16 @@
          bundle = true;
      } else if(project->first("TEMPLATE") == "app") {
          target = "$(QMAKE_TARGET)";
@@ -48,7 +47,7 @@
      }
      for(int i = 0; i < targets.size(); ++i) {
          QString src = targets.at(i),
-@@ -790,7 +790,10 @@ UnixMakefileGenerator::defaultInstall(co
+@@ -792,7 +792,10 @@
                      if(lslash != -1)
                          link = link.right(link.length() - (lslash + 1));
                      QString dst_link = filePrefixRoot(root, fileFixify(targetdir + link, FileFixifyAbsolute));
@@ -60,9 +59,9 @@
                      if(!uninst.isEmpty())
                          uninst.append("\n\t");
                      uninst.append("-$(DEL_FILE) \"" + dst_link + "\"");
---- origsrc/qt-x11-opensource-src-4.5.1/qmake/generators/unix/unixmake2.cpp	2009-04-21 18:57:37.000000000 -0500
-+++ src/qt-x11-opensource-src-4.5.1/qmake/generators/unix/unixmake2.cpp	2009-04-29 23:17:09.576500000 -0500
-@@ -544,6 +544,14 @@ UnixMakefileGenerator::writeMakeParts(QT
+--- origsrc/qt-everywhere-opensource-src-4.7.1/qmake/generators/unix/unixmake2.cpp	2010-12-26 23:47:35.522630400 -0600
++++ src/qt-everywhere-opensource-src-4.7.1/qmake/generators/unix/unixmake2.cpp	2010-12-26 22:49:54.972201000 -0600
+@@ -565,6 +565,14 @@
              if(!project->isEmpty("QMAKE_POST_LINK"))
                  t << "\n\t" << var("QMAKE_POST_LINK");
              t << endl << endl;
@@ -77,18 +76,7 @@
          } else if(project->isEmpty("QMAKE_HPUX_SHLIB")) {
              t << "\n\t"
                << "-$(DEL_FILE) $(TARGET) $(TARGET0) $(TARGET1) $(TARGET2)" << "\n\t"
-@@ -874,6 +882,10 @@ UnixMakefileGenerator::writeMakeParts(QT
-         t << "\t-$(LIBTOOL) --mode=clean $(DEL_FILE) " << "$(TARGET)" << endl;
-     } else if(!project->isActiveConfig("staticlib") && project->values("QMAKE_APP_FLAG").isEmpty() &&
-        !project->isActiveConfig("plugin")) {
-+       if (!project->isEmpty("QMAKE_CYGWIN_SHLIB"))
-+        t << "\t-$(DEL_FILE) " << destdir << "$(TARGET)" << " " << endl
-+          << "\t-S(DEL_FILE) " << destdir << "$(TARGET0)" << endl;
-+       else
-         t << "\t-$(DEL_FILE) " << destdir << "$(TARGET)" << " " << endl
-           << "\t-$(DEL_FILE) " << destdir << "$(TARGET0) " << destdir << "$(TARGET1) "
-           << destdir << "$(TARGET2) $(TARGETA)" << endl;
-@@ -988,8 +1000,8 @@ void UnixMakefileGenerator::init2()
+@@ -1011,8 +1019,8 @@
          }
          if(!project->isEmpty("TARGET"))
              project->values("TARGET").first().prepend(project->first("DESTDIR"));
@@ -97,55 +85,33 @@
 +        if(!project->isEmpty("QMAKE_CYGWIN_EXE"))
 +            project->values("TARGET").first() += ".exe";
      } else if (project->isActiveConfig("staticlib")) {
-         project->values("TARGET").first().prepend("lib");
-         project->values("TARGET").first() += ".a";
-@@ -997,9 +1009,12 @@ void UnixMakefileGenerator::init2()
-             project->values("QMAKE_AR_CMD").append("$(AR) $(TARGET) $(OBJECTS)");
-     } else {
-         project->values("TARGETA").append(project->first("DESTDIR") + "lib" + project->first("TARGET") + ".a");
--        if(project->isActiveConfig("compile_libtool"))
--            project->values("TARGET_la") = QStringList(project->first("DESTDIR") + "lib" + project->first("TARGET") + Option::libtool_ext);
--
-+        if(project->isActiveConfig("compile_libtool")) {
-+             if (!project->isEmpty("QMAKE_CYGWIN_SHLIB"))
-+                 project->values("TARGET_la") = QStringList(project->first("DESTDIR") + "lib" + project->first("L_TARGET") + Option::libtool_ext);
-+             else
-+                 project->values("TARGET_la") = QStringList(project->first("DESTDIR") + "lib" + project->first("TARGET") + Option::libtool_ext);
-+        }
-         if (!project->values("QMAKE_AR_CMD").isEmpty())
-             project->values("QMAKE_AR_CMD").first().replace("(TARGET)","(TARGETA)");
-         else
-@@ -1020,8 +1035,12 @@ void UnixMakefileGenerator::init2()
+         project->values("TARGET").first().prepend(project->first("QMAKE_PREFIX_STATICLIB"));
+         project->values("TARGET").first() += "." + project->first("QMAKE_EXTENSION_STATICLIB");
+@@ -1044,8 +1052,9 @@
                                                        bundle_loc + unescapeFilePath(project->first("TARGET")));
          } else if(project->isActiveConfig("plugin")) {
              QString prefix;
 -            if(!project->isActiveConfig("no_plugin_name_prefix"))
 -                prefix = "lib";
 +            if(!project->isActiveConfig("no_plugin_name_prefix")) {
-+                if(!project->isEmpty("QMAKE_CYGWIN_SHLIB"))
-+                    prefix = "cyg";
-+                else
-+                    prefix = "lib";
++                prefix = project->first("QMAKE_PREFIX_SHLIB");
 +            }
              project->values("TARGET_x.y.z").append(prefix +
                                                          project->first("TARGET") + "." +
                                                          project->first("QMAKE_EXTENSION_PLUGIN"));
-@@ -1034,6 +1053,14 @@ void UnixMakefileGenerator::init2()
+@@ -1058,6 +1067,11 @@
                                                          project->first("QMAKE_EXTENSION_PLUGIN") +
                                                          "." + project->first("VER_MAJ"));
              project->values("TARGET") = project->values("TARGET_x.y.z");
 +        } else if (!project->isEmpty("QMAKE_CYGWIN_SHLIB")) {
-+            project->values("TARGET_").append("lib" + project->first("TARGET") + "." +
-+                                                    project->first("QMAKE_EXTENSION_SHLIB") + ".a");
++            project->values("TARGET_").append("lib" + project->first("TARGET") + ".dll.a");
 +            project->values("TARGET_x").append("cyg" + project->first("TARGET") + "-" +
 +                                                    project->first("VER_MAJ") + "." + project->first("QMAKE_EXTENSION_SHLIB"));
-+            project->values("L_TARGET").append("lib" + project->first("TARGET") + "." +
-+                                                    project->first("QMAKE_EXTENSION_SHLIB"));
 +            project->values("TARGET") = project->values("TARGET_x");
          } else if (!project->isEmpty("QMAKE_HPUX_SHLIB")) {
              project->values("TARGET_").append("lib" + project->first("TARGET") + ".sl");
              if(project->isActiveConfig("lib_version_first"))
-@@ -1152,6 +1179,8 @@ void UnixMakefileGenerator::init2()
+@@ -1181,6 +1195,8 @@
                  project->values("QMAKE_LFLAGS") += project->values("QMAKE_LFLAGS_SONAME");
          } else {
              project->values("QMAKE_LFLAGS") += project->values("QMAKE_LFLAGS_SHLIB");
@@ -154,47 +120,51 @@
              if(!project->isEmpty("QMAKE_LFLAGS_COMPAT_VERSION")) {
                  if(project->isEmpty("COMPAT_VERSION"))
                      project->values("QMAKE_LFLAGS") += QString(project->first("QMAKE_LFLAGS_COMPAT_VERSION") +
-@@ -1213,7 +1242,11 @@ void UnixMakefileGenerator::init2()
- QString
- UnixMakefileGenerator::libtoolFileName(bool fixify)
- {
--    QString ret = var("TARGET");
-+    QString ret;
-+    if (!project->isEmpty("QMAKE_CYGWIN_SHLIB"))
-+        ret = var("L_TARGET");
-+    else
-+        ret = var("TARGET");
-     int slsh = ret.lastIndexOf(Option::dir_sep);
-     if(slsh != -1)
-         ret = ret.right(ret.length() - slsh - 1);
-@@ -1259,9 +1292,14 @@ UnixMakefileGenerator::writeLibtoolFile(
+@@ -1249,6 +1265,13 @@
+     int dot = ret.indexOf('.');
+     if(dot != -1)
+         ret = ret.left(dot);
++#ifdef Q_OS_CYGWIN
++    if(ret.startsWith("cyg"))
++        ret = "lib" + ret.mid(3);
++    int dash = ret.indexOf('-');
++    if(dash != -1)
++        ret = ret.left(dash);
++#endif
+     ret += Option::libtool_ext;
+     if(!project->isEmpty("QMAKE_LIBTOOL_DESTDIR"))
+         ret.prepend(project->first("QMAKE_LIBTOOL_DESTDIR") + Option::dir_sep);
+@@ -1288,9 +1311,14 @@
      if(project->isActiveConfig("plugin")) {
          t << var("TARGET");
      } else {
 -        if (project->isEmpty("QMAKE_HPUX_SHLIB"))
--            t << var("TARGET_x.y.z") << " ";
--        t << var("TARGET_x") << " " << var("TARGET_");
 +        if (!project->isEmpty("QMAKE_CYGWIN_SHLIB")) {
 +            t << var("TARGET_");
 +        } else {
-+            if (project->isEmpty("QMAKE_HPUX_SHLIB")) {
-+                t << var("TARGET_x.y.z") << " ";
-+            }
-+            t << var("TARGET_x") << " " << var("TARGET_");
++        if (project->isEmpty("QMAKE_HPUX_SHLIB")) {
+             t << var("TARGET_x.y.z") << " ";
++        }
+         t << var("TARGET_x") << " " << var("TARGET_");
 +        }
      }
      t << "'\n\n";
  
-@@ -1306,7 +1344,11 @@ UnixMakefileGenerator::writeLibtoolFile(
- QString
- UnixMakefileGenerator::pkgConfigFileName(bool fixify)
- {
--    QString ret = var("TARGET");
-+    QString ret;
-+    if (!project->isEmpty("QMAKE_CYGWIN_SHLIB") && !project->isActiveConfig("staticlib"))
-+        ret = var("L_TARGET");
-+    else
-+        ret = var("TARGET");
+@@ -1339,11 +1367,16 @@
      int slsh = ret.lastIndexOf(Option::dir_sep);
      if(slsh != -1)
          ret = ret.right(ret.length() - slsh - 1);
+-    if(ret.startsWith("lib"))
++    if(ret.startsWith("lib") || ret.startsWith("cyg"))
+         ret = ret.mid(3);
+     int dot = ret.indexOf('.');
+     if(dot != -1)
+         ret = ret.left(dot);
++#ifdef Q_OS_CYGWIN
++    int dash = ret.indexOf('-');
++    if(dash != -1)
++        ret = ret.left(dash);
++#endif
+     ret += Option::pkgcfg_ext;
+     if(!project->isEmpty("QMAKE_PKGCONFIG_DESTDIR"))
+         ret.prepend(project->first("QMAKE_PKGCONFIG_DESTDIR") + Option::dir_sep);

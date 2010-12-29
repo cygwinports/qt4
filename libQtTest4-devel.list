@@ -1,5 +1,5 @@
 usr/include/qt4/Qt/QtTest
-usr/include/qt4/Qt/qbenchmark.h
+usr/include/qt4/Qt/qbenchmark*.h
 usr/include/qt4/Qt/qsignalspy.h
 usr/include/qt4/Qt/qtest*.h
 usr/include/qt4/QtTest/
