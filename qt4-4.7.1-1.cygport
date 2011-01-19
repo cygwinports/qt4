@@ -15,7 +15,6 @@ PATCH_URI="
 	4.7.1-qmake.patch
 	4.7.1-webkit.patch
 	4.5.3-makedepend.patch
-	4.5.3-qhash-ulong.patch
 	4.7.1-multimedia.patch
 	4.6.2-gtkstyle.patch
 	4.6.2-qprocess-race.patch
