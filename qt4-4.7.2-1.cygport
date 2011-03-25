@@ -3,11 +3,12 @@ HOMEPAGE="http://qt.nokia.com/"
 ORIG_PN="qt-everywhere-opensource-src"
 SRC_URI="mirror://qt/qt/source/${ORIG_PN}-${PV}.tar.gz"
 
-debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.7.0~rc1-1"
+debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.7.2-2"
+#	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
 PATCH_URI="
+	${debian_patches}/0195-compositing-properties.diff
+	${debian_patches}/0225-invalidate-tabbar-geometry-on-refresh.patch
 	${debian_patches}/15_fix_qmake_makefile_generation.diff
-	${debian_patches}/17_add_postgresql_8.3_support.diff
-	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
 	4.7.1-dlopen.patch
 	4.7.1-mkspecs.patch
 	4.7.1-not-windows.patch
@@ -39,13 +40,15 @@ QSYSCONFDIR="/etc/qt${PV_MAJ}"
 
 export PATH="${B}/bin:${B}/lib:$PATH"
 
+# let these be determined by mkspecs
+unset CC CXX CFLAGS CXXFLAGS
+
 src_compile() {
 	cd ${B}
 
 	# -exceptions: required for QtXmlPatterns
 	# -no-largefile: Cygwin's open() and friends are 64-bit w/o O_LARGEFILE
 	# -phonon: we build it but don't install it (KDE phonon is used instead)
-	# -sql-odbc: enable when iODBC/unixODBC are available
 	${S}/configure \
 		-prefix ${QPREFIX} \
 		-bindir ${QBINDIR} \
@@ -107,9 +110,13 @@ src_install() {
 
 	# fix pkg-config metadata
 	sed -e "s|\-L${B}/lib ||g" \
-		-e "/c_location=/ s|=.*/bin/|=${QBINDIR}/|g" \
+		-e "/_location=/ s|=.*/bin/|=${QBINDIR}/|g" \
 		-i ${D}${QLIBDIR}/pkgconfig/*.pc
+
+	sed	-e "s| -ljscore | |" -i ${D}${QLIBDIR}/pkgconfig/QtWebKit.pc
+
 	mv ${D}${QLIBDIR}/pkgconfig/ ${D}/usr/lib/
+
 
 	# fix libtool libs
 	sed -e '/^dlname/ s|cyg|../../../bin/cyg|' \
@@ -147,14 +154,6 @@ src_install() {
 		linguist-${PN}.png "Development;Translation;Qt"
 	make_desktop_entry qtconfig-${PN} "Qt${PV_MAJ} Configuration" \
 		qtconfig-${PN}.png "Settings;DesktopSettings;Qt"
-
-	dodir /etc/profile.d
-	cat > ${D}/etc/profile.d/libQtCore${PV_MAJ}-devel.sh <<-_EOF
-		export QMAKESPEC=${QPLATFORM}
-		_EOF
-	cat > ${D}/etc/profile.d/libQtCore${PV_MAJ}-devel.csh <<-_EOF
-		setenv QMAKESPEC ${QPLATFORM}
-		_EOF
 
 	dodoc ${S}/changes-${PV} ${S}/GPL_* ${S}/LICENSE.* ${S}/OPENSOURCE-NOTICE.TXT
 }

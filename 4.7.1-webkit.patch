@@ -160,6 +160,17 @@
  #elif CPU(X86) && OS(WINDOWS) && COMPILER(MINGW) && GCC_VERSION >= 40100
      #define ENABLE_JIT 1
      #define WTF_USE_JIT_STUB_ARGUMENT_VA_LIST 1
+--- origsrc/qt-everywhere-opensource-src-4.7.2/src/3rdparty/webkit/JavaScriptCore/wtf/StringExtras.h	2011-02-22 06:03:55.000000000 -0600
++++ src/qt-everywhere-opensource-src-4.7.2/src/3rdparty/webkit/JavaScriptCore/wtf/StringExtras.h	2011-03-24 23:32:43.426713900 -0500
+@@ -86,7 +86,7 @@
+ 
+ #endif
+ 
+-#if OS(WINDOWS) || OS(LINUX) || OS(SOLARIS)
++#if OS(WINDOWS) || OS(LINUX) || OS(SOLARIS) || OS(CYGWIN)
+ // FIXME: should check HAVE_STRNSTR
+ 
+ inline char* strnstr(const char* buffer, const char* target, size_t bufferLength)
 --- origsrc/qt-everywhere-opensource-src-4.7.1/src/3rdparty/webkit/WebCore/plugins/PluginDatabase.cpp	2010-11-05 20:55:22.000000000 -0500
 +++ src/qt-everywhere-opensource-src-4.7.1/src/3rdparty/webkit/WebCore/plugins/PluginDatabase.cpp	2010-12-25 22:21:30.665042400 -0600
 @@ -410,7 +410,9 @@ void PluginDatabase::getPluginPathsInDir

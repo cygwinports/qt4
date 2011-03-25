@@ -1,6 +1,4 @@
 --exclude=*_vxworks.h
-etc/profile.d/libQtCore4-devel.csh
-etc/profile.d/libQtCore4-devel.sh
 usr/bin/lconvert
 usr/bin/lrelease-qt4
 usr/bin/lupdate-qt4
