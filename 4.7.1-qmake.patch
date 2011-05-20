@@ -11,15 +11,17 @@
     qmake.files=$$QT_BUILD_TREE/bin/qmake
 --- origsrc/qt-everywhere-opensource-src-4.7.1/qmake/generators/makefile.cpp	2010-12-25 21:26:02.821646800 -0600
 +++ src/qt-everywhere-opensource-src-4.7.1/qmake/generators/makefile.cpp	2010-12-26 22:50:54.751505200 -0600
-@@ -1087,6 +1087,11 @@
+@@ -1087,6 +1087,13 @@
          int dot = ret.indexOf('.');
          if(dot != -1)
              ret.truncate(dot);
-+        if(ret.startsWith("cyg"))
-+            ret = "lib" + ret.mid(3);
-+        int dash = ret.indexOf('-');
-+        if(dash != -1)
-+            ret.truncate(dash);
++        if(!project->isEmpty("QMAKE_CYGWIN_SHLIB")) {
++            if(ret.startsWith("cyg"))
++                ret = "lib" + ret.mid(3);
++            int dash = ret.indexOf('-');
++            if(dash != -1)
++                ret.truncate(dash);
++        }
          ret += Option::prl_ext;
      }
      if(!project->isEmpty("QMAKE_BUNDLE"))
@@ -118,15 +120,17 @@
              if(!project->isEmpty("QMAKE_LFLAGS_COMPAT_VERSION")) {
                  if(project->isEmpty("COMPAT_VERSION"))
                      project->values("QMAKE_LFLAGS") += QString(project->first("QMAKE_LFLAGS_COMPAT_VERSION") +
-@@ -1249,6 +1265,11 @@
+@@ -1249,6 +1265,13 @@
      int dot = ret.indexOf('.');
      if(dot != -1)
          ret = ret.left(dot);
-+    if(ret.startsWith("cyg"))
-+        ret = "lib" + ret.mid(3);
-+    int dash = ret.indexOf('-');
-+    if(dash != -1)
-+        ret = ret.left(dash);
++    if(!project->isEmpty("QMAKE_CYGWIN_SHLIB")) {
++        if(ret.startsWith("cyg"))
++            ret = "lib" + ret.mid(3);
++        int dash = ret.indexOf('-');
++        if(dash != -1)
++            ret = ret.left(dash);
++    }
      ret += Option::libtool_ext;
      if(!project->isEmpty("QMAKE_LIBTOOL_DESTDIR"))
          ret.prepend(project->first("QMAKE_LIBTOOL_DESTDIR") + Option::dir_sep);

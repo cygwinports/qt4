@@ -3,22 +3,21 @@ HOMEPAGE="http://qt.nokia.com/"
 ORIG_PN="qt-everywhere-opensource-src"
 SRC_URI="mirror://qt/qt/source/${ORIG_PN}-${PV}.tar.gz"
 
-debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.7.2-2"
+debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.7.2-3"
 #	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
 PATCH_URI="
 	${debian_patches}/0195-compositing-properties.diff
 	${debian_patches}/0225-invalidate-tabbar-geometry-on-refresh.patch
+	${debian_patches}/11_build_translations.diff
 	${debian_patches}/15_fix_qmake_makefile_generation.diff
 	4.7.1-dlopen.patch
 	4.7.1-mkspecs.patch
 	4.7.1-not-windows.patch
-	4.5.1-iconv.patch
 	4.7.1-qmake.patch
 	4.7.1-webkit.patch
 	4.5.3-makedepend.patch
 	4.7.1-multimedia.patch
 	4.6.2-gtkstyle.patch
-	4.6.2-qprocess-race.patch
 "
 
 # created by debian 11_build_translations.diff
@@ -92,6 +91,7 @@ src_compile() {
 		-no-separate-debug-info \
 		-little-endian \
 		-no-reduce-exports \
+		-pch \
 		|| error "configure failed"
 
 	cygmake
