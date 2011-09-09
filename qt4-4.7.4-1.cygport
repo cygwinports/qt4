@@ -3,9 +3,18 @@ HOMEPAGE="http://qt.nokia.com/"
 ORIG_PN="qt-everywhere-opensource-src"
 SRC_URI="mirror://qt/qt/source/${ORIG_PN}-${PV}.tar.gz"
 
-debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.7.2-3"
+debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.7.3-7"
 #	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
 PATCH_URI="
+	${debian_patches}/Improve-performance-of-partial-updates-in-raster-win.patch
+	${debian_patches}/Fix_transformIsSimple_in_QGraphicsScene.patch
+	${debian_patches}/Micro-optimization_for_QSpanData.patch
+	${debian_patches}/Some_Optimizations_for_the_gray_raster.patch
+	${debian_patches}/Make_use_of_the_fast_image_paths.patch
+	${debian_patches}/Add_support_for_QT_USE_DRAG_DISTANCE_env_var.patch
+	${debian_patches}/Fixed_bug_in_X11_backend_when_creating_translucent_windows.patch
+	${debian_patches}/Take_Xft.hintstyle_by_default_to_match_the_behavior_of_GTK+.patch
+	${debian_patches}/Fix_fontconfig_usage_in_X11_font_database.patch
 	${debian_patches}/0195-compositing-properties.diff
 	${debian_patches}/0225-invalidate-tabbar-geometry-on-refresh.patch
 	${debian_patches}/11_build_translations.diff
@@ -18,6 +27,7 @@ PATCH_URI="
 	4.5.3-makedepend.patch
 	4.7.1-multimedia.patch
 	4.6.2-gtkstyle.patch
+	4.7.4-kde-phonon.patch
 "
 
 # created by debian 11_build_translations.diff
@@ -70,7 +80,7 @@ src_compile() {
 		-exceptions \
 		-accessibility \
 		-stl \
-		-glib -qdbus -qt3support -no-phonon \
+		-glib -qdbus -qt3support -phonon \
 		-no-sql-ibase \
 		-plugin-sql-mysql \
 		-plugin-sql-odbc \
@@ -113,7 +123,9 @@ src_install() {
 		-e "/_location=/ s|=.*/bin/|=${QBINDIR}/|g" \
 		-i ${D}${QLIBDIR}/pkgconfig/*.pc
 
-	sed	-e "s| -ljscore | |" -i ${D}${QLIBDIR}/pkgconfig/QtWebKit.pc
+	sed -e "s| -ljscore | |" \
+	    -e "s| -L\.\./JavaScriptCore/release | |" \
+	    -i ${D}${QLIBDIR}/pkgconfig/QtWebKit.pc ${D}${QLIBDIR}/libQtWebKit.la
 
 	mv ${D}${QLIBDIR}/pkgconfig/ ${D}/usr/lib/
 

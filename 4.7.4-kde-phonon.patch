@@ -1,0 +1,31 @@
+Build QtWebKit and demos against KDE phonon without building Qt phonon
+
+--- origsrc/qt-everywhere-opensource-src-4.7.4/src/plugins/plugins.pro	2011-08-23 07:02:27.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.7.4/src/plugins/plugins.pro	2011-09-08 22:13:44.439067400 -0500
+@@ -12,5 +12,5 @@ embedded:SUBDIRS *=  gfxdrivers decorati
+ !win32:!embedded:!mac:!symbian:!contains(QT_CONFIG, no-gui):SUBDIRS *= inputmethods
+ !symbian:!contains(QT_CONFIG, no-gui):SUBDIRS += accessible
+ symbian:SUBDIRS += s60
+-contains(QT_CONFIG, phonon): SUBDIRS *= phonon
++false:contains(QT_CONFIG, phonon): SUBDIRS *= phonon
+ contains(QT_CONFIG, declarative): SUBDIRS *= qmltooling
+--- origsrc/qt-everywhere-opensource-src-4.7.4/src/src.pro	2011-08-23 07:02:27.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.7.4/src/src.pro	2011-09-08 22:15:09.490932100 -0500
+@@ -15,7 +15,7 @@ win32:SRC_SUBDIRS += src_activeqt
+ contains(QT_CONFIG, opengl)|contains(QT_CONFIG, opengles1)|contains(QT_CONFIG, opengles2): SRC_SUBDIRS += src_opengl
+ contains(QT_CONFIG, openvg): SRC_SUBDIRS += src_openvg
+ contains(QT_CONFIG, xmlpatterns): SRC_SUBDIRS += src_xmlpatterns
+-contains(QT_CONFIG, phonon): SRC_SUBDIRS += src_phonon
++false:contains(QT_CONFIG, phonon): SRC_SUBDIRS += src_phonon
+ contains(QT_CONFIG, multimedia): SRC_SUBDIRS += src_multimedia
+ contains(QT_CONFIG, svg): SRC_SUBDIRS += src_svg
+ contains(QT_CONFIG, script): SRC_SUBDIRS += src_script
+--- origsrc/qt-everywhere-opensource-src-4.7.4/tools/designer/src/plugins/plugins.pro	2011-08-23 07:02:27.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.7.4/tools/designer/src/plugins/plugins.pro	2011-09-08 22:15:18.654456200 -0500
+@@ -6,5 +6,5 @@ contains(QT_CONFIG, qt3support): SUBDIRS
+ win32: SUBDIRS += activeqt
+ # contains(QT_CONFIG, opengl): SUBDIRS += tools/view3d
+ contains(QT_CONFIG, webkit): SUBDIRS += qwebview
+-contains(QT_CONFIG, phonon): SUBDIRS += phononwidgets
++false:contains(QT_CONFIG, phonon): SUBDIRS += phononwidgets
+ contains(QT_CONFIG, declarative): SUBDIRS += qdeclarativeview
