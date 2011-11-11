@@ -2,8 +2,9 @@ DESCRIPTION="Qt C++ application framework"
 HOMEPAGE="http://qt.nokia.com/"
 ORIG_PN="qt-everywhere-opensource-src"
 SRC_URI="mirror://qt/qt/source/${ORIG_PN}-${PV}.tar.gz"
+#SRC_URI=${SRC_URI##*/}
 
-debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.7.3-7"
+debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.7.3-8"
 #	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
 PATCH_URI="
 	${debian_patches}/Improve-performance-of-partial-updates-in-raster-win.patch
