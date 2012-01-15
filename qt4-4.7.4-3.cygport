@@ -4,22 +4,25 @@ ORIG_PN="qt-everywhere-opensource-src"
 SRC_URI="mirror://qt/qt/source/${ORIG_PN}-${PV}.tar.gz"
 #SRC_URI=${SRC_URI##*/}
 
-debian_patches="http://patch-tracker.debian.org/patch/series/dl/qt4-x11/4:4.7.3-8"
-#	mirror://portage/x11-libs/qt-gui/files/hardcoded_fonts.patch
 PATCH_URI="
-	${debian_patches}/Improve-performance-of-partial-updates-in-raster-win.patch
-	${debian_patches}/Fix_transformIsSimple_in_QGraphicsScene.patch
-	${debian_patches}/Micro-optimization_for_QSpanData.patch
-	${debian_patches}/Some_Optimizations_for_the_gray_raster.patch
-	${debian_patches}/Make_use_of_the_fast_image_paths.patch
-	${debian_patches}/Add_support_for_QT_USE_DRAG_DISTANCE_env_var.patch
-	${debian_patches}/Fixed_bug_in_X11_backend_when_creating_translucent_windows.patch
-	${debian_patches}/Take_Xft.hintstyle_by_default_to_match_the_behavior_of_GTK+.patch
-	${debian_patches}/Fix_fontconfig_usage_in_X11_font_database.patch
-	${debian_patches}/0195-compositing-properties.diff
-	${debian_patches}/0225-invalidate-tabbar-geometry-on-refresh.patch
-	${debian_patches}/11_build_translations.diff
-	${debian_patches}/15_fix_qmake_makefile_generation.diff
+	fedora/qt-x11-opensource-src-4.5.1-enable_ft_lcdfilter.patch
+	fedora/qt-everywhere-opensource-src-4.6.3-glib_eventloop_nullcheck.patch
+	fedora/qt-x11-opensource-src-4.5.0-fix-qatomic-inline-asm.patch
+	fedora/qt-4.6.3-bn-rendering-bz562049.patch
+	fedora/qt-4.6.3-bn-rendering-bz562058.patch
+	fedora/qt-4.6.3-indic-rendering-bz631732.patch
+	fedora/qt-4.6.3-indic-rendering-bz636399.patch
+	fedora/qt-everywhere-opensource-src-4.7.1-QTBUG-14467.patch
+	fedora/qt-everywhere-opensource-src-4.8.0-QTBUG-14724.patch
+	fedora/qt-everywhere-opensource-src-4.7.4-qml_no_strict_aliasing.patch
+	fedora/qt-everywhere-opensource-src-4.7.4-tds_no_strict_aliasing.patch
+	fedora/qt-everywhere-opensource-src-4.7.4-filter_event.patch
+	fedora/qt-everywhere-opensource-src-4.7.4-QTBUG-21754.patch
+	fedora/QTBUG-19947-fontconfig-2.patch
+	fedora/0002-This-patch-makes-override-redirect-windows-popup-men.patch
+	fedora/0005-When-tabs-are-inserted-or-removed-in-a-QTabBar.patch
+	fedora/qt-everywhere-opensource-src-4.7.0-CVE-2010-1822-crash-svg-image.patch
+	fedora/qt-4.8.0-CVE-2011-3922-bz#772125.patch
 	4.7.1-dlopen.patch
 	4.7.1-mkspecs.patch
 	4.7.1-not-windows.patch
@@ -30,9 +33,6 @@ PATCH_URI="
 	4.6.2-gtkstyle.patch
 	4.7.4-kde-phonon.patch
 "
-
-# created by debian 11_build_translations.diff
-DISTCLEANFILES="tools/assistant/translations/*.pro tools/designer/translations/*.pro"
 
 QPLATFORM="cygwin-g++"
 QPREFIX="/usr"
@@ -139,7 +139,7 @@ src_install() {
 
 	# these are provided by both 3.x and 4.x
 	for x in assistant designer linguist lrelease lupdate \
-	         moc qmake qtconfig uic
+	         moc qmake qtconfig qtdemo uic
 	do
 		dosym ../lib/qt${PV_MAJ}/bin/${x}.exe /usr/bin/${x}-${PN}
 	done
@@ -147,7 +147,7 @@ src_install() {
 	# These are new in 4.x
 	for x in lconvert pixeltool qcollectiongenerator qdbus \
 	         qdbus{cpp2xml,viewer,xml2cpp} qdoc3 qhelp{converter,generator} \
-	         qmlviewer qt3to4 qtdemo qttracereplay rcc uic3 xmlpatterns xmlpatternsvalidator
+	         qmlviewer qt3to4 qttracereplay rcc uic3 xmlpatterns xmlpatternsvalidator
 	do
 		dosym ../lib/qt${PV_MAJ}/bin/${x}.exe /usr/bin/${x}
 	done
@@ -158,6 +158,7 @@ src_install() {
 	newicon ${S}/tools/designer/src/designer/images/designer.png designer-${PN}.png
 	newicon ${S}/tools/linguist/linguist/images/appicon.png linguist-${PN}.png
 	newicon ${S}/tools/qtconfig/images/appicon.png qtconfig-${PN}.png
+	newicon ${S}/tools/qtconfig/images/appicon.png qtdemo-${PN}.png
 
 	make_desktop_entry assistant-${PN} "Qt${PV_MAJ} Assistant" \
 		assistant-${PN}.png "Development;Documentation;Qt"
@@ -167,6 +168,8 @@ src_install() {
 		linguist-${PN}.png "Development;Translation;Qt"
 	make_desktop_entry qtconfig-${PN} "Qt${PV_MAJ} Configuration" \
 		qtconfig-${PN}.png "Settings;DesktopSettings;Qt"
+	make_desktop_entry qtdemo-${PN} "Qt${PV_MAJ} Demos" \
+		qtdemo-${PN}.png "Development;Qt"
 
 	dodoc ${S}/changes-${PV} ${S}/GPL_* ${S}/LICENSE.* ${S}/OPENSOURCE-NOTICE.TXT
 }
@@ -192,6 +195,7 @@ PKG_IGNORE="
 	${QINCLUDEDIR#/}/Qt/*_vxworks.h
 	${QINCLUDEDIR#/}/Qt/*_win.h
 	${QINCLUDEDIR#/}/Qt/*_wince.h
+	${QINCLUDEDIR#/}/QtCore/*_vxworks.h
 	${QTRANSLATIONSDIR#/}/qvfb_*
 "
 
