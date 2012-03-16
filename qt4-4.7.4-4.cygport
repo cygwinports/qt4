@@ -98,7 +98,7 @@ src_compile() {
 		-no-nis -no-cups \
 		-iconv -liconv \
 		-system-nas-sound \
-		-opengl -sm -xshape -xinerama -xinput -xcursor -xfixes -xrandr -xrender -fontconfig -xkb \
+		-opengl -no-mitshm -sm -xshape -xinerama -xinput -xcursor -xfixes -xrandr -xrender -fontconfig -xkb \
 		-no-separate-debug-info \
 		-little-endian \
 		-no-reduce-exports \
@@ -195,7 +195,6 @@ PKG_IGNORE="
 	${QINCLUDEDIR#/}/Qt/*_vxworks.h
 	${QINCLUDEDIR#/}/Qt/*_win.h
 	${QINCLUDEDIR#/}/Qt/*_wince.h
-	${QINCLUDEDIR#/}/QtCore/*_vxworks.h
 	${QTRANSLATIONSDIR#/}/qvfb_*
 "
 
