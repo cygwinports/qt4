@@ -62,8 +62,10 @@ usr/include/qt4/Qt/qfontmetrics.h
 usr/include/qt4/Qt/qformlayout.h
 usr/include/qt4/Qt/qframe.h
 usr/include/qt4/Qt/qgenericmatrix.h
+usr/include/qt4/Qt/qgenericplugin*_qpa.h
 usr/include/qt4/Qt/qgesture.h
 usr/include/qt4/Qt/qgesturerecognizer.h
+usr/include/qt4/Qt/qglyphrun.h
 usr/include/qt4/Qt/qgraphicsanchorlayout.h
 usr/include/qt4/Qt/qgraphicseffect.h
 usr/include/qt4/Qt/qgraphicsgridlayout.h
@@ -85,6 +87,7 @@ usr/include/qt4/Qt/qheaderview.h
 usr/include/qt4/Qt/qicon.h
 usr/include/qt4/Qt/qiconengine.h
 usr/include/qt4/Qt/qiconengineplugin.h
+usr/include/qt4/Qt/qidentityproxymodel.h
 usr/include/qt4/Qt/qimage.h
 usr/include/qt4/Qt/qimageiohandler.h
 usr/include/qt4/Qt/qimagereader.h
@@ -131,6 +134,7 @@ usr/include/qt4/Qt/qpixmap.h
 usr/include/qt4/Qt/qpixmapcache.h
 usr/include/qt4/Qt/qplaintextedit.h
 usr/include/qt4/Qt/qplastiquestyle.h
+usr/include/qt4/Qt/qplatform*_qpa.h
 usr/include/qt4/Qt/qpolygon.h
 usr/include/qt4/Qt/qprintdialog.h
 usr/include/qt4/Qt/qprintengine.h
@@ -145,6 +149,7 @@ usr/include/qt4/Qt/qproxystyle.h
 usr/include/qt4/Qt/qpushbutton.h
 usr/include/qt4/Qt/qquaternion.h
 usr/include/qt4/Qt/qradiobutton.h
+usr/include/qt4/Qt/qrawfont.h
 usr/include/qt4/Qt/qregion.h
 usr/include/qt4/Qt/qrgb.h
 usr/include/qt4/Qt/qrubberband.h
@@ -215,6 +220,7 @@ usr/include/qt4/Qt/qwindowsmobilestyle.h
 usr/include/qt4/Qt/qwindowsstyle.h
 usr/include/qt4/Qt/qwindowsvistastyle.h
 usr/include/qt4/Qt/qwindowsxpstyle.h
+usr/include/qt4/Qt/qwindowsysteminterface_qpa.h
 usr/include/qt4/Qt/qwizard.h
 usr/include/qt4/Qt/qwmatrix.h
 usr/include/qt4/Qt/qworkspace.h

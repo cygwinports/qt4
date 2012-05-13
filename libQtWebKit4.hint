@@ -1,5 +1,5 @@
 category: KDE Web
-requires: libphonon4 libQtCore4 libQtGui4 libQtNetwork4 libsqlite3_0 libgcc1 libstdc++6 libX11_6 libXrender1
+requires: libgcc1 libglib2.0_0 libgstinterfaces0.10_0 libgstreamer0.10_0 libQtCore4 libQtGui4 libQtNetwork4 libsqlite3_0 libstdc++6 libX11_6 libXrender1
 external-source: qt4
 sdesc: "Qt4 Webkit library (runtime)"
 ldesc: "Qt is a cross-platform application framework for desktop and 

@@ -1,0 +1,5 @@
+usr/include/qt4/Qt/QtOpenVG
+usr/include/qt4/Qt/qvg.h
+usr/include/qt4/QtOpenVG/
+usr/lib/pkgconfig/QtOpenVG.pc
+usr/lib/qt4/lib/libQtOpenVG.*

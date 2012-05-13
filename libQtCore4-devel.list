@@ -26,12 +26,7 @@ usr/include/qt4/Qt/qbytearray.h
 usr/include/qt4/Qt/qbytearraymatcher.h
 usr/include/qt4/Qt/qcache.h
 usr/include/qt4/Qt/qchar.h
-usr/include/qt4/Qt/qconfig-dist.h
-usr/include/qt4/Qt/qconfig-large.h
-usr/include/qt4/Qt/qconfig-medium.h
-usr/include/qt4/Qt/qconfig-minimal.h
-usr/include/qt4/Qt/qconfig-small.h
-usr/include/qt4/Qt/qconfig.h
+usr/include/qt4/Qt/qconfig*.h
 usr/include/qt4/Qt/qcontainerfwd.h
 usr/include/qt4/Qt/qcontiguouscache.h
 usr/include/qt4/Qt/qcoreapplication.h
@@ -54,6 +49,7 @@ usr/include/qt4/Qt/qfileinfo.h
 usr/include/qt4/Qt/qfilesystemwatcher.h
 usr/include/qt4/Qt/qfinalstate.h
 usr/include/qt4/Qt/qfsfileengine.h
+usr/include/qt4/Qt/qfunctions_nacl.h
 usr/include/qt4/Qt/qfuture.h
 usr/include/qt4/Qt/qfutureinterface.h
 usr/include/qt4/Qt/qfuturesynchronizer.h
@@ -97,6 +93,7 @@ usr/include/qt4/Qt/qregexp.h
 usr/include/qt4/Qt/qresource.h
 usr/include/qt4/Qt/qrunnable.h
 usr/include/qt4/Qt/qscopedpointer.h
+usr/include/qt4/Qt/qscopedvaluerollback.h
 usr/include/qt4/Qt/qsemaphore.h
 usr/include/qt4/Qt/qsequentialanimationgroup.h
 usr/include/qt4/Qt/qset.h

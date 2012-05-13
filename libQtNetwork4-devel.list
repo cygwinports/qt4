@@ -6,6 +6,7 @@ usr/include/qt4/Qt/qftp.h
 usr/include/qt4/Qt/qhostaddress.h
 usr/include/qt4/Qt/qhostinfo.h
 usr/include/qt4/Qt/qhttp.h
+usr/include/qt4/Qt/qhttpmultipart.h
 usr/include/qt4/Qt/qlocalserver.h
 usr/include/qt4/Qt/qlocalsocket.h
 usr/include/qt4/Qt/qnetwork*.h

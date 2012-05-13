@@ -3,6 +3,7 @@ usr/include/qt4/Qt/qgl.h
 usr/include/qt4/Qt/qglbuffer.h
 usr/include/qt4/Qt/qglcolormap.h
 usr/include/qt4/Qt/qglframebufferobject.h
+usr/include/qt4/Qt/qglfunctions.h
 usr/include/qt4/Qt/qglpixelbuffer.h
 usr/include/qt4/Qt/qglshaderprogram.h
 usr/include/qt4/QtOpenGL/

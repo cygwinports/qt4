@@ -7,31 +7,28 @@ SRC_URI="mirror://qt/qt/source/${ORIG_PN}-${PV}.tar.gz"
 PATCH_URI="
 	fedora/qt-x11-opensource-src-4.5.1-enable_ft_lcdfilter.patch
 	fedora/qt-everywhere-opensource-src-4.6.3-glib_eventloop_nullcheck.patch
+	fedora/qt-everywhere-opensource-src-4.8.0-rc1-moc-boost148.patch
 	fedora/qt-x11-opensource-src-4.5.0-fix-qatomic-inline-asm.patch
-	fedora/qt-4.6.3-bn-rendering-bz562049.patch
-	fedora/qt-4.6.3-bn-rendering-bz562058.patch
-	fedora/qt-4.6.3-indic-rendering-bz631732.patch
-	fedora/qt-4.6.3-indic-rendering-bz636399.patch
 	fedora/qt-everywhere-opensource-src-4.7.1-QTBUG-14467.patch
+	fedora/qt-everywhere-opensource-src-4.8.0-tp-qtreeview-kpackagekit-crash.patch
+	fedora/qt-4.8.1-webkit-no_Werror.patch
+	fedora/qt-everywhere-opensource-src-4.8.0-QTBUG-22037.patch
 	fedora/qt-everywhere-opensource-src-4.8.0-QTBUG-14724.patch
-	fedora/qt-everywhere-opensource-src-4.7.4-qml_no_strict_aliasing.patch
+	fedora/qt-everywhere-opensource-src-4.8.0-QTBUG-21900.patch
+	fedora/qt-everywhere-opensource-src-4.8.0-qtwebkit-glib231.patch
 	fedora/qt-everywhere-opensource-src-4.7.4-tds_no_strict_aliasing.patch
-	fedora/qt-everywhere-opensource-src-4.7.4-filter_event.patch
-	fedora/qt-everywhere-opensource-src-4.7.4-QTBUG-21754.patch
-	fedora/QTBUG-19947-fontconfig-2.patch
-	fedora/0002-This-patch-makes-override-redirect-windows-popup-men.patch
-	fedora/0005-When-tabs-are-inserted-or-removed-in-a-QTabBar.patch
-	fedora/qt-everywhere-opensource-src-4.7.0-CVE-2010-1822-crash-svg-image.patch
+	fedora/qt-everywhere-opensource-src-4.8.0-icu_no_spam.patch
+	fedora/qt-everywhere-opensource-src-4.8.1-qtgahandle.patch
+	fedora/qt-everywhere-opensource-src-4.8.1-QTBUG-24718.patch
 	fedora/qt-4.8.0-CVE-2011-3922-bz#772125.patch
-	4.7.1-dlopen.patch
-	4.7.1-mkspecs.patch
-	4.7.1-not-windows.patch
-	4.7.1-qmake.patch
-	4.7.1-webkit.patch
+	4.8.1-dlopen.patch
+	4.8.1-mkspecs.patch
+	4.8.1-not-windows.patch
+	4.8.1-qmake.patch
+	4.8.1-webkit.patch
 	4.5.3-makedepend.patch
 	4.7.1-multimedia.patch
 	4.6.2-gtkstyle.patch
-	4.7.4-kde-phonon.patch
 "
 
 QPLATFORM="cygwin-g++"
@@ -58,7 +55,6 @@ src_compile() {
 
 	# -exceptions: required for QtXmlPatterns
 	# -no-largefile: Cygwin's open() and friends are 64-bit w/o O_LARGEFILE
-	# -phonon: we build it but don't install it (KDE phonon is used instead)
 	${S}/configure \
 		-prefix ${QPREFIX} \
 		-bindir ${QBINDIR} \
@@ -81,14 +77,14 @@ src_compile() {
 		-exceptions \
 		-accessibility \
 		-stl \
-		-glib -qdbus -qt3support -phonon \
+		-glib -qdbus -qt3support -no-phonon \
 		-no-sql-ibase \
 		-plugin-sql-mysql \
 		-plugin-sql-odbc \
 		-plugin-sql-psql \
 		-plugin-sql-sqlite -no-sql-sqlite2 -system-sqlite \
 		-plugin-sql-tds \
-		-system-zlib -qt-gif \
+		-system-zlib \
 		-system-libjpeg -system-libmng -system-libpng -system-libtiff \
 		-openssl-linked \
 		-dbus-linked \
@@ -120,16 +116,16 @@ src_install() {
 	mv ${D}${QLIBDIR}/*.dll ${D}/usr/bin
 
 	# fix pkg-config metadata
-	sed -e "s|\-L${B}/lib ||g" \
+	sed -e "s| -L[\./][^ ]*||g" \
 		-e "/_location=/ s|=.*/bin/|=${QBINDIR}/|g" \
 		-i ${D}${QLIBDIR}/pkgconfig/*.pc
 
-	sed -e "s| -ljscore | |" \
-	    -e "s| -L\.\./JavaScriptCore/release | |" \
+	sed -e "s| -lwebcore -ljscore | |" \
 	    -i ${D}${QLIBDIR}/pkgconfig/QtWebKit.pc ${D}${QLIBDIR}/libQtWebKit.la
 
-	mv ${D}${QLIBDIR}/pkgconfig/ ${D}/usr/lib/
+	rm -fr ${D}/usr/tests/
 
+	mv ${D}${QLIBDIR}/pkgconfig/ ${D}/usr/lib/
 
 	# fix libtool libs
 	sed -e '/^dlname/ s|cyg|../../../bin/cyg|' \
@@ -147,7 +143,8 @@ src_install() {
 	# These are new in 4.x
 	for x in lconvert pixeltool qcollectiongenerator qdbus \
 	         qdbus{cpp2xml,viewer,xml2cpp} qdoc3 qhelp{converter,generator} \
-	         qmlviewer qt3to4 qttracereplay rcc uic3 xmlpatterns xmlpatternsvalidator
+	         qmlplugindump qmlviewer qt3to4 qttracereplay rcc uic3 \
+	         xmlpatterns xmlpatternsvalidator
 	do
 		dosym ../lib/qt${PV_MAJ}/bin/${x}.exe /usr/bin/${x}
 	done
@@ -175,8 +172,8 @@ src_install() {
 }
 
 for lib in Qt3Support QtCore QtDBus QtDeclarative QtDesigner QtGui \
-           QtHelp QtMultimedia QtNetwork QtOpenGL QtScript QtScriptTools \
-           QtSql QtSvg QtTest QtWebKit QtXml QtXmlPatterns
+           QtHelp QtMultimedia QtNetwork QtOpenGL QtOpenVG QtScript \
+           QtScriptTools QtSql QtSvg QtTest QtWebKit QtXml QtXmlPatterns
 do
 	PKG_NAMES+=" lib${lib}${PV_MAJ} lib${lib}${PV_MAJ}-devel"
 done

@@ -20,62 +20,37 @@
  #ifndef qdoc
      typedef int WindowsVersion;
  
---- origsrc/qt-everywhere-opensource-src-4.7.1/src/corelib/io/qfsfileengine_iterator_unix.cpp	2010-11-05 20:55:18.000000000 -0500
-+++ src/qt-everywhere-opensource-src-4.7.1/src/corelib/io/qfsfileengine_iterator_unix.cpp	2010-12-25 21:50:39.223818400 -0600
-@@ -53,7 +53,7 @@ class QFSFileEngineIteratorPlatformSpeci
- public:
-     inline QFSFileEngineIteratorPlatformSpecificData()
-         : dir(0), dirEntry(0), done(false)
--#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN) && !defined(Q_OS_SYMBIAN)
-+#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_SYMBIAN)
-           , mt_file(0)
- #endif
-     {}
-@@ -62,7 +62,7 @@ public:
-     QT_DIRENT *dirEntry;
-     bool done;
- 
--#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN) && !defined(Q_OS_SYMBIAN)
-+#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_SYMBIAN)
-     // for readdir_r
-     QT_DIRENT *mt_file;
- #endif
-@@ -75,7 +75,7 @@ void QFSFileEngineIterator::advance()
-     if (!platform->dir)
-         return;
- 
--#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN) && !defined(Q_OS_SYMBIAN)
-+#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_SYMBIAN)
-     if (QT_READDIR_R(platform->dir, platform->mt_file, &platform->dirEntry) != 0)
-         platform->done = true;
+--- origsrc/qt-everywhere-opensource-src-4.8.1/src/corelib/io/qfilesystemiterator_p.h	2012-03-14 09:01:18.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.8.1/src/corelib/io/qfilesystemiterator_p.h	2012-04-24 00:48:07.269358700 -0500
+@@ -103,7 +103,7 @@ private:
  #else
-@@ -86,7 +86,7 @@ void QFSFileEngineIterator::advance()
-         QT_CLOSEDIR(platform->dir);
-         platform->dir = 0;
-         platform->done = true;
--#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN) && !defined(Q_OS_SYMBIAN)
-+#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_SYMBIAN)
-         delete [] platform->mt_file;
-         platform->mt_file = 0;
+     QT_DIR *dir;
+     QT_DIRENT *dirEntry;
+-#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN)
++#if defined(_POSIX_THREAD_SAFE_FUNCTIONS)
+     // for readdir_r
+     QScopedPointer<QT_DIRENT, QScopedPointerPodDeleter> mt_file;
  #endif
-@@ -102,7 +102,7 @@ void QFSFileEngineIterator::deletePlatfo
- {
-     if (platform->dir) {
-         QT_CLOSEDIR(platform->dir);
--#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN) && !defined(Q_OS_SYMBIAN)
-+#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_SYMBIAN)
-         delete [] platform->mt_file;
-         platform->mt_file = 0;
- #endif
-@@ -123,7 +123,7 @@ bool QFSFileEngineIterator::hasNext() co
-             if ((int) maxPathName == -1)
-                 maxPathName = FILENAME_MAX;
-             maxPathName += sizeof(QT_DIRENT) + 1;
--#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN) && !defined(Q_OS_SYMBIAN)
-+#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_SYMBIAN)
-             if (that->platform->mt_file)
-                 delete [] that->platform->mt_file;
-             that->platform->mt_file = (QT_DIRENT *)new char[maxPathName];
+--- origsrc/qt-everywhere-opensource-src-4.8.1/src/corelib/io/qfilesystemiterator_unix.cpp	2012-03-14 09:01:18.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.8.1/src/corelib/io/qfilesystemiterator_unix.cpp	2012-04-24 00:36:19.153856800 -0500
+@@ -67,7 +67,7 @@ QFileSystemIterator::QFileSystemIterator
+         if (!nativePath.endsWith('/'))
+             nativePath.append('/');
+ 
+-#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN)
++#if defined(_POSIX_THREAD_SAFE_FUNCTIONS)
+         // ### Race condition; we should use fpathconf and dirfd().
+         size_t maxPathName = ::pathconf(nativePath.constData(), _PC_NAME_MAX);
+         if (maxPathName == size_t(-1))
+@@ -93,7 +93,7 @@ bool QFileSystemIterator::advance(QFileS
+     if (!dir)
+         return false;
+ 
+-#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN)
++#if defined(_POSIX_THREAD_SAFE_FUNCTIONS)
+     lastError = QT_READDIR_R(dir, mt_file.data(), &dirEntry);
+     if (lastError)
+         return false;
 --- origsrc/qt-everywhere-opensource-src-4.7.1/src/gui/kernel/qapplication.h	2010-11-05 20:55:16.000000000 -0500
 +++ src/qt-everywhere-opensource-src-4.7.1/src/gui/kernel/qapplication.h	2010-12-25 21:51:24.198696800 -0600
 @@ -330,7 +330,7 @@ public:

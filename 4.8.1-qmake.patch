@@ -9,8 +9,8 @@
     qmake.files=$$QT_BUILD_TREE/bin/qmake.exe
  } else {
     qmake.files=$$QT_BUILD_TREE/bin/qmake
---- origsrc/qt-everywhere-opensource-src-4.7.1/qmake/generators/makefile.cpp	2010-12-25 21:26:02.821646800 -0600
-+++ src/qt-everywhere-opensource-src-4.7.1/qmake/generators/makefile.cpp	2010-12-26 22:50:54.751505200 -0600
+--- origsrc/qt-everywhere-opensource-src-4.8.1/qmake/generators/makefile.cpp	2012-04-23 22:00:45.580006900 -0500
++++ src/qt-everywhere-opensource-src-4.8.1/qmake/generators/makefile.cpp	2012-04-24 00:37:59.307585200 -0500
 @@ -1087,6 +1087,13 @@
          int dot = ret.indexOf('.');
          if(dot != -1)
@@ -25,6 +25,22 @@
          ret += Option::prl_ext;
      }
      if(!project->isEmpty("QMAKE_BUNDLE"))
+@@ -3130,11 +3130,14 @@ MakefileGenerator::pkgConfigFileName(boo
+     int slsh = ret.lastIndexOf(Option::dir_sep);
+     if(slsh != -1)
+         ret = ret.right(ret.length() - slsh - 1);
+-    if(ret.startsWith("lib"))
++    if(ret.startsWith("lib") || ret.startsWith("cyg"))
+         ret = ret.mid(3);
+     int dot = ret.indexOf('.');
+     if(dot != -1)
+         ret = ret.left(dot);
++    int dash = ret.indexOf('-');
++    if(dash != -1)
++        ret = ret.left(dash);
+     ret += Option::pkgcfg_ext;
+     QString subdir = project->first("QMAKE_PKGCONFIG_DESTDIR");
+     if(!subdir.isEmpty()) {
 --- origsrc/qt-everywhere-opensource-src-4.7.1/qmake/generators/unix/unixmake.cpp	2010-12-26 23:47:35.507030300 -0600
 +++ src/qt-everywhere-opensource-src-4.7.1/qmake/generators/unix/unixmake.cpp	2010-12-25 21:47:53.558331100 -0600
 @@ -695,16 +695,16 @@
@@ -150,19 +166,3 @@
      }
      t << "'\n\n";
  
-@@ -1339,11 +1367,14 @@
-     int slsh = ret.lastIndexOf(Option::dir_sep);
-     if(slsh != -1)
-         ret = ret.right(ret.length() - slsh - 1);
--    if(ret.startsWith("lib"))
-+    if(ret.startsWith("lib") || ret.startsWith("cyg"))
-         ret = ret.mid(3);
-     int dot = ret.indexOf('.');
-     if(dot != -1)
-         ret = ret.left(dot);
-+    int dash = ret.indexOf('-');
-+    if(dash != -1)
-+        ret = ret.left(dash);
-     ret += Option::pkgcfg_ext;
-     if(!project->isEmpty("QMAKE_PKGCONFIG_DESTDIR"))
-         ret.prepend(project->first("QMAKE_PKGCONFIG_DESTDIR") + Option::dir_sep);
