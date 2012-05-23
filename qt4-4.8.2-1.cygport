@@ -1,13 +1,15 @@
 DESCRIPTION="Qt C++ application framework"
 HOMEPAGE="http://qt.nokia.com/"
 ORIG_PN="qt-everywhere-opensource-src"
-SRC_URI="mirror://qt/qt/source/${ORIG_PN}-${PV}.tar.gz"
+SRC_URI="http://releases.qt-project.org/qt4/source/${ORIG_PN}-${PV}.tar.gz"
 #SRC_URI=${SRC_URI##*/}
 
 PATCH_URI="
 	fedora/qt-x11-opensource-src-4.5.1-enable_ft_lcdfilter.patch
 	fedora/qt-everywhere-opensource-src-4.6.3-glib_eventloop_nullcheck.patch
 	fedora/qt-everywhere-opensource-src-4.8.0-rc1-moc-boost148.patch
+	fedora/qt-everywhere-opensource-src-4.8.1-qdbusconnection_no_debug.patch
+	fedora/qt-everywhere-opensource-src-4.8.1-qt3support_debuginfo.patch
 	fedora/qt-x11-opensource-src-4.5.0-fix-qatomic-inline-asm.patch
 	fedora/qt-everywhere-opensource-src-4.7.1-QTBUG-14467.patch
 	fedora/qt-everywhere-opensource-src-4.8.0-tp-qtreeview-kpackagekit-crash.patch
@@ -17,9 +19,8 @@ PATCH_URI="
 	fedora/qt-everywhere-opensource-src-4.8.0-QTBUG-21900.patch
 	fedora/qt-everywhere-opensource-src-4.8.0-qtwebkit-glib231.patch
 	fedora/qt-everywhere-opensource-src-4.7.4-tds_no_strict_aliasing.patch
-	fedora/qt-everywhere-opensource-src-4.8.0-icu_no_spam.patch
+	fedora/qt-everywhere-opensource-src-4.8.1-icu_no_debug.patch
 	fedora/qt-everywhere-opensource-src-4.8.1-qtgahandle.patch
-	fedora/qt-everywhere-opensource-src-4.8.1-QTBUG-24718.patch
 	fedora/qt-4.8.0-CVE-2011-3922-bz#772125.patch
 	4.8.1-dlopen.patch
 	4.8.1-mkspecs.patch
@@ -184,14 +185,10 @@ do
 done
 
 PKG_IGNORE="
-	${QINCLUDEDIR#/}/Qt/qs60*.h
-	${QINCLUDEDIR#/}/Qt/qsymbian*.h
 	${QINCLUDEDIR#/}/Qt/qt_windows.h
 	${QINCLUDEDIR#/}/Qt/*qws*.h
 	${QINCLUDEDIR#/}/Qt/*_mac.h
-	${QINCLUDEDIR#/}/Qt/*_vxworks.h
 	${QINCLUDEDIR#/}/Qt/*_win.h
-	${QINCLUDEDIR#/}/Qt/*_wince.h
 	${QTRANSLATIONSDIR#/}/qvfb_*
 "
 
