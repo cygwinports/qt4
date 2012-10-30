@@ -7,9 +7,9 @@
 +    QLibrary libgdk(QLS("gdk-x11-2.0"), 0, 0);
 +    QLibrary libgdkpixbuf(QLS("gdk_pixbuf-2.0"), 0, 0);
 +    QLibrary libpango(QLS("pango-1.0"), 0, 0);
+     libgtk.setLoadHints(QLibrary::ImprovedSearchHeuristics);
  
      gtk_init = (Ptr_gtk_init)libgtk.resolve("gtk_init");
-     gtk_window_new = (Ptr_gtk_window_new)libgtk.resolve("gtk_window_new");
 @@ -328,20 +331,20 @@ void QGtkStylePrivate::resolveGtk() cons
      gtk_dialog_run = (Ptr_gtk_dialog_run)libgtk.resolve("gtk_dialog_run");
      gtk_file_chooser_set_filename = (Ptr_gtk_file_chooser_set_filename)libgtk.resolve("gtk_file_chooser_set_filename");
