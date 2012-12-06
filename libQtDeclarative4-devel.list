@@ -1,6 +1,0 @@
-usr/include/qt4/Qt/qdeclarative*
-usr/include/qt4/Qt/QtDeclarative
-usr/include/qt4/QtDeclarative/
-usr/lib/pkgconfig/QtDeclarative.pc
-usr/lib/qt4/lib/libQtDeclarative.*
-usr/lib/qt4/plugins/designer/cygqdeclarativeview.dll

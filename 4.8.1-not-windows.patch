@@ -33,24 +33,12 @@
  #endif
 --- origsrc/qt-everywhere-opensource-src-4.8.1/src/corelib/io/qfilesystemiterator_unix.cpp	2012-03-14 09:01:18.000000000 -0500
 +++ src/qt-everywhere-opensource-src-4.8.1/src/corelib/io/qfilesystemiterator_unix.cpp	2012-04-24 00:36:19.153856800 -0500
-@@ -67,7 +67,7 @@ QFileSystemIterator::QFileSystemIterator
-         if (!nativePath.endsWith('/'))
-             nativePath.append('/');
- 
+@@ -70,1 +70,1 @@ QFileSystemIterator::QFileSystemIterator
 -#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN)
 +#if defined(_POSIX_THREAD_SAFE_FUNCTIONS)
-         // ### Race condition; we should use fpathconf and dirfd().
-         size_t maxPathName = ::pathconf(nativePath.constData(), _PC_NAME_MAX);
-         if (maxPathName == size_t(-1))
-@@ -93,7 +93,7 @@ bool QFileSystemIterator::advance(QFileS
-     if (!dir)
-         return false;
- 
--#if defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN)
-+#if defined(_POSIX_THREAD_SAFE_FUNCTIONS)
-     lastError = QT_READDIR_R(dir, mt_file.data(), &dirEntry);
-     if (lastError)
-         return false;
+@@ -96,1 +96,1 @@ bool QFileSystemIterator::advance(QFileS
+-#elif defined(_POSIX_THREAD_SAFE_FUNCTIONS) && !defined(Q_OS_CYGWIN)
++#elif defined(_POSIX_THREAD_SAFE_FUNCTIONS)
 --- origsrc/qt-everywhere-opensource-src-4.7.1/src/gui/kernel/qapplication.h	2010-11-05 20:55:16.000000000 -0500
 +++ src/qt-everywhere-opensource-src-4.7.1/src/gui/kernel/qapplication.h	2010-12-25 21:51:24.198696800 -0600
 @@ -330,7 +330,7 @@ public:

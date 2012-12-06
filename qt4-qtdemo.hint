@@ -1,9 +1,0 @@
-category: KDE
-requires: libgcc1 libGL1 libGLU1 libQtCore4 libQtDBus4 libQtDeclarative4 libQtDesigner4 libQtGui4 libQtHelp4 libQtMultimedia4 libQtNetwork4 libQtOpenGL4 libQtScript4 libQtScriptTools4 libQtSql4 libQtSvg4 libQtTest4 libQtWebKit4 libQtXml4 libQtXmlPatterns4 libstdc++6
-external-source: qt4
-sdesc: "Qt4 demos and examples"
-ldesc: "Qt is a cross-platform application framework for desktop and 
-embedded development. Qt enables programmers to create advanced GUI 
-applications once and deploy them to Windows, Mac OS X and Linux without 
-rewriting the source code. Companies using Qt can leverage software 
-investments made on one platform across many others."

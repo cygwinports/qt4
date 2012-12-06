@@ -1,7 +1,0 @@
-usr/include/qt4/Qt/QtXml
-usr/include/qt4/Qt/qdom.h
-usr/include/qt4/Qt/qxml.h
-usr/include/qt4/Qt/qxmlstream.h
-usr/include/qt4/QtXml/
-usr/lib/pkgconfig/QtXml.pc
-usr/lib/qt4/lib/libQtXml.*

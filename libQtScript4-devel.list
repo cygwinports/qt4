@@ -1,6 +1,0 @@
---exclude=qscriptenginedebugger.h
-usr/include/qt4/Qt/QtScript
-usr/include/qt4/Qt/qscript*.h
-usr/include/qt4/QtScript/
-usr/lib/pkgconfig/QtScript.pc
-usr/lib/qt4/lib/libQtScript.*

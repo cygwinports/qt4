@@ -1,8 +1,0 @@
-category: KDE
-sdesc: "Qt application framework (source)"
-ldesc: "Qt is a cross-platform application framework for desktop and 
-embedded development. Qt enables programmers to create advanced GUI 
-applications once and deploy them to Windows, Mac OS X and Linux without 
-rewriting the source code. Companies using Qt can leverage software 
-investments made on one platform across many others."
-

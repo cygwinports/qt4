@@ -1,7 +1,0 @@
-usr/include/qt4/Qt/QtHelp
-usr/include/qt4/Qt/qhelp*.h
-usr/include/qt4/QtHelp/
-usr/lib/pkgconfig/QtCLucene.pc
-usr/lib/pkgconfig/QtHelp.pc
-usr/lib/qt4/lib/libQtCLucene.*
-usr/lib/qt4/lib/libQtHelp.*

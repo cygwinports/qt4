@@ -1,9 +1,0 @@
-category: KDE
-requires: libQtGui4 libaudio-devel libfontconfig-devel libfreetype-devel libglib2.0-devel libICE-devel libpng-devel libQtCore4-devel libSM-devel libX11-devel libXcursor-devel libXext-devel libXfixes-devel libXi-devel libXinerama-devel libXrandr-devel libXrender-devel zlib-devel
-external-source: qt4
-sdesc: "Qt4 Gui library (libdevel)"
-ldesc: "Qt is a cross-platform application framework for desktop and 
-embedded development. Qt enables programmers to create advanced GUI 
-applications once and deploy them to Windows, Mac OS X and Linux without 
-rewriting the source code. Companies using Qt can leverage software 
-investments made on one platform across many others."
