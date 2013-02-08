@@ -1,6 +1,6 @@
 NAME="qt4"
 VERSION=4.8.4
-RELEASE=1
+RELEASE=2
 CATEGORY="X11"
 SUMMARY="Qt C++ application framework"
 DESCRIPTION="Qt is a cross-platform application framework for desktop and
@@ -15,7 +15,6 @@ SRC_URI="http://releases.qt-project.org/qt4/source/${ORIG_PN}-${PV}.tar.gz"
 PATCH_URI="
 	fedora/qt-x11-opensource-src-4.5.1-enable_ft_lcdfilter.patch
 	fedora/qt-everywhere-opensource-src-4.6.3-glib_eventloop_nullcheck.patch
-	fedora/qt-everywhere-opensource-src-4.8.0-rc1-moc-boost148.patch
 	fedora/qt-everywhere-opensource-src-4.8.3-qdbusconnection_no_debug.patch
 	fedora/qt-everywhere-opensource-src-4.8.1-qt3support_debuginfo.patch
 	fedora/qt-x11-opensource-src-4.5.0-fix-qatomic-inline-asm.patch
@@ -30,6 +29,12 @@ PATCH_URI="
 	fedora/qt-everywhere-opensource-src-4.8.3-QTBUG-4862.patch
 	fedora/qt-everywhere-opensource-src-4.8.1-qtgahandle.patch
 	fedora/qt-4.8.0-CVE-2011-3922-bz#772125.patch
+	fedora/qt-everywhere-opensource-src-4.8.4-qgtkstyle_disable_gtk_theme_check.patch
+	fedora/0013-Fix-moc-from-choking-on-boost-headers.patch
+	fedora/0054-Fix-binary-incompatibility-between-openssl-versions.patch
+	fedora/0080-SSL-certificates-blacklist-mis-issued-Turktrust-cert.patch
+	fedora/0090-QtNetwork-blacklist-two-more-certificates.patch
+	fedora/qt-4.8-CVE-2013-0254.patch
 	4.8.1-dlopen.patch
 	4.8.1-mkspecs.patch
 	4.8.1-not-windows.patch
