@@ -1,6 +1,6 @@
 NAME="qt4"
 VERSION=4.8.4
-RELEASE=2
+RELEASE=3
 CATEGORY="X11"
 SUMMARY="Qt C++ application framework"
 DESCRIPTION="Qt is a cross-platform application framework for desktop and
@@ -28,12 +28,20 @@ PATCH_URI="
 	fedora/qt-everywhere-opensource-src-4.8.2--assistant-crash.patch
 	fedora/qt-everywhere-opensource-src-4.8.3-QTBUG-4862.patch
 	fedora/qt-everywhere-opensource-src-4.8.1-qtgahandle.patch
-	fedora/qt-4.8.0-CVE-2011-3922-bz#772125.patch
+	fedora/qt-everywhere-opensource-src-4.8.4-QTBUG-29082.patch
 	fedora/qt-everywhere-opensource-src-4.8.4-qgtkstyle_disable_gtk_theme_check.patch
-	fedora/0013-Fix-moc-from-choking-on-boost-headers.patch
+	fedora/qt-everywhere-opensource-src-4.8.4-QTBUG-22829.patch
 	fedora/0054-Fix-binary-incompatibility-between-openssl-versions.patch
+	fedora/0057-Update-defaultNumberingSystem-value-for-some-indic-a.patch
+	fedora/0067-Allow-qmljsdebugger-argument-and-value-to-be-separat.patch
 	fedora/0080-SSL-certificates-blacklist-mis-issued-Turktrust-cert.patch
 	fedora/0090-QtNetwork-blacklist-two-more-certificates.patch
+	fedora/0110-QUrl-fromUserInput-fix-for-urls-without-a-host.patch
+	fedora/0112-Limit-the-range-of-the-QUrlPrivate-port-to-1-to-6553.patch
+	fedora/0124-QtDBus-Garbage-collect-deleted-objects-now-and-then.patch
+	fedora/0125-QTBUG-15319-fix-shortcuts-with-secondary-Xkb-layout.patch
+	fedora/0214-Fix-multiselection-by-CTRL-click-in-QFileDialog-KDE.patch
+	fedora/qt-4.8.0-CVE-2011-3922-bz#772125.patch
 	fedora/qt-4.8-CVE-2013-0254.patch
 	4.8.1-dlopen.patch
 	4.8.1-mkspecs.patch
@@ -44,6 +52,9 @@ PATCH_URI="
 	4.7.1-multimedia.patch
 	4.6.2-gtkstyle.patch
 "
+
+# files created by patches
+DISTCLEANFILES="tests/auto/qsslcertificate/more-certificates/blacklisted-turktrust*"
 
 QPLATFORM="cygwin-g++"
 QPREFIX="/usr"
