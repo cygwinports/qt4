@@ -5,7 +5,7 @@
  namespace JSC {
  
 -#if OS(DARWIN) || OS(WINDOWS)
-+#if OS(CYGWIN) || OS(DARWIN) || OS(WINDOWS)
++#if OS(DARWIN) || ((OS(CYGWIN) || OS(WINDOWS)) && CPU(X86))
  #define SYMBOL_STRING(name) "_" #name
  #else
  #define SYMBOL_STRING(name) #name
@@ -66,7 +66,7 @@
  namespace JSC {
  
 -#if OS(DARWIN) || (OS(WINDOWS) && CPU(X86))
-+#if OS(DARWIN) || OS(CYGWIN) || (OS(WINDOWS) && CPU(X86))
++#if OS(DARWIN) || ((OS(CYGWIN) || OS(WINDOWS)) && CPU(X86))
  #define SYMBOL_STRING(name) "_" #name
  #else
  #define SYMBOL_STRING(name) #name
