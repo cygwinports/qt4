@@ -141,6 +141,24 @@
  #define HAVE_TM_GMTOFF 1
  #define HAVE_TM_ZONE 1
  #define HAVE_TIMEGM 1
+@@ -1015,7 +1021,7 @@
+ #endif
+ 
+ /* JIT is not implemented for Windows 64-bit */
+-#if !defined(ENABLE_JIT) && OS(WINDOWS) && CPU(X86_64)
++#if !defined(ENABLE_JIT) && (OS(WINDOWS) || OS(CYGWIN)) && CPU(X86_64)
+ #define ENABLE_JIT 0
+ #endif
+ 
+@@ -1120,7 +1126,7 @@
+ /* Pick which allocator to use; we only need an executable allocator if the assembler is compiled in.
+    On x86-64 we use a single fixed mmap, on other platforms we mmap on demand. */
+ #if ENABLE(ASSEMBLER)
+-#if CPU(X86_64)
++#if CPU(X86_64) && !(OS(WINDOWS) || OS(CYGWIN))
+ #define ENABLE_EXECUTABLE_ALLOCATOR_FIXED 1
+ #else
+ #define ENABLE_EXECUTABLE_ALLOCATOR_DEMAND 1
 --- origsrc/qt-everywhere-opensource-src-4.8.1/src/3rdparty/webkit/Source/JavaScriptCore/wtf/wtf.pri	2012-03-14 09:01:26.000000000 -0500
 +++ src/qt-everywhere-opensource-src-4.8.1/src/3rdparty/webkit/Source/JavaScriptCore/wtf/wtf.pri	2012-04-24 11:52:08.104745700 -0500
 @@ -41,7 +41,7 @@ SOURCES += \
