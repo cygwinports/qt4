@@ -1,7 +1,7 @@
 NAME="qt4"
-VERSION=4.8.4
-RELEASE=3
-CATEGORY="X11"
+VERSION=4.8.5
+RELEASE=1
+CATEGORY="Libs"
 SUMMARY="Qt C++ application framework"
 DESCRIPTION="Qt is a cross-platform application framework for desktop and
 embedded development. Qt enables programmers to create advanced GUI
@@ -10,39 +10,29 @@ rewriting the source code. Companies using Qt can leverage software
 investments made on one platform across many others."
 HOMEPAGE="http://qt-project.org/"
 ORIG_PN="qt-everywhere-opensource-src"
-SRC_URI="http://releases.qt-project.org/qt4/source/${ORIG_PN}-${PV}.tar.gz"
+SRC_URI="http://download.qt-project.org/official_releases/qt/${VERSION%.*}/${VERSION}/${ORIG_PN}-${VERSION}.tar.gz"
 
 PATCH_URI="
+	fedora/qt-everywhere-opensource-src-4.8.5-webcore_debuginfo.patch
 	fedora/qt-x11-opensource-src-4.5.1-enable_ft_lcdfilter.patch
 	fedora/qt-everywhere-opensource-src-4.6.3-glib_eventloop_nullcheck.patch
 	fedora/qt-everywhere-opensource-src-4.8.3-qdbusconnection_no_debug.patch
 	fedora/qt-everywhere-opensource-src-4.8.1-qt3support_debuginfo.patch
+	fedora/qt-everywhere-opensource-src-4.8.5-qt_plugin_path.patch
+	fedora/qt-everywhere-opensource-src-4.8.4-qmake_pkgconfig_requires_private.patch
 	fedora/qt-x11-opensource-src-4.5.0-fix-qatomic-inline-asm.patch
-	fedora/qt-everywhere-opensource-src-4.7.1-QTBUG-14467.patch
+	fedora/qt-everywhere-opensource-src-4.8.5-QTBUG-14467.patch
 	fedora/qt-everywhere-opensource-src-4.8.0-tp-qtreeview-kpackagekit-crash.patch
 	fedora/qt-everywhere-opensource-src-4.8.3-no_Werror.patch
 	fedora/qt-everywhere-opensource-src-4.8.0-QTBUG-22037.patch
-	fedora/qt-everywhere-opensource-src-4.8.0-QTBUG-21900.patch
-	fedora/qt-everywhere-opensource-src-4.7.4-tds_no_strict_aliasing.patch
+	fedora/qt-everywhere-opensource-src-4.8.5-QTBUG-21900.patch
+	fedora/qt-everywhere-opensource-src-4.8.5-tds_no_strict_aliasing.patch
 	fedora/qt-everywhere-opensource-src-4.8.3-icu_no_debug.patch
 	fedora/qt-everywhere-opensource-src-4.8.2--assistant-crash.patch
-	fedora/qt-everywhere-opensource-src-4.8.3-QTBUG-4862.patch
 	fedora/qt-everywhere-opensource-src-4.8.1-qtgahandle.patch
-	fedora/qt-everywhere-opensource-src-4.8.4-QTBUG-29082.patch
-	fedora/qt-everywhere-opensource-src-4.8.4-qgtkstyle_disable_gtk_theme_check.patch
-	fedora/qt-everywhere-opensource-src-4.8.4-QTBUG-22829.patch
-	fedora/0054-Fix-binary-incompatibility-between-openssl-versions.patch
-	fedora/0057-Update-defaultNumberingSystem-value-for-some-indic-a.patch
-	fedora/0067-Allow-qmljsdebugger-argument-and-value-to-be-separat.patch
-	fedora/0080-SSL-certificates-blacklist-mis-issued-Turktrust-cert.patch
-	fedora/0090-QtNetwork-blacklist-two-more-certificates.patch
-	fedora/0110-QUrl-fromUserInput-fix-for-urls-without-a-host.patch
-	fedora/0112-Limit-the-range-of-the-QUrlPrivate-port-to-1-to-6553.patch
-	fedora/0124-QtDBus-Garbage-collect-deleted-objects-now-and-then.patch
-	fedora/0125-QTBUG-15319-fix-shortcuts-with-secondary-Xkb-layout.patch
-	fedora/0214-Fix-multiselection-by-CTRL-click-in-QFileDialog-KDE.patch
-	fedora/qt-4.8.0-CVE-2011-3922-bz#772125.patch
-	fedora/qt-4.8-CVE-2013-0254.patch
+	fedora/qt-everywhere-opensource-src-4.8.5-QTBUG-30076.patch
+	fedora/qt-everywhere-opensource-src-4.8.5-qgtkstyle_disable_gtk_theme_check.patch
+	fedora/qt-everywhere-opensource-src-4.8.5-QTBUG-22829.patch
 	4.8.1-dlopen.patch
 	4.8.1-mkspecs.patch
 	4.8.1-not-windows.patch
@@ -51,52 +41,40 @@ PATCH_URI="
 	4.5.3-makedepend.patch
 	4.7.1-multimedia.patch
 	4.6.2-gtkstyle.patch
+	4.8.5-libiconv.patch
 "
 
 # files created by patches
 DISTCLEANFILES="tests/auto/qsslcertificate/more-certificates/blacklisted-turktrust*"
 
-QPLATFORM="cygwin-g++"
-QPREFIX="/usr"
-QBINDIR="/usr/lib/qt${PV_MAJ}/bin"
-QINCLUDEDIR="/usr/include/qt${PV_MAJ}"
-QLIBDIR="/usr/lib/qt${PV_MAJ}/lib"
-QIMPORTDIR="/usr/lib/qt${PV_MAJ}/imports"
-QPLUGINDIR="/usr/lib/qt${PV_MAJ}/plugins"
-QDATADIR="/usr/share/qt${PV_MAJ}"
-QDOCDIR="${QDATADIR}/doc"
-QTRANSLATIONSDIR="${QDATADIR}/translations"
-QEXAMPLESDIR="/usr/lib/qt${PV_MAJ}/examples"
-QDEMOSDIR="/usr/lib/qt${PV_MAJ}/demos"
-QSYSCONFDIR="/etc/qt${PV_MAJ}"
-
-export PATH="${B}/bin:${B}/lib:$PATH"
-
-# let these be determined by mkspecs
-unset CC CXX CFLAGS CXXFLAGS
+CFLAGS+=" -DFD_SETSIZE=1024"
+CXXFLAGS+=" -DFD_SETSIZE=1024"
 
 src_compile() {
 	cd ${B}
 
+	export PATH="${B}/bin:${B}/lib:$PATH"
+
 	# -exceptions: required for QtXmlPatterns
 	# -no-largefile: Cygwin's open() and friends are 64-bit w/o O_LARGEFILE
+	STRIP=: \
 	${S}/configure \
-		-prefix ${QPREFIX} \
-		-bindir ${QBINDIR} \
-		-headerdir ${QINCLUDEDIR} \
-		-libdir ${QLIBDIR} \
-		-plugindir ${QPLUGINDIR} \
-		-importdir ${QIMPORTDIR} \
-		-datadir ${QDATADIR} \
-		-docdir ${QDOCDIR} \
-		-sysconfdir ${QSYSCONFDIR} \
-		-translationdir ${QTRANSLATIONSDIR} \
-		-examplesdir ${QEXAMPLESDIR} \
-		-demosdir ${QDEMOSDIR} \
+		-prefix /usr/ \
+		-bindir /usr/lib/qt4/bin \
+		-headerdir /usr/include/qt4 \
+		-libdir /usr/lib \
+		-plugindir /usr/lib/qt4/plugins \
+		-importdir /usr/lib/qt4/imports \
+		-datadir /usr/share/qt4 \
+		-docdir /usr/share/qt4/doc \
+		-sysconfdir /etc/qt4 \
+		-translationdir /usr/share/qt4/translations \
+		-examplesdir /usr/lib/qt4/examples \
+		-demosdir /usr/lib/qt4/demos \
 		-confirm-license \
 		-opensource \
-		-platform ${QPLATFORM} \
-		-xplatform ${QPLATFORM} \
+		-platform cygwin-g++ \
+		-xplatform cygwin-g++ \
 		-release -no-debug -shared -fast \
 		-no-largefile \
 		-exceptions \
@@ -117,83 +95,69 @@ src_compile() {
 		-continue -verbose \
 		-optimized-qmake \
 		-no-nis -no-cups \
-		-iconv -liconv \
+		-iconv \
 		-system-nas-sound \
-		-opengl -no-mitshm -sm -xshape -xinerama -xinput -xcursor -xfixes -xrandr -xrender -fontconfig -xkb \
+		-opengl -no-openvg -no-mitshm -sm -xshape -xinerama -xinput -xcursor -xfixes -xrandr -xrender -fontconfig -xkb \
 		-no-separate-debug-info \
 		-little-endian \
 		-no-reduce-exports \
 		-pch \
+		-nomake demos -nomake examples \
 		|| error "configure failed"
 
 	cygmake
 }
 
 src_install() {
-	local x
+	local x xname
 
 	cd ${B}
 
 	cygmake INSTALL_ROOT=${D} install
 
-	inform "Fixing installation directories"
 	dodir /usr/bin
-	mv ${D}${QLIBDIR}/*.dll ${D}/usr/bin
+	mv ${D}/usr/lib/*.dll ${D}/usr/bin
 
 	# fix pkg-config metadata
 	sed -e "s| -L[\./][^ ]*||g" \
 		-e "/_location=/ s|=.*/bin/|=${QBINDIR}/|g" \
-		-i ${D}${QLIBDIR}/pkgconfig/*.pc
+		-i ${D}/usr/lib/pkgconfig/*.pc
 
 	sed -e "s| -lwebcore -ljscore | |" \
-	    -i ${D}${QLIBDIR}/pkgconfig/QtWebKit.pc ${D}${QLIBDIR}/libQtWebKit.la
+	    -i ${D}/usr/lib/pkgconfig/QtWebKit.pc
 
 	rm -fr ${D}/usr/tests/
 
-	mv ${D}${QLIBDIR}/pkgconfig/ ${D}/usr/lib/
+	# remove libtool libs
+	rm -f ${D}/usr/lib/*.la
 
-	# fix libtool libs
-	sed -e '/^dlname/ s|cyg|../../../bin/cyg|' \
-		-e "s|${B}/lib|${QLIBDIR}|g" \
-		-e "s|old_library=.*|old_library=''|" \
-		-i ${D}${QLIBDIR}/*.la
-
-	# these are provided by both 3.x and 4.x
-	for x in assistant designer linguist lrelease lupdate \
-	         moc qmake qtconfig qtdemo uic
+	# these are provided by both 4.x and either (or both) of 3.x/5.x
+	for x in ${D}/usr/lib/qt4/bin/*.exe
 	do
-		dosym ../lib/qt${PV_MAJ}/bin/${x}.exe /usr/bin/${x}-${PN}
+		xname=$(basename $x .exe)
+		dosym ../lib/qt4/bin/${xname}.exe /usr/bin/${xname}-qt4
 	done
 
-	# These are new in 4.x
-	for x in lconvert pixeltool qcollectiongenerator qdbus \
-	         qdbus{cpp2xml,viewer,xml2cpp} qdoc3 qhelp{converter,generator} \
-	         qmlplugindump qmlviewer qt3to4 qttracereplay rcc uic3 \
-	         xmlpatterns xmlpatternsvalidator
-	do
-		dosym ../lib/qt${PV_MAJ}/bin/${x}.exe /usr/bin/${x}
-	done
+	dosym ../../include/qt4 /usr/lib/qt4/include
 
-	dosym ../../include/qt${PV_MAJ} /usr/lib/qt${PV_MAJ}/include
+	newicon ${S}/tools/assistant/tools/assistant/images/assistant.png assistant-qt4.png
+	newicon ${S}/tools/designer/src/designer/images/designer.png designer-qt4.png
+	newicon ${S}/tools/linguist/linguist/images/appicon.png linguist-qt4.png
+	newicon ${S}/tools/qdbus/qdbusviewer/images/qdbusviewer.png qdbusviewer-qt4.png
+	newicon ${S}/tools/qtconfig/images/appicon.png qtconfig-qt4.png
 
-	newicon ${S}/tools/assistant/tools/assistant/images/assistant.png assistant-${PN}.png
-	newicon ${S}/tools/designer/src/designer/images/designer.png designer-${PN}.png
-	newicon ${S}/tools/linguist/linguist/images/appicon.png linguist-${PN}.png
-	newicon ${S}/tools/qtconfig/images/appicon.png qtconfig-${PN}.png
-	newicon ${S}/tools/qtconfig/images/appicon.png qtdemo-${PN}.png
+	make_desktop_entry assistant-qt4 "Qt4 Assistant" \
+		assistant-qt4.png "Development;Documentation;Qt"
+	make_desktop_entry designer-qt4 "Qt4 Designer" \
+		designer-qt4.png "Development;GUIDesigner;Qt"
+	make_desktop_entry linguist-qt4 "Qt4 Linguist" \
+		linguist-qt4.png "Development;Translation;Qt"
+	make_desktop_entry qdbusviewer-qt4 "Qt4 D-Bus Viewer" \
+		qdbusviewer-qt4.png "Development;Debugger;Qt"
+	make_desktop_entry qtconfig-qt4 "Qt4 Configuration" \
+		qtconfig-qt4.png "Settings;DesktopSettings;Qt"
 
-	make_desktop_entry assistant-${PN} "Qt${PV_MAJ} Assistant" \
-		assistant-${PN}.png "Development;Documentation;Qt"
-	make_desktop_entry designer-${PN} "Qt${PV_MAJ} Designer" \
-		designer-${PN}.png "Development;GUIDesigner;Qt"
-	make_desktop_entry linguist-${PN} "Qt${PV_MAJ} Linguist" \
-		linguist-${PN}.png "Development;Translation;Qt"
-	make_desktop_entry qtconfig-${PN} "Qt${PV_MAJ} Configuration" \
-		qtconfig-${PN}.png "Settings;DesktopSettings;Qt"
-	make_desktop_entry qtdemo-${PN} "Qt${PV_MAJ} Demos" \
-		qtdemo-${PN}.png "Development;Qt"
-
-	dodoc ${S}/changes-${PV} ${S}/GPL_* ${S}/LICENSE.* ${S}/OPENSOURCE-NOTICE.TXT
+	dodoc ${S}/changes-${VERSION} ${S}/GPL_* ${S}/LICENSE.* ${S}/OPENSOURCE-NOTICE.TXT
 }
 
 PKG_NAMES="libQt3Support4 libQt3Support4-devel libQtCore4 libQtCore4-devel
@@ -201,741 +165,719 @@ PKG_NAMES="libQt3Support4 libQt3Support4-devel libQtCore4 libQtCore4-devel
            libQtDesigner4 libQtDesigner4-devel libQtGui4 libQtGui4-devel
            libQtHelp4 libQtHelp4-devel libQtMultimedia4 libQtMultimedia4-devel
            libQtNetwork4 libQtNetwork4-devel libQtOpenGL4 libQtOpenGL4-devel
-           libQtOpenVG4 libQtOpenVG4-devel libQtScript4 libQtScript4-devel
+           libQtScript4 libQtScript4-devel
            libQtScriptTools4 libQtScriptTools4-devel libQtSql4 libQtSql4-devel
            libQtSvg4 libQtSvg4-devel libQtTest4 libQtTest4-devel
            libQtWebKit4 libQtWebKit4-devel libQtXml4 libQtXml4-devel
            libQtXmlPatterns4 libQtXmlPatterns4-devel
-           qt4-devel-tools qt4-doc qt4-qtconfig qt4-qtdemo"
+           qt4-devel-tools qt4-doc qt4-qtconfig"
 libQt3Support4_SUMMARY="Qt4 Qt3Support library (runtime)"
 libQt3Support4_CONTENTS="
 	usr/bin/cygQt3Support-4.dll
-	${QPLUGINDIR#/}/accessible/cygqtaccessiblecompatwidgets.dll
+	usr/lib/qt4/plugins/accessible/cygqtaccessiblecompatwidgets.dll
 "
 libQt3Support4_devel_SUMMARY="Qt4 Qt3Support library (development)"
 libQt3Support4_devel_CONTENTS="
-	usr/bin/uic3
-	${QINCLUDEDIR#/}/Qt/Qt3Support
-	${QINCLUDEDIR#/}/Qt/q3*.h
-	${QINCLUDEDIR#/}/Qt/qiconset.h
-	${QINCLUDEDIR#/}/Qt3Support/
+	usr/bin/uic3-qt4
+	usr/include/qt4/Qt/Qt3Support
+	usr/include/qt4/Qt/q3*.h
+	usr/include/qt4/Qt/qiconset.h
+	usr/include/qt4/Qt3Support/
+	usr/lib/libQt3Support.*
 	usr/lib/pkgconfig/Qt3Support.pc
-	${QBINDIR#/}/uic3.exe
-	${QLIBDIR#/}/libQt3Support.*
-	${QPLUGINDIR#/}/designer/cygqt3supportwidgets.dll
+	usr/lib/qt4/bin/uic3.exe
+	usr/lib/qt4/plugins/designer/cygqt3supportwidgets.dll
 "
 libQtCore4_SUMMARY="Qt4 Core library (runtime)"
 libQtCore4_CONTENTS="
 	usr/bin/cygQtCore-4.dll
-	${QPLUGINDIR#/}/codecs/
+	usr/lib/qt4/plugins/codecs/
 	usr/share/doc/
-	${QTRANSLATIONSDIR#/}/qt_*
+	usr/share/qt4/translations/qt_*
 "
 libQtCore4_devel_SUMMARY="Qt4 Core library (development)"
 libQtCore4_devel_CONTENTS="
-	usr/bin/lconvert
+	usr/bin/lconvert-qt4
 	usr/bin/lrelease-qt4
 	usr/bin/lupdate-qt4
 	usr/bin/moc-qt4
-	usr/bin/rcc
+	usr/bin/rcc-qt4
 	usr/bin/qmake-qt4
-	usr/bin/qt3to4
+	usr/bin/qt3to4-qt4
 	usr/bin/uic-qt4
-	${QINCLUDEDIR#/}/Qt/QtCore
-	${QINCLUDEDIR#/}/Qt/qabstractanimation.h
-	${QINCLUDEDIR#/}/Qt/qabstracteventdispatcher.h
-	${QINCLUDEDIR#/}/Qt/qabstractfileengine.h
-	${QINCLUDEDIR#/}/Qt/qabstractitemmodel.h
-	${QINCLUDEDIR#/}/Qt/qabstractstate.h
-	${QINCLUDEDIR#/}/Qt/qabstracttransition.h
-	${QINCLUDEDIR#/}/Qt/qalgorithms.h
-	${QINCLUDEDIR#/}/Qt/qanimationgroup.h
-	${QINCLUDEDIR#/}/Qt/qatomic.h
-	${QINCLUDEDIR#/}/Qt/qatomic_*.h
-	${QINCLUDEDIR#/}/Qt/qbasicatomic.h
-	${QINCLUDEDIR#/}/Qt/qbasictimer.h
-	${QINCLUDEDIR#/}/Qt/qbitarray.h
-	${QINCLUDEDIR#/}/Qt/qbuffer.h
-	${QINCLUDEDIR#/}/Qt/qbytearray.h
-	${QINCLUDEDIR#/}/Qt/qbytearraymatcher.h
-	${QINCLUDEDIR#/}/Qt/qcache.h
-	${QINCLUDEDIR#/}/Qt/qchar.h
-	${QINCLUDEDIR#/}/Qt/qconfig*.h
-	${QINCLUDEDIR#/}/Qt/qcontainerfwd.h
-	${QINCLUDEDIR#/}/Qt/qcontiguouscache.h
-	${QINCLUDEDIR#/}/Qt/qcoreapplication.h
-	${QINCLUDEDIR#/}/Qt/qcoreevent.h
-	${QINCLUDEDIR#/}/Qt/qcryptographichash.h
-	${QINCLUDEDIR#/}/Qt/qdatastream.h
-	${QINCLUDEDIR#/}/Qt/qdatetime.h
-	${QINCLUDEDIR#/}/Qt/qdebug.h
-	${QINCLUDEDIR#/}/Qt/qdir.h
-	${QINCLUDEDIR#/}/Qt/qdiriterator.h
-	${QINCLUDEDIR#/}/Qt/qeasingcurve.h
-	${QINCLUDEDIR#/}/Qt/qelapsedtimer.h
-	${QINCLUDEDIR#/}/Qt/qendian.h
-	${QINCLUDEDIR#/}/Qt/qeventloop.h
-	${QINCLUDEDIR#/}/Qt/qeventtransition.h
-	${QINCLUDEDIR#/}/Qt/qfactoryinterface.h
-	${QINCLUDEDIR#/}/Qt/qfeatures.h
-	${QINCLUDEDIR#/}/Qt/qfile.h
-	${QINCLUDEDIR#/}/Qt/qfileinfo.h
-	${QINCLUDEDIR#/}/Qt/qfilesystemwatcher.h
-	${QINCLUDEDIR#/}/Qt/qfinalstate.h
-	${QINCLUDEDIR#/}/Qt/qfsfileengine.h
-	${QINCLUDEDIR#/}/Qt/qfunctions*.h
-	${QINCLUDEDIR#/}/Qt/qfuture.h
-	${QINCLUDEDIR#/}/Qt/qfutureinterface.h
-	${QINCLUDEDIR#/}/Qt/qfuturesynchronizer.h
-	${QINCLUDEDIR#/}/Qt/qfuturewatcher.h
-	${QINCLUDEDIR#/}/Qt/qglobal.h
-	${QINCLUDEDIR#/}/Qt/qhash.h
-	${QINCLUDEDIR#/}/Qt/qhistorystate.h
-	${QINCLUDEDIR#/}/Qt/qiodevice.h
-	${QINCLUDEDIR#/}/Qt/qiterator.h
-	${QINCLUDEDIR#/}/Qt/qlibrary.h
-	${QINCLUDEDIR#/}/Qt/qlibraryinfo.h
-	${QINCLUDEDIR#/}/Qt/qline.h
-	${QINCLUDEDIR#/}/Qt/qlinkedlist.h
-	${QINCLUDEDIR#/}/Qt/qlist.h
-	${QINCLUDEDIR#/}/Qt/qlocale.h
-	${QINCLUDEDIR#/}/Qt/qmap.h
-	${QINCLUDEDIR#/}/Qt/qmargins.h
-	${QINCLUDEDIR#/}/Qt/qmath.h
-	${QINCLUDEDIR#/}/Qt/qmetaobject.h
-	${QINCLUDEDIR#/}/Qt/qmetatype.h
-	${QINCLUDEDIR#/}/Qt/qmimedata.h
-	${QINCLUDEDIR#/}/Qt/qmutex.h
-	${QINCLUDEDIR#/}/Qt/qnamespace.h
-	${QINCLUDEDIR#/}/Qt/qnumeric.h
-	${QINCLUDEDIR#/}/Qt/qobject.h
-	${QINCLUDEDIR#/}/Qt/qobjectcleanuphandler.h
-	${QINCLUDEDIR#/}/Qt/qobjectdefs.h
-	${QINCLUDEDIR#/}/Qt/qpair.h
-	${QINCLUDEDIR#/}/Qt/qparallelanimationgroup.h
-	${QINCLUDEDIR#/}/Qt/qpauseanimation.h
-	${QINCLUDEDIR#/}/Qt/qplugin.h
-	${QINCLUDEDIR#/}/Qt/qpluginloader.h
-	${QINCLUDEDIR#/}/Qt/qpoint.h
-	${QINCLUDEDIR#/}/Qt/qpointer.h
-	${QINCLUDEDIR#/}/Qt/qprocess.h
-	${QINCLUDEDIR#/}/Qt/qpropertyanimation.h
-	${QINCLUDEDIR#/}/Qt/qqueue.h
-	${QINCLUDEDIR#/}/Qt/qreadwritelock.h
-	${QINCLUDEDIR#/}/Qt/qrect.h
-	${QINCLUDEDIR#/}/Qt/qregexp.h
-	${QINCLUDEDIR#/}/Qt/qresource.h
-	${QINCLUDEDIR#/}/Qt/qrunnable.h
-	${QINCLUDEDIR#/}/Qt/qscopedpointer.h
-	${QINCLUDEDIR#/}/Qt/qscopedvaluerollback.h
-	${QINCLUDEDIR#/}/Qt/qsemaphore.h
-	${QINCLUDEDIR#/}/Qt/qsequentialanimationgroup.h
-	${QINCLUDEDIR#/}/Qt/qset.h
-	${QINCLUDEDIR#/}/Qt/qsettings.h
-	${QINCLUDEDIR#/}/Qt/qshareddata.h
-	${QINCLUDEDIR#/}/Qt/qsharedmemory.h
-	${QINCLUDEDIR#/}/Qt/qsharedpointer.h
-	${QINCLUDEDIR#/}/Qt/qsharedpointer_impl.h
-	${QINCLUDEDIR#/}/Qt/qsignalmapper.h
-	${QINCLUDEDIR#/}/Qt/qsignaltransition.h
-	${QINCLUDEDIR#/}/Qt/qsize.h
-	${QINCLUDEDIR#/}/Qt/qsocketnotifier.h
-	${QINCLUDEDIR#/}/Qt/qstate.h
-	${QINCLUDEDIR#/}/Qt/qstatemachine.h
-	${QINCLUDEDIR#/}/Qt/qstack.h
-	${QINCLUDEDIR#/}/Qt/qstring.h
-	${QINCLUDEDIR#/}/Qt/qstringbuilder.h
-	${QINCLUDEDIR#/}/Qt/qstringlist.h
-	${QINCLUDEDIR#/}/Qt/qstringmatcher.h
-	${QINCLUDEDIR#/}/Qt/qsystemsemaphore.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentcompilertest.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentexception.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentfilter.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentfilterkernel.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentfunctionwrappers.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentiteratekernel.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentmap.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentmapkernel.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentmedian.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentreducekernel.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentresultstore.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentrun.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentrunbase.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentstoredfunctioncall.h
-	${QINCLUDEDIR#/}/Qt/qtconcurrentthreadengine.h
-	${QINCLUDEDIR#/}/Qt/qtemporaryfile.h
-	${QINCLUDEDIR#/}/Qt/qtextboundaryfinder.h
-	${QINCLUDEDIR#/}/Qt/qtextcodec.h
-	${QINCLUDEDIR#/}/Qt/qtextcodecplugin.h
-	${QINCLUDEDIR#/}/Qt/qtextstream.h
-	${QINCLUDEDIR#/}/Qt/qthread.h
-	${QINCLUDEDIR#/}/Qt/qthreadpool.h
-	${QINCLUDEDIR#/}/Qt/qthreadstorage.h
-	${QINCLUDEDIR#/}/Qt/qtimeline.h
-	${QINCLUDEDIR#/}/Qt/qtimer.h
-	${QINCLUDEDIR#/}/Qt/qtranslator.h
-	${QINCLUDEDIR#/}/Qt/qurl.h
-	${QINCLUDEDIR#/}/Qt/quuid.h
-	${QINCLUDEDIR#/}/Qt/qvariant.h
-	${QINCLUDEDIR#/}/Qt/qvariantanimation.h
-	${QINCLUDEDIR#/}/Qt/qvarlengtharray.h
-	${QINCLUDEDIR#/}/Qt/qvector.h
-	${QINCLUDEDIR#/}/Qt/qwaitcondition.h
-	${QINCLUDEDIR#/}/QtCore/
+	usr/include/qt4/Qt/QtCore
+	usr/include/qt4/Qt/qabstractanimation.h
+	usr/include/qt4/Qt/qabstracteventdispatcher.h
+	usr/include/qt4/Qt/qabstractfileengine.h
+	usr/include/qt4/Qt/qabstractitemmodel.h
+	usr/include/qt4/Qt/qabstractstate.h
+	usr/include/qt4/Qt/qabstracttransition.h
+	usr/include/qt4/Qt/qalgorithms.h
+	usr/include/qt4/Qt/qanimationgroup.h
+	usr/include/qt4/Qt/qatomic.h
+	usr/include/qt4/Qt/qatomic_*.h
+	usr/include/qt4/Qt/qbasicatomic.h
+	usr/include/qt4/Qt/qbasictimer.h
+	usr/include/qt4/Qt/qbitarray.h
+	usr/include/qt4/Qt/qbuffer.h
+	usr/include/qt4/Qt/qbytearray.h
+	usr/include/qt4/Qt/qbytearraymatcher.h
+	usr/include/qt4/Qt/qcache.h
+	usr/include/qt4/Qt/qchar.h
+	usr/include/qt4/Qt/qconfig*.h
+	usr/include/qt4/Qt/qcontainerfwd.h
+	usr/include/qt4/Qt/qcontiguouscache.h
+	usr/include/qt4/Qt/qcoreapplication.h
+	usr/include/qt4/Qt/qcoreevent.h
+	usr/include/qt4/Qt/qcryptographichash.h
+	usr/include/qt4/Qt/qdatastream.h
+	usr/include/qt4/Qt/qdatetime.h
+	usr/include/qt4/Qt/qdebug.h
+	usr/include/qt4/Qt/qdir.h
+	usr/include/qt4/Qt/qdiriterator.h
+	usr/include/qt4/Qt/qeasingcurve.h
+	usr/include/qt4/Qt/qelapsedtimer.h
+	usr/include/qt4/Qt/qendian.h
+	usr/include/qt4/Qt/qeventloop.h
+	usr/include/qt4/Qt/qeventtransition.h
+	usr/include/qt4/Qt/qfactoryinterface.h
+	usr/include/qt4/Qt/qfeatures.h
+	usr/include/qt4/Qt/qfile.h
+	usr/include/qt4/Qt/qfileinfo.h
+	usr/include/qt4/Qt/qfilesystemwatcher.h
+	usr/include/qt4/Qt/qfinalstate.h
+	usr/include/qt4/Qt/qfsfileengine.h
+	usr/include/qt4/Qt/qfunctions*.h
+	usr/include/qt4/Qt/qfuture.h
+	usr/include/qt4/Qt/qfutureinterface.h
+	usr/include/qt4/Qt/qfuturesynchronizer.h
+	usr/include/qt4/Qt/qfuturewatcher.h
+	usr/include/qt4/Qt/qglobal.h
+	usr/include/qt4/Qt/qhash.h
+	usr/include/qt4/Qt/qhistorystate.h
+	usr/include/qt4/Qt/qiodevice.h
+	usr/include/qt4/Qt/qiterator.h
+	usr/include/qt4/Qt/qlibrary.h
+	usr/include/qt4/Qt/qlibraryinfo.h
+	usr/include/qt4/Qt/qline.h
+	usr/include/qt4/Qt/qlinkedlist.h
+	usr/include/qt4/Qt/qlist.h
+	usr/include/qt4/Qt/qlocale.h
+	usr/include/qt4/Qt/qmap.h
+	usr/include/qt4/Qt/qmargins.h
+	usr/include/qt4/Qt/qmath.h
+	usr/include/qt4/Qt/qmetaobject.h
+	usr/include/qt4/Qt/qmetatype.h
+	usr/include/qt4/Qt/qmimedata.h
+	usr/include/qt4/Qt/qmutex.h
+	usr/include/qt4/Qt/qnamespace.h
+	usr/include/qt4/Qt/qnumeric.h
+	usr/include/qt4/Qt/qobject.h
+	usr/include/qt4/Qt/qobjectcleanuphandler.h
+	usr/include/qt4/Qt/qobjectdefs.h
+	usr/include/qt4/Qt/qpair.h
+	usr/include/qt4/Qt/qparallelanimationgroup.h
+	usr/include/qt4/Qt/qpauseanimation.h
+	usr/include/qt4/Qt/qplugin.h
+	usr/include/qt4/Qt/qpluginloader.h
+	usr/include/qt4/Qt/qpoint.h
+	usr/include/qt4/Qt/qpointer.h
+	usr/include/qt4/Qt/qprocess.h
+	usr/include/qt4/Qt/qpropertyanimation.h
+	usr/include/qt4/Qt/qqueue.h
+	usr/include/qt4/Qt/qreadwritelock.h
+	usr/include/qt4/Qt/qrect.h
+	usr/include/qt4/Qt/qregexp.h
+	usr/include/qt4/Qt/qresource.h
+	usr/include/qt4/Qt/qrunnable.h
+	usr/include/qt4/Qt/qscopedpointer.h
+	usr/include/qt4/Qt/qscopedvaluerollback.h
+	usr/include/qt4/Qt/qsemaphore.h
+	usr/include/qt4/Qt/qsequentialanimationgroup.h
+	usr/include/qt4/Qt/qset.h
+	usr/include/qt4/Qt/qsettings.h
+	usr/include/qt4/Qt/qshareddata.h
+	usr/include/qt4/Qt/qsharedmemory.h
+	usr/include/qt4/Qt/qsharedpointer.h
+	usr/include/qt4/Qt/qsharedpointer_impl.h
+	usr/include/qt4/Qt/qsignalmapper.h
+	usr/include/qt4/Qt/qsignaltransition.h
+	usr/include/qt4/Qt/qsize.h
+	usr/include/qt4/Qt/qsocketnotifier.h
+	usr/include/qt4/Qt/qstate.h
+	usr/include/qt4/Qt/qstatemachine.h
+	usr/include/qt4/Qt/qstack.h
+	usr/include/qt4/Qt/qstring.h
+	usr/include/qt4/Qt/qstringbuilder.h
+	usr/include/qt4/Qt/qstringlist.h
+	usr/include/qt4/Qt/qstringmatcher.h
+	usr/include/qt4/Qt/qsystemsemaphore.h
+	usr/include/qt4/Qt/qtconcurrentcompilertest.h
+	usr/include/qt4/Qt/qtconcurrentexception.h
+	usr/include/qt4/Qt/qtconcurrentfilter.h
+	usr/include/qt4/Qt/qtconcurrentfilterkernel.h
+	usr/include/qt4/Qt/qtconcurrentfunctionwrappers.h
+	usr/include/qt4/Qt/qtconcurrentiteratekernel.h
+	usr/include/qt4/Qt/qtconcurrentmap.h
+	usr/include/qt4/Qt/qtconcurrentmapkernel.h
+	usr/include/qt4/Qt/qtconcurrentmedian.h
+	usr/include/qt4/Qt/qtconcurrentreducekernel.h
+	usr/include/qt4/Qt/qtconcurrentresultstore.h
+	usr/include/qt4/Qt/qtconcurrentrun.h
+	usr/include/qt4/Qt/qtconcurrentrunbase.h
+	usr/include/qt4/Qt/qtconcurrentstoredfunctioncall.h
+	usr/include/qt4/Qt/qtconcurrentthreadengine.h
+	usr/include/qt4/Qt/qtemporaryfile.h
+	usr/include/qt4/Qt/qtextboundaryfinder.h
+	usr/include/qt4/Qt/qtextcodec.h
+	usr/include/qt4/Qt/qtextcodecplugin.h
+	usr/include/qt4/Qt/qtextstream.h
+	usr/include/qt4/Qt/qthread.h
+	usr/include/qt4/Qt/qthreadpool.h
+	usr/include/qt4/Qt/qthreadstorage.h
+	usr/include/qt4/Qt/qtimeline.h
+	usr/include/qt4/Qt/qtimer.h
+	usr/include/qt4/Qt/qtranslator.h
+	usr/include/qt4/Qt/qurl.h
+	usr/include/qt4/Qt/quuid.h
+	usr/include/qt4/Qt/qvariant.h
+	usr/include/qt4/Qt/qvariantanimation.h
+	usr/include/qt4/Qt/qvarlengtharray.h
+	usr/include/qt4/Qt/qvector.h
+	usr/include/qt4/Qt/qwaitcondition.h
+	usr/include/qt4/QtCore/
+	usr/lib/libQtCore.*
 	usr/lib/pkgconfig/QtCore.pc
-	${QBINDIR#/}/lconvert.exe
-	${QBINDIR#/}/lrelease.exe
-	${QBINDIR#/}/lupdate.exe*
-	${QBINDIR#/}/moc.exe
-	${QBINDIR#/}/rcc.exe
-	${QBINDIR#/}/qmake.exe
-	${QBINDIR#/}/qt3to4.exe
-	${QBINDIR#/}/uic.exe
+	usr/lib/qt4/bin/lconvert.exe
+	usr/lib/qt4/bin/lrelease.exe
+	usr/lib/qt4/bin/lupdate.exe*
+	usr/lib/qt4/bin/moc.exe
+	usr/lib/qt4/bin/rcc.exe
+	usr/lib/qt4/bin/qmake.exe
+	usr/lib/qt4/bin/qt3to4.exe
+	usr/lib/qt4/bin/uic.exe
 	usr/lib/qt4/include
-	${QLIBDIR#/}/libQtCore.*
-	${QDATADIR#/}/mkspecs/
-	${QDATADIR#/}/q3porting.xml
+	usr/share/qt4/mkspecs/
+	usr/share/qt4/q3porting.xml
 "
 libQtDBus4_SUMMARY="Qt4 DBus library (runtime)"
 libQtDBus4_CONTENTS="
-	usr/bin/qdbus
+	usr/bin/qdbus-qt4
 	usr/bin/cygQtDBus-4.dll
-	${QBINDIR#/}/qdbus.exe
-	${QPLUGINDIR#/}/script/cygqtscriptdbus.dll
+	usr/lib/qt4/bin/qdbus.exe
+	usr/lib/qt4/plugins/script/cygqtscriptdbus.dll
 "
 libQtDBus4_devel_SUMMARY="Qt4 DBus library (development)"
 libQtDBus4_devel_CONTENTS="
-	usr/bin/qdbuscpp2xml
-	usr/bin/qdbusxml2cpp
-	${QINCLUDEDIR#/}/Qt/QtDBus
-	${QINCLUDEDIR#/}/Qt/qdbus*.h
-	${QINCLUDEDIR#/}/QtDBus/
+	usr/bin/qdbuscpp2xml-qt4
+	usr/bin/qdbusxml2cpp-qt4
+	usr/include/qt4/Qt/QtDBus
+	usr/include/qt4/Qt/qdbus*.h
+	usr/include/qt4/QtDBus/
+	usr/lib/libQtDBus.*
 	usr/lib/pkgconfig/QtDBus.pc
-	${QBINDIR#/}/qdbuscpp2xml.exe
-	${QBINDIR#/}/qdbusxml2cpp.exe
-	${QLIBDIR#/}/libQtDBus.*
+	usr/lib/qt4/bin/qdbuscpp2xml.exe
+	usr/lib/qt4/bin/qdbusxml2cpp.exe
 "
 libQtDeclarative4_SUMMARY="Qt4 QML library (runtime)"
 libQtDeclarative4_CONTENTS="
 	usr/bin/cygQtDeclarative-4.dll
 	usr/lib/qt4/imports/Qt/
-	${QPLUGINDIR#/}/qmltooling/
+	usr/lib/qt4/plugins/qmltooling/
 "
 libQtDeclarative4_devel_SUMMARY="Qt4 QML library (development)"
 libQtDeclarative4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/qdeclarative*
-	${QINCLUDEDIR#/}/Qt/QtDeclarative
-	${QINCLUDEDIR#/}/QtDeclarative/
+	usr/include/qt4/Qt/qdeclarative*
+	usr/include/qt4/Qt/QtDeclarative
+	usr/include/qt4/QtDeclarative/
+	usr/lib/libQtDeclarative.*
 	usr/lib/pkgconfig/QtDeclarative.pc
-	${QLIBDIR#/}/libQtDeclarative.*
-	${QPLUGINDIR#/}/designer/cygqdeclarativeview.dll
+	usr/lib/qt4/plugins/designer/cygqdeclarativeview.dll
 "
 libQtDesigner4_SUMMARY="Qt4 Designer library (runtime)"
 libQtDesigner4_CONTENTS="usr/bin/cygQtDesigner*-4.dll"
 libQtDesigner4_devel_SUMMARY="Qt4 Designer library (development)"
 libQtDesigner4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/QtDesigner/
-	${QINCLUDEDIR#/}/QtUiTools/
+	usr/include/qt4/QtDesigner/
+	usr/include/qt4/QtUiTools/
+	usr/lib/libQtDesigner*
+	usr/lib/libQtUiTools.*
 	usr/lib/pkgconfig/QtDesigner*.pc
 	usr/lib/pkgconfig/QtUiTools.pc
-	${QLIBDIR#/}/libQtDesigner*
-	${QLIBDIR#/}/libQtUiTools.*
 "
 libQtGui4_SUMMARY="Qt4 Gui library (runtime)"
 libQtGui4_CONTENTS="
 	usr/bin/cygQtGui-4.dll
-	${QPLUGINDIR#/}/accessible/cygqtaccessiblewidgets.dll
-	${QPLUGINDIR#/}/imageformats/cygqgif.dll
-	${QPLUGINDIR#/}/imageformats/cygqico.dll
-	${QPLUGINDIR#/}/imageformats/cygqjpeg.dll
-	${QPLUGINDIR#/}/imageformats/cygqmng.dll
-	${QPLUGINDIR#/}/imageformats/cygqtga.dll
-	${QPLUGINDIR#/}/imageformats/cygqtiff.dll
-	${QPLUGINDIR#/}/inputmethods/
+	usr/lib/qt4/plugins/accessible/cygqtaccessiblewidgets.dll
+	usr/lib/qt4/plugins/imageformats/cygqgif.dll
+	usr/lib/qt4/plugins/imageformats/cygqico.dll
+	usr/lib/qt4/plugins/imageformats/cygqjpeg.dll
+	usr/lib/qt4/plugins/imageformats/cygqmng.dll
+	usr/lib/qt4/plugins/imageformats/cygqtga.dll
+	usr/lib/qt4/plugins/imageformats/cygqtiff.dll
+	usr/lib/qt4/plugins/inputmethods/
 "
 libQtGui4_devel_SUMMARY="Qt4 Gui library (development)"
 libQtGui4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtGui
-	${QINCLUDEDIR#/}/Qt/qabstractbutton.h
-	${QINCLUDEDIR#/}/Qt/qabstractitemdelegate.h
-	${QINCLUDEDIR#/}/Qt/qabstractitemview.h
-	${QINCLUDEDIR#/}/Qt/qabstractpagesetupdialog.h
-	${QINCLUDEDIR#/}/Qt/qabstractprintdialog.h
-	${QINCLUDEDIR#/}/Qt/qabstractproxymodel.h
-	${QINCLUDEDIR#/}/Qt/qabstractscrollarea.h
-	${QINCLUDEDIR#/}/Qt/qabstractslider.h
-	${QINCLUDEDIR#/}/Qt/qabstractspinbox.h
-	${QINCLUDEDIR#/}/Qt/qabstracttextdocumentlayout.h
-	${QINCLUDEDIR#/}/Qt/qaccessible.h
-	${QINCLUDEDIR#/}/Qt/qaccessible2.h
-	${QINCLUDEDIR#/}/Qt/qaccessiblebridge.h
-	${QINCLUDEDIR#/}/Qt/qaccessibleobject.h
-	${QINCLUDEDIR#/}/Qt/qaccessibleplugin.h
-	${QINCLUDEDIR#/}/Qt/qaccessiblewidget.h
-	${QINCLUDEDIR#/}/Qt/qaction.h
-	${QINCLUDEDIR#/}/Qt/qactiongroup.h
-	${QINCLUDEDIR#/}/Qt/qapplication.h
-	${QINCLUDEDIR#/}/Qt/qbitmap.h
-	${QINCLUDEDIR#/}/Qt/qboxlayout.h
-	${QINCLUDEDIR#/}/Qt/qbrush.h
-	${QINCLUDEDIR#/}/Qt/qbuttongroup.h
-	${QINCLUDEDIR#/}/Qt/qcalendarwidget.h
-	${QINCLUDEDIR#/}/Qt/qcdestyle.h
-	${QINCLUDEDIR#/}/Qt/qcheckbox.h
-	${QINCLUDEDIR#/}/Qt/qcleanlooksstyle.h
-	${QINCLUDEDIR#/}/Qt/qclipboard.h
-	${QINCLUDEDIR#/}/Qt/qcolor.h
-	${QINCLUDEDIR#/}/Qt/qcolordialog.h
-	${QINCLUDEDIR#/}/Qt/qcolormap.h
-	${QINCLUDEDIR#/}/Qt/qcolumnview.h
-	${QINCLUDEDIR#/}/Qt/qcombobox.h
-	${QINCLUDEDIR#/}/Qt/qcommandlinkbutton.h
-	${QINCLUDEDIR#/}/Qt/qcommonstyle.h
-	${QINCLUDEDIR#/}/Qt/qcompleter.h
-	${QINCLUDEDIR#/}/Qt/qcursor.h
-	${QINCLUDEDIR#/}/Qt/qdatawidgetmapper.h
-	${QINCLUDEDIR#/}/Qt/qdatetimeedit.h
-	${QINCLUDEDIR#/}/Qt/qdesktopservices.h
-	${QINCLUDEDIR#/}/Qt/qdesktopwidget.h
-	${QINCLUDEDIR#/}/Qt/qdial.h
-	${QINCLUDEDIR#/}/Qt/qdialog.h
-	${QINCLUDEDIR#/}/Qt/qdialogbuttonbox.h
-	${QINCLUDEDIR#/}/Qt/qdirmodel.h
-	${QINCLUDEDIR#/}/Qt/qdockwidget.h
-	${QINCLUDEDIR#/}/Qt/qdrag.h
-	${QINCLUDEDIR#/}/Qt/qdrawutil.h
-	${QINCLUDEDIR#/}/Qt/qerrormessage.h
-	${QINCLUDEDIR#/}/Qt/qevent.h
-	${QINCLUDEDIR#/}/Qt/qfiledialog.h
-	${QINCLUDEDIR#/}/Qt/qfileiconprovider.h
-	${QINCLUDEDIR#/}/Qt/qfilesystemmodel.h
-	${QINCLUDEDIR#/}/Qt/qfocusframe.h
-	${QINCLUDEDIR#/}/Qt/qfont.h
-	${QINCLUDEDIR#/}/Qt/qfontcombobox.h
-	${QINCLUDEDIR#/}/Qt/qfontdatabase.h
-	${QINCLUDEDIR#/}/Qt/qfontdialog.h
-	${QINCLUDEDIR#/}/Qt/qfontinfo.h
-	${QINCLUDEDIR#/}/Qt/qfontmetrics.h
-	${QINCLUDEDIR#/}/Qt/qformlayout.h
-	${QINCLUDEDIR#/}/Qt/qframe.h
-	${QINCLUDEDIR#/}/Qt/qgenericmatrix.h
-	${QINCLUDEDIR#/}/Qt/qgenericplugin*_qpa.h
-	${QINCLUDEDIR#/}/Qt/qgesture.h
-	${QINCLUDEDIR#/}/Qt/qgesturerecognizer.h
-	${QINCLUDEDIR#/}/Qt/qglyphrun.h
-	${QINCLUDEDIR#/}/Qt/qgraphicsanchorlayout.h
-	${QINCLUDEDIR#/}/Qt/qgraphicseffect.h
-	${QINCLUDEDIR#/}/Qt/qgraphicsgridlayout.h
-	${QINCLUDEDIR#/}/Qt/qgraphicsitem.h
-	${QINCLUDEDIR#/}/Qt/qgraphicsitemanimation.h
-	${QINCLUDEDIR#/}/Qt/qgraphicslayout.h
-	${QINCLUDEDIR#/}/Qt/qgraphicslayoutitem.h
-	${QINCLUDEDIR#/}/Qt/qgraphicslinearlayout.h
-	${QINCLUDEDIR#/}/Qt/qgraphicsproxywidget.h
-	${QINCLUDEDIR#/}/Qt/qgraphicsscene.h
-	${QINCLUDEDIR#/}/Qt/qgraphicssceneevent.h
-	${QINCLUDEDIR#/}/Qt/qgraphicssystemhelper*
-	${QINCLUDEDIR#/}/Qt/qgraphicstransform.h
-	${QINCLUDEDIR#/}/Qt/qgraphicsview.h
-	${QINCLUDEDIR#/}/Qt/qgraphicswidget.h
-	${QINCLUDEDIR#/}/Qt/qgridlayout.h
-	${QINCLUDEDIR#/}/Qt/qgroupbox.h
-	${QINCLUDEDIR#/}/Qt/qgtkstyle.h
-	${QINCLUDEDIR#/}/Qt/qguifunctions*
-	${QINCLUDEDIR#/}/Qt/qheaderview.h
-	${QINCLUDEDIR#/}/Qt/qicon.h
-	${QINCLUDEDIR#/}/Qt/qiconengine.h
-	${QINCLUDEDIR#/}/Qt/qiconengineplugin.h
-	${QINCLUDEDIR#/}/Qt/qidentityproxymodel.h
-	${QINCLUDEDIR#/}/Qt/qimage.h
-	${QINCLUDEDIR#/}/Qt/qimageiohandler.h
-	${QINCLUDEDIR#/}/Qt/qimagereader.h
-	${QINCLUDEDIR#/}/Qt/qimagewriter.h
-	${QINCLUDEDIR#/}/Qt/qinputcontext.h
-	${QINCLUDEDIR#/}/Qt/qinputcontextfactory.h
-	${QINCLUDEDIR#/}/Qt/qinputcontextplugin.h
-	${QINCLUDEDIR#/}/Qt/qinputdialog.h
-	${QINCLUDEDIR#/}/Qt/qitemdelegate.h
-	${QINCLUDEDIR#/}/Qt/qitemeditorfactory.h
-	${QINCLUDEDIR#/}/Qt/qitemselectionmodel.h
-	${QINCLUDEDIR#/}/Qt/qkeyeventtransition.h
-	${QINCLUDEDIR#/}/Qt/qkeysequence.h
-	${QINCLUDEDIR#/}/Qt/qlabel.h
-	${QINCLUDEDIR#/}/Qt/qlayout.h
-	${QINCLUDEDIR#/}/Qt/qlayoutitem.h
-	${QINCLUDEDIR#/}/Qt/qlcdnumber.h
-	${QINCLUDEDIR#/}/Qt/qlineedit.h
-	${QINCLUDEDIR#/}/Qt/qlistview.h
-	${QINCLUDEDIR#/}/Qt/qlistwidget.h
-	${QINCLUDEDIR#/}/Qt/qmainwindow.h
-	${QINCLUDEDIR#/}/Qt/qmatrix.h
-	${QINCLUDEDIR#/}/Qt/qmatrix4x4.h
-	${QINCLUDEDIR#/}/Qt/qmdiarea.h
-	${QINCLUDEDIR#/}/Qt/qmdisubwindow.h
-	${QINCLUDEDIR#/}/Qt/qmenu.h
-	${QINCLUDEDIR#/}/Qt/qmenubar.h
-	${QINCLUDEDIR#/}/Qt/qmenudata.h
-	${QINCLUDEDIR#/}/Qt/qmessagebox.h
-	${QINCLUDEDIR#/}/Qt/qmime.h
-	${QINCLUDEDIR#/}/Qt/qmotifstyle.h
-	${QINCLUDEDIR#/}/Qt/qmouseeventtransition.h
-	${QINCLUDEDIR#/}/Qt/qmovie.h
-	${QINCLUDEDIR#/}/Qt/qpagesetupdialog.h
-	${QINCLUDEDIR#/}/Qt/qpaintdevice.h
-	${QINCLUDEDIR#/}/Qt/qpaintengine.h
-	${QINCLUDEDIR#/}/Qt/qpainter.h
-	${QINCLUDEDIR#/}/Qt/qpainterpath.h
-	${QINCLUDEDIR#/}/Qt/qpalette.h
-	${QINCLUDEDIR#/}/Qt/qpen.h
-	${QINCLUDEDIR#/}/Qt/qpicture.h
-	${QINCLUDEDIR#/}/Qt/qpictureformatplugin.h
-	${QINCLUDEDIR#/}/Qt/qpixmap.h
-	${QINCLUDEDIR#/}/Qt/qpixmapcache.h
-	${QINCLUDEDIR#/}/Qt/qplaintextedit.h
-	${QINCLUDEDIR#/}/Qt/qplastiquestyle.h
-	${QINCLUDEDIR#/}/Qt/qplatform*_qpa.h
-	${QINCLUDEDIR#/}/Qt/qpolygon.h
-	${QINCLUDEDIR#/}/Qt/qprintdialog.h
-	${QINCLUDEDIR#/}/Qt/qprintengine.h
-	${QINCLUDEDIR#/}/Qt/qprinter.h
-	${QINCLUDEDIR#/}/Qt/qprinterinfo.h
-	${QINCLUDEDIR#/}/Qt/qprintpreviewdialog.h
-	${QINCLUDEDIR#/}/Qt/qprintpreviewwidget.h
-	${QINCLUDEDIR#/}/Qt/qprogressbar.h
-	${QINCLUDEDIR#/}/Qt/qprogressdialog.h
-	${QINCLUDEDIR#/}/Qt/qproxymodel.h
-	${QINCLUDEDIR#/}/Qt/qproxystyle.h
-	${QINCLUDEDIR#/}/Qt/qpushbutton.h
-	${QINCLUDEDIR#/}/Qt/qquaternion.h
-	${QINCLUDEDIR#/}/Qt/qradiobutton.h
-	${QINCLUDEDIR#/}/Qt/qrawfont.h
-	${QINCLUDEDIR#/}/Qt/qregion.h
-	${QINCLUDEDIR#/}/Qt/qrgb.h
-	${QINCLUDEDIR#/}/Qt/qrubberband.h
-	${QINCLUDEDIR#/}/Qt/qs60*
-	${QINCLUDEDIR#/}/Qt/qscrollarea.h
-	${QINCLUDEDIR#/}/Qt/qscrollbar.h
-	${QINCLUDEDIR#/}/Qt/qsessionmanager.h
-	${QINCLUDEDIR#/}/Qt/qshortcut.h
-	${QINCLUDEDIR#/}/Qt/qsizegrip.h
-	${QINCLUDEDIR#/}/Qt/qsizepolicy.h
-	${QINCLUDEDIR#/}/Qt/qslider.h
-	${QINCLUDEDIR#/}/Qt/qsortfilterproxymodel.h
-	${QINCLUDEDIR#/}/Qt/qsound.h
-	${QINCLUDEDIR#/}/Qt/qspinbox.h
-	${QINCLUDEDIR#/}/Qt/qsplashscreen.h
-	${QINCLUDEDIR#/}/Qt/qsplitter.h
-	${QINCLUDEDIR#/}/Qt/qstackedlayout.h
-	${QINCLUDEDIR#/}/Qt/qstackedwidget.h
-	${QINCLUDEDIR#/}/Qt/qstandarditemmodel.h
-	${QINCLUDEDIR#/}/Qt/qstatictext.h
-	${QINCLUDEDIR#/}/Qt/qstatusbar.h
-	${QINCLUDEDIR#/}/Qt/qstringlistmodel.h
-	${QINCLUDEDIR#/}/Qt/qstyle.h
-	${QINCLUDEDIR#/}/Qt/qstyleditemdelegate.h
-	${QINCLUDEDIR#/}/Qt/qstylefactory.h
-	${QINCLUDEDIR#/}/Qt/qstyleoption.h
-	${QINCLUDEDIR#/}/Qt/qstylepainter.h
-	${QINCLUDEDIR#/}/Qt/qstyleplugin.h
-	${QINCLUDEDIR#/}/Qt/qsymbianevent.h
-	${QINCLUDEDIR#/}/Qt/qsyntaxhighlighter.h
-	${QINCLUDEDIR#/}/Qt/qsystemtrayicon.h
-	${QINCLUDEDIR#/}/Qt/qtabbar.h
-	${QINCLUDEDIR#/}/Qt/qtableview.h
-	${QINCLUDEDIR#/}/Qt/qtablewidget.h
-	${QINCLUDEDIR#/}/Qt/qtabwidget.h
-	${QINCLUDEDIR#/}/Qt/qtextbrowser.h
-	${QINCLUDEDIR#/}/Qt/qtextcursor.h
-	${QINCLUDEDIR#/}/Qt/qtextdocument.h
-	${QINCLUDEDIR#/}/Qt/qtextdocumentfragment.h
-	${QINCLUDEDIR#/}/Qt/qtextdocumentwriter.h
-	${QINCLUDEDIR#/}/Qt/qtextedit.h
-	${QINCLUDEDIR#/}/Qt/qtextformat.h
-	${QINCLUDEDIR#/}/Qt/qtextlayout.h
-	${QINCLUDEDIR#/}/Qt/qtextlist.h
-	${QINCLUDEDIR#/}/Qt/qtextobject.h
-	${QINCLUDEDIR#/}/Qt/qtextoption.h
-	${QINCLUDEDIR#/}/Qt/qtexttable.h
-	${QINCLUDEDIR#/}/Qt/qtoolbar.h
-	${QINCLUDEDIR#/}/Qt/qtoolbox.h
-	${QINCLUDEDIR#/}/Qt/qtoolbutton.h
-	${QINCLUDEDIR#/}/Qt/qtooltip.h
-	${QINCLUDEDIR#/}/Qt/qtransform.h
-	${QINCLUDEDIR#/}/Qt/qtreeview.h
-	${QINCLUDEDIR#/}/Qt/qtreewidget.h
-	${QINCLUDEDIR#/}/Qt/qtreewidgetitemiterator.h
-	${QINCLUDEDIR#/}/Qt/qundogroup.h
-	${QINCLUDEDIR#/}/Qt/qundostack.h
-	${QINCLUDEDIR#/}/Qt/qundoview.h
-	${QINCLUDEDIR#/}/Qt/qvalidator.h
-	${QINCLUDEDIR#/}/Qt/qvector2d.h
-	${QINCLUDEDIR#/}/Qt/qvector3d.h
-	${QINCLUDEDIR#/}/Qt/qvector4d.h
-	${QINCLUDEDIR#/}/Qt/qvfbhdr.h
-	${QINCLUDEDIR#/}/Qt/qwhatsthis.h
-	${QINCLUDEDIR#/}/Qt/qwidget.h
-	${QINCLUDEDIR#/}/Qt/qwidgetaction.h
-	${QINCLUDEDIR#/}/Qt/qwindowdefs.h
-	${QINCLUDEDIR#/}/Qt/qwindowscestyle.h
-	${QINCLUDEDIR#/}/Qt/qwindowsmobilestyle.h
-	${QINCLUDEDIR#/}/Qt/qwindowsstyle.h
-	${QINCLUDEDIR#/}/Qt/qwindowsvistastyle.h
-	${QINCLUDEDIR#/}/Qt/qwindowsxpstyle.h
-	${QINCLUDEDIR#/}/Qt/qwindowsysteminterface_qpa.h
-	${QINCLUDEDIR#/}/Qt/qwizard.h
-	${QINCLUDEDIR#/}/Qt/qwmatrix.h
-	${QINCLUDEDIR#/}/Qt/qworkspace.h
-	${QINCLUDEDIR#/}/Qt/qx11embed_x11.h
-	${QINCLUDEDIR#/}/Qt/qx11info_x11.h
-	${QINCLUDEDIR#/}/QtGui/
+	usr/include/qt4/Qt/QtGui
+	usr/include/qt4/Qt/qabstractbutton.h
+	usr/include/qt4/Qt/qabstractitemdelegate.h
+	usr/include/qt4/Qt/qabstractitemview.h
+	usr/include/qt4/Qt/qabstractpagesetupdialog.h
+	usr/include/qt4/Qt/qabstractprintdialog.h
+	usr/include/qt4/Qt/qabstractproxymodel.h
+	usr/include/qt4/Qt/qabstractscrollarea.h
+	usr/include/qt4/Qt/qabstractslider.h
+	usr/include/qt4/Qt/qabstractspinbox.h
+	usr/include/qt4/Qt/qabstracttextdocumentlayout.h
+	usr/include/qt4/Qt/qaccessible.h
+	usr/include/qt4/Qt/qaccessible2.h
+	usr/include/qt4/Qt/qaccessiblebridge.h
+	usr/include/qt4/Qt/qaccessibleobject.h
+	usr/include/qt4/Qt/qaccessibleplugin.h
+	usr/include/qt4/Qt/qaccessiblewidget.h
+	usr/include/qt4/Qt/qaction.h
+	usr/include/qt4/Qt/qactiongroup.h
+	usr/include/qt4/Qt/qapplication.h
+	usr/include/qt4/Qt/qbitmap.h
+	usr/include/qt4/Qt/qboxlayout.h
+	usr/include/qt4/Qt/qbrush.h
+	usr/include/qt4/Qt/qbuttongroup.h
+	usr/include/qt4/Qt/qcalendarwidget.h
+	usr/include/qt4/Qt/qcdestyle.h
+	usr/include/qt4/Qt/qcheckbox.h
+	usr/include/qt4/Qt/qcleanlooksstyle.h
+	usr/include/qt4/Qt/qclipboard.h
+	usr/include/qt4/Qt/qcolor.h
+	usr/include/qt4/Qt/qcolordialog.h
+	usr/include/qt4/Qt/qcolormap.h
+	usr/include/qt4/Qt/qcolumnview.h
+	usr/include/qt4/Qt/qcombobox.h
+	usr/include/qt4/Qt/qcommandlinkbutton.h
+	usr/include/qt4/Qt/qcommonstyle.h
+	usr/include/qt4/Qt/qcompleter.h
+	usr/include/qt4/Qt/qcursor.h
+	usr/include/qt4/Qt/qdatawidgetmapper.h
+	usr/include/qt4/Qt/qdatetimeedit.h
+	usr/include/qt4/Qt/qdesktopservices.h
+	usr/include/qt4/Qt/qdesktopwidget.h
+	usr/include/qt4/Qt/qdial.h
+	usr/include/qt4/Qt/qdialog.h
+	usr/include/qt4/Qt/qdialogbuttonbox.h
+	usr/include/qt4/Qt/qdirmodel.h
+	usr/include/qt4/Qt/qdockwidget.h
+	usr/include/qt4/Qt/qdrag.h
+	usr/include/qt4/Qt/qdrawutil.h
+	usr/include/qt4/Qt/qerrormessage.h
+	usr/include/qt4/Qt/qevent.h
+	usr/include/qt4/Qt/qfiledialog.h
+	usr/include/qt4/Qt/qfileiconprovider.h
+	usr/include/qt4/Qt/qfilesystemmodel.h
+	usr/include/qt4/Qt/qfocusframe.h
+	usr/include/qt4/Qt/qfont.h
+	usr/include/qt4/Qt/qfontcombobox.h
+	usr/include/qt4/Qt/qfontdatabase.h
+	usr/include/qt4/Qt/qfontdialog.h
+	usr/include/qt4/Qt/qfontinfo.h
+	usr/include/qt4/Qt/qfontmetrics.h
+	usr/include/qt4/Qt/qformlayout.h
+	usr/include/qt4/Qt/qframe.h
+	usr/include/qt4/Qt/qgenericmatrix.h
+	usr/include/qt4/Qt/qgenericplugin*_qpa.h
+	usr/include/qt4/Qt/qgesture.h
+	usr/include/qt4/Qt/qgesturerecognizer.h
+	usr/include/qt4/Qt/qglyphrun.h
+	usr/include/qt4/Qt/qgraphicsanchorlayout.h
+	usr/include/qt4/Qt/qgraphicseffect.h
+	usr/include/qt4/Qt/qgraphicsgridlayout.h
+	usr/include/qt4/Qt/qgraphicsitem.h
+	usr/include/qt4/Qt/qgraphicsitemanimation.h
+	usr/include/qt4/Qt/qgraphicslayout.h
+	usr/include/qt4/Qt/qgraphicslayoutitem.h
+	usr/include/qt4/Qt/qgraphicslinearlayout.h
+	usr/include/qt4/Qt/qgraphicsproxywidget.h
+	usr/include/qt4/Qt/qgraphicsscene.h
+	usr/include/qt4/Qt/qgraphicssceneevent.h
+	usr/include/qt4/Qt/qgraphicssystemhelper*
+	usr/include/qt4/Qt/qgraphicstransform.h
+	usr/include/qt4/Qt/qgraphicsview.h
+	usr/include/qt4/Qt/qgraphicswidget.h
+	usr/include/qt4/Qt/qgridlayout.h
+	usr/include/qt4/Qt/qgroupbox.h
+	usr/include/qt4/Qt/qgtkstyle.h
+	usr/include/qt4/Qt/qguifunctions*
+	usr/include/qt4/Qt/qheaderview.h
+	usr/include/qt4/Qt/qicon.h
+	usr/include/qt4/Qt/qiconengine.h
+	usr/include/qt4/Qt/qiconengineplugin.h
+	usr/include/qt4/Qt/qidentityproxymodel.h
+	usr/include/qt4/Qt/qimage.h
+	usr/include/qt4/Qt/qimageiohandler.h
+	usr/include/qt4/Qt/qimagereader.h
+	usr/include/qt4/Qt/qimagewriter.h
+	usr/include/qt4/Qt/qinputcontext.h
+	usr/include/qt4/Qt/qinputcontextfactory.h
+	usr/include/qt4/Qt/qinputcontextplugin.h
+	usr/include/qt4/Qt/qinputdialog.h
+	usr/include/qt4/Qt/qitemdelegate.h
+	usr/include/qt4/Qt/qitemeditorfactory.h
+	usr/include/qt4/Qt/qitemselectionmodel.h
+	usr/include/qt4/Qt/qkeyeventtransition.h
+	usr/include/qt4/Qt/qkeysequence.h
+	usr/include/qt4/Qt/qlabel.h
+	usr/include/qt4/Qt/qlayout.h
+	usr/include/qt4/Qt/qlayoutitem.h
+	usr/include/qt4/Qt/qlcdnumber.h
+	usr/include/qt4/Qt/qlineedit.h
+	usr/include/qt4/Qt/qlistview.h
+	usr/include/qt4/Qt/qlistwidget.h
+	usr/include/qt4/Qt/qmainwindow.h
+	usr/include/qt4/Qt/qmatrix.h
+	usr/include/qt4/Qt/qmatrix4x4.h
+	usr/include/qt4/Qt/qmdiarea.h
+	usr/include/qt4/Qt/qmdisubwindow.h
+	usr/include/qt4/Qt/qmenu.h
+	usr/include/qt4/Qt/qmenubar.h
+	usr/include/qt4/Qt/qmenudata.h
+	usr/include/qt4/Qt/qmessagebox.h
+	usr/include/qt4/Qt/qmime.h
+	usr/include/qt4/Qt/qmotifstyle.h
+	usr/include/qt4/Qt/qmouseeventtransition.h
+	usr/include/qt4/Qt/qmovie.h
+	usr/include/qt4/Qt/qpagesetupdialog.h
+	usr/include/qt4/Qt/qpaintdevice.h
+	usr/include/qt4/Qt/qpaintengine.h
+	usr/include/qt4/Qt/qpainter.h
+	usr/include/qt4/Qt/qpainterpath.h
+	usr/include/qt4/Qt/qpalette.h
+	usr/include/qt4/Qt/qpen.h
+	usr/include/qt4/Qt/qpicture.h
+	usr/include/qt4/Qt/qpictureformatplugin.h
+	usr/include/qt4/Qt/qpixmap.h
+	usr/include/qt4/Qt/qpixmapcache.h
+	usr/include/qt4/Qt/qplaintextedit.h
+	usr/include/qt4/Qt/qplastiquestyle.h
+	usr/include/qt4/Qt/qplatform*_qpa.h
+	usr/include/qt4/Qt/qpolygon.h
+	usr/include/qt4/Qt/qprintdialog.h
+	usr/include/qt4/Qt/qprintengine.h
+	usr/include/qt4/Qt/qprinter.h
+	usr/include/qt4/Qt/qprinterinfo.h
+	usr/include/qt4/Qt/qprintpreviewdialog.h
+	usr/include/qt4/Qt/qprintpreviewwidget.h
+	usr/include/qt4/Qt/qprogressbar.h
+	usr/include/qt4/Qt/qprogressdialog.h
+	usr/include/qt4/Qt/qproxymodel.h
+	usr/include/qt4/Qt/qproxystyle.h
+	usr/include/qt4/Qt/qpushbutton.h
+	usr/include/qt4/Qt/qquaternion.h
+	usr/include/qt4/Qt/qradiobutton.h
+	usr/include/qt4/Qt/qrawfont.h
+	usr/include/qt4/Qt/qregion.h
+	usr/include/qt4/Qt/qrgb.h
+	usr/include/qt4/Qt/qrubberband.h
+	usr/include/qt4/Qt/qs60*
+	usr/include/qt4/Qt/qscrollarea.h
+	usr/include/qt4/Qt/qscrollbar.h
+	usr/include/qt4/Qt/qsessionmanager.h
+	usr/include/qt4/Qt/qshortcut.h
+	usr/include/qt4/Qt/qsizegrip.h
+	usr/include/qt4/Qt/qsizepolicy.h
+	usr/include/qt4/Qt/qslider.h
+	usr/include/qt4/Qt/qsortfilterproxymodel.h
+	usr/include/qt4/Qt/qsound.h
+	usr/include/qt4/Qt/qspinbox.h
+	usr/include/qt4/Qt/qsplashscreen.h
+	usr/include/qt4/Qt/qsplitter.h
+	usr/include/qt4/Qt/qstackedlayout.h
+	usr/include/qt4/Qt/qstackedwidget.h
+	usr/include/qt4/Qt/qstandarditemmodel.h
+	usr/include/qt4/Qt/qstatictext.h
+	usr/include/qt4/Qt/qstatusbar.h
+	usr/include/qt4/Qt/qstringlistmodel.h
+	usr/include/qt4/Qt/qstyle.h
+	usr/include/qt4/Qt/qstyleditemdelegate.h
+	usr/include/qt4/Qt/qstylefactory.h
+	usr/include/qt4/Qt/qstyleoption.h
+	usr/include/qt4/Qt/qstylepainter.h
+	usr/include/qt4/Qt/qstyleplugin.h
+	usr/include/qt4/Qt/qsymbianevent.h
+	usr/include/qt4/Qt/qsyntaxhighlighter.h
+	usr/include/qt4/Qt/qsystemtrayicon.h
+	usr/include/qt4/Qt/qtabbar.h
+	usr/include/qt4/Qt/qtableview.h
+	usr/include/qt4/Qt/qtablewidget.h
+	usr/include/qt4/Qt/qtabwidget.h
+	usr/include/qt4/Qt/qtextbrowser.h
+	usr/include/qt4/Qt/qtextcursor.h
+	usr/include/qt4/Qt/qtextdocument.h
+	usr/include/qt4/Qt/qtextdocumentfragment.h
+	usr/include/qt4/Qt/qtextdocumentwriter.h
+	usr/include/qt4/Qt/qtextedit.h
+	usr/include/qt4/Qt/qtextformat.h
+	usr/include/qt4/Qt/qtextlayout.h
+	usr/include/qt4/Qt/qtextlist.h
+	usr/include/qt4/Qt/qtextobject.h
+	usr/include/qt4/Qt/qtextoption.h
+	usr/include/qt4/Qt/qtexttable.h
+	usr/include/qt4/Qt/qtoolbar.h
+	usr/include/qt4/Qt/qtoolbox.h
+	usr/include/qt4/Qt/qtoolbutton.h
+	usr/include/qt4/Qt/qtooltip.h
+	usr/include/qt4/Qt/qtransform.h
+	usr/include/qt4/Qt/qtreeview.h
+	usr/include/qt4/Qt/qtreewidget.h
+	usr/include/qt4/Qt/qtreewidgetitemiterator.h
+	usr/include/qt4/Qt/qundogroup.h
+	usr/include/qt4/Qt/qundostack.h
+	usr/include/qt4/Qt/qundoview.h
+	usr/include/qt4/Qt/qvalidator.h
+	usr/include/qt4/Qt/qvector2d.h
+	usr/include/qt4/Qt/qvector3d.h
+	usr/include/qt4/Qt/qvector4d.h
+	usr/include/qt4/Qt/qvfbhdr.h
+	usr/include/qt4/Qt/qwhatsthis.h
+	usr/include/qt4/Qt/qwidget.h
+	usr/include/qt4/Qt/qwidgetaction.h
+	usr/include/qt4/Qt/qwindowdefs.h
+	usr/include/qt4/Qt/qwindowscestyle.h
+	usr/include/qt4/Qt/qwindowsmobilestyle.h
+	usr/include/qt4/Qt/qwindowsstyle.h
+	usr/include/qt4/Qt/qwindowsvistastyle.h
+	usr/include/qt4/Qt/qwindowsxpstyle.h
+	usr/include/qt4/Qt/qwindowsysteminterface_qpa.h
+	usr/include/qt4/Qt/qwizard.h
+	usr/include/qt4/Qt/qwmatrix.h
+	usr/include/qt4/Qt/qworkspace.h
+	usr/include/qt4/Qt/qx11embed_x11.h
+	usr/include/qt4/Qt/qx11info_x11.h
+	usr/include/qt4/QtGui/
+	usr/lib/libQtGui.*
 	usr/lib/pkgconfig/QtGui.pc
-	${QLIBDIR#/}/libQtGui.*
 "
 libQtHelp4_SUMMARY="Qt4 Help library (runtime)"
 libQtHelp4_CONTENTS="usr/bin/cygQtCLucene-4.dll usr/bin/cygQtHelp-4.dll"
 libQtHelp4_devel_SUMMARY="Qt4 Help library (development)"
 libQtHelp4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtHelp
-	${QINCLUDEDIR#/}/Qt/qhelp*.h
-	${QINCLUDEDIR#/}/QtHelp/
+	usr/include/qt4/Qt/QtHelp
+	usr/include/qt4/Qt/qhelp*.h
+	usr/include/qt4/QtHelp/
+	usr/lib/libQtCLucene.*
+	usr/lib/libQtHelp.*
 	usr/lib/pkgconfig/QtCLucene.pc
 	usr/lib/pkgconfig/QtHelp.pc
-	${QLIBDIR#/}/libQtCLucene.*
-	${QLIBDIR#/}/libQtHelp.*
 "
 libQtMultimedia4_SUMMARY="Qt4 Multimedia library (runtime)"
 libQtMultimedia4_CONTENTS="usr/bin/cygQtMultimedia-4.dll"
 libQtMultimedia4_devel_SUMMARY="Qt4 Multimedia library (development)"
 libQtMultimedia4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtMultimedia
-	${QINCLUDEDIR#/}/Qt/qabstractvideo*.h
-	${QINCLUDEDIR#/}/Qt/qaudio*.h
-	${QINCLUDEDIR#/}/Qt/qvideo*.h
-	${QINCLUDEDIR#/}/QtMultimedia/
+	usr/include/qt4/Qt/QtMultimedia
+	usr/include/qt4/Qt/qabstractvideo*.h
+	usr/include/qt4/Qt/qaudio*.h
+	usr/include/qt4/Qt/qvideo*.h
+	usr/include/qt4/QtMultimedia/
+	usr/lib/libQtMultimedia.*
 	usr/lib/pkgconfig/QtMultimedia.pc
-	${QLIBDIR#/}/libQtMultimedia.*
 "
 libQtNetwork4_SUMMARY="Qt4 Network library (runtime)"
-libQtNetwork4_CONTENTS="usr/bin/cygQtNetwork-4.dll ${QPLUGINDIR#/}/bearer/"
+libQtNetwork4_CONTENTS="usr/bin/cygQtNetwork-4.dll usr/lib/qt4/plugins/bearer/"
 libQtNetwork4_devel_SUMMARY="Qt4 Network library (development)"
 libQtNetwork4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtNetwork
-	${QINCLUDEDIR#/}/Qt/qabstractnetworkcache.h
-	${QINCLUDEDIR#/}/Qt/qabstractsocket.h
-	${QINCLUDEDIR#/}/Qt/qauthenticator.h
-	${QINCLUDEDIR#/}/Qt/qftp.h
-	${QINCLUDEDIR#/}/Qt/qhostaddress.h
-	${QINCLUDEDIR#/}/Qt/qhostinfo.h
-	${QINCLUDEDIR#/}/Qt/qhttp.h
-	${QINCLUDEDIR#/}/Qt/qhttpmultipart.h
-	${QINCLUDEDIR#/}/Qt/qlocalserver.h
-	${QINCLUDEDIR#/}/Qt/qlocalsocket.h
-	${QINCLUDEDIR#/}/Qt/qnetwork*.h
-	${QINCLUDEDIR#/}/Qt/qssl*.h
-	${QINCLUDEDIR#/}/Qt/qtcpserver.h
-	${QINCLUDEDIR#/}/Qt/qtcpsocket.h
-	${QINCLUDEDIR#/}/Qt/qudpsocket.h
-	${QINCLUDEDIR#/}/Qt/qurlinfo.h
-	${QINCLUDEDIR#/}/QtNetwork/
+	usr/include/qt4/Qt/QtNetwork
+	usr/include/qt4/Qt/qabstractnetworkcache.h
+	usr/include/qt4/Qt/qabstractsocket.h
+	usr/include/qt4/Qt/qauthenticator.h
+	usr/include/qt4/Qt/qftp.h
+	usr/include/qt4/Qt/qhostaddress.h
+	usr/include/qt4/Qt/qhostinfo.h
+	usr/include/qt4/Qt/qhttp.h
+	usr/include/qt4/Qt/qhttpmultipart.h
+	usr/include/qt4/Qt/qlocalserver.h
+	usr/include/qt4/Qt/qlocalsocket.h
+	usr/include/qt4/Qt/qnetwork*.h
+	usr/include/qt4/Qt/qssl*.h
+	usr/include/qt4/Qt/qtcpserver.h
+	usr/include/qt4/Qt/qtcpsocket.h
+	usr/include/qt4/Qt/qudpsocket.h
+	usr/include/qt4/Qt/qurlinfo.h
+	usr/include/qt4/QtNetwork/
+	usr/lib/libQtNetwork.*
 	usr/lib/pkgconfig/QtNetwork.pc
-	${QLIBDIR#/}/libQtNetwork.*
 "
 libQtOpenGL4_SUMMARY="Qt4 OpenGL library (runtime)"
-libQtOpenGL4_CONTENTS="usr/bin/cygQtOpenGL-4.dll ${QPLUGINDIR#/}/graphicssystems/"
+libQtOpenGL4_CONTENTS="usr/bin/cygQtOpenGL-4.dll usr/lib/qt4/plugins/graphicssystems/"
 libQtOpenGL4_devel_SUMMARY="Qt4 OpenGL library (development)"
 libQtOpenGL4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtOpenGL
-	${QINCLUDEDIR#/}/Qt/qgl.h
-	${QINCLUDEDIR#/}/Qt/qglbuffer.h
-	${QINCLUDEDIR#/}/Qt/qglcolormap.h
-	${QINCLUDEDIR#/}/Qt/qglframebufferobject.h
-	${QINCLUDEDIR#/}/Qt/qglfunctions.h
-	${QINCLUDEDIR#/}/Qt/qglpixelbuffer.h
-	${QINCLUDEDIR#/}/Qt/qglshaderprogram.h
-	${QINCLUDEDIR#/}/QtOpenGL/
+	usr/include/qt4/Qt/QtOpenGL
+	usr/include/qt4/Qt/qgl.h
+	usr/include/qt4/Qt/qglbuffer.h
+	usr/include/qt4/Qt/qglcolormap.h
+	usr/include/qt4/Qt/qglframebufferobject.h
+	usr/include/qt4/Qt/qglfunctions.h
+	usr/include/qt4/Qt/qglpixelbuffer.h
+	usr/include/qt4/Qt/qglshaderprogram.h
+	usr/include/qt4/QtOpenGL/
+	usr/lib/libQtOpenGL.*
 	usr/lib/pkgconfig/QtOpenGL.pc
-	${QLIBDIR#/}/libQtOpenGL.*
-"
-libQtOpenVG4_SUMMARY="Qt4 OpenVG library (runtime)"
-libQtOpenVG4_CONTENTS="usr/bin/cygQtOpenVG-4.dll"
-libQtOpenVG4_devel_SUMMARY="Qt4 OpenVG library (development)"
-libQtOpenVG4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtOpenVG
-	${QINCLUDEDIR#/}/Qt/qvg.h
-	${QINCLUDEDIR#/}/QtOpenVG/
-	usr/lib/pkgconfig/QtOpenVG.pc
-	${QLIBDIR#/}/libQtOpenVG.*
 "
 libQtScript4_SUMMARY="Qt4 Script library (runtime)"
 libQtScript4_CONTENTS="usr/bin/cygQtScript-4.dll"
 libQtScript4_devel_SUMMARY="Qt4 Script library (development)"
 libQtScript4_devel_CONTENTS="
 	--exclude=qscriptenginedebugger.h
-	${QINCLUDEDIR#/}/Qt/QtScript
-	${QINCLUDEDIR#/}/Qt/qscript*.h
-	${QINCLUDEDIR#/}/QtScript/
+	usr/include/qt4/Qt/QtScript
+	usr/include/qt4/Qt/qscript*.h
+	usr/include/qt4/QtScript/
+	usr/lib/libQtScript.*
 	usr/lib/pkgconfig/QtScript.pc
-	${QLIBDIR#/}/libQtScript.*
 "
 libQtScriptTools4_SUMMARY="Qt4 Script library (runtime)"
 libQtScriptTools4_CONTENTS="usr/bin/cygQtScriptTools-4.dll"
 libQtScriptTools4_devel_SUMMARY="Qt4 ScriptTools library (development)"
 libQtScriptTools4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtScriptTools
-	${QINCLUDEDIR#/}/Qt/qscriptenginedebugger.h
-	${QINCLUDEDIR#/}/QtScriptTools/
+	usr/include/qt4/Qt/QtScriptTools
+	usr/include/qt4/Qt/qscriptenginedebugger.h
+	usr/include/qt4/QtScriptTools/
+	usr/lib/libQtScriptTools.*
 	usr/lib/pkgconfig/QtScriptTools.pc
-	${QLIBDIR#/}/libQtScriptTools.*
 "
 libQtSql4_SUMMARY="Qt4 Sql library (runtime)"
-libQtSql4_CONTENTS="usr/bin/cygQtSql-4.dll ${QPLUGINDIR#/}/sqldrivers/"
+libQtSql4_CONTENTS="usr/bin/cygQtSql-4.dll usr/lib/qt4/plugins/sqldrivers/"
 libQtSql4_devel_SUMMARY="Qt4 SQL library (development)"
 libQtSql4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtSql
-	${QINCLUDEDIR#/}/Qt/qsql*.h
-	${QINCLUDEDIR#/}/QtSql/
+	usr/include/qt4/Qt/QtSql
+	usr/include/qt4/Qt/qsql*.h
+	usr/include/qt4/QtSql/
+	usr/lib/libQtSql.*
 	usr/lib/pkgconfig/QtSql.pc
-	${QLIBDIR#/}/libQtSql.*
 "
 libQtSvg4_SUMMARY="Qt4 SVG library (runtime)"
 libQtSvg4_CONTENTS="
 	usr/bin/cygQtSvg-4.dll
-	${QPLUGINDIR#/}/iconengines/cygqsvgicon.dll
-	${QPLUGINDIR#/}/imageformats/cygqsvg.dll
+	usr/lib/qt4/plugins/iconengines/cygqsvgicon.dll
+	usr/lib/qt4/plugins/imageformats/cygqsvg.dll
 "
 libQtSvg4_devel_SUMMARY="Qt4 SVG library (development)"
 libQtSvg4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtSvg
-	${QINCLUDEDIR#/}/Qt/qgraphicssvgitem.h
-	${QINCLUDEDIR#/}/Qt/qsvg*.h
-	${QINCLUDEDIR#/}/QtSvg/
+	usr/include/qt4/Qt/QtSvg
+	usr/include/qt4/Qt/qgraphicssvgitem.h
+	usr/include/qt4/Qt/qsvg*.h
+	usr/include/qt4/QtSvg/
+	usr/lib/libQtSvg.*
 	usr/lib/pkgconfig/QtSvg.pc
-	${QLIBDIR#/}/libQtSvg.*
 "
 libQtTest4_SUMMARY="Qt4 Test library (runtime)"
 libQtTest4_CONTENTS="usr/bin/cygQtTest-4.dll"
 libQtTest4_devel_SUMMARY="Qt4 Test library (development)"
 libQtTest4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtTest
-	${QINCLUDEDIR#/}/Qt/qbenchmark*.h
-	${QINCLUDEDIR#/}/Qt/qsignalspy.h
-	${QINCLUDEDIR#/}/Qt/qtest*.h
-	${QINCLUDEDIR#/}/QtTest/
+	usr/include/qt4/Qt/QtTest
+	usr/include/qt4/Qt/qbenchmark*.h
+	usr/include/qt4/Qt/qsignalspy.h
+	usr/include/qt4/Qt/qtest*.h
+	usr/include/qt4/QtTest/
+	usr/lib/libQtTest.*
 	usr/lib/pkgconfig/QtTest.pc
-	${QLIBDIR#/}/libQtTest.*
 "
 libQtWebKit4_SUMMARY="Qt4 Webkit library (runtime)"
 libQtWebKit4_CONTENTS="usr/bin/cygQtWebKit-4.dll usr/lib/qt4/imports/QtWebKit/"
 libQtWebKit4_devel_SUMMARY="Qt4 Webkit library (development)"
 libQtWebKit4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtWebKit
-	${QINCLUDEDIR#/}/Qt/qgraphicswebview.h
-	${QINCLUDEDIR#/}/Qt/qweb*.h
-	${QINCLUDEDIR#/}/QtWebKit/
+	usr/include/qt4/Qt/QtWebKit
+	usr/include/qt4/Qt/qgraphicswebview.h
+	usr/include/qt4/Qt/qweb*.h
+	usr/include/qt4/QtWebKit/
+	usr/lib/libQtWebKit.*
 	usr/lib/pkgconfig/QtWebKit.pc
-	${QLIBDIR#/}/libQtWebKit.*
-	${QPLUGINDIR#/}/designer/cygqwebview.dll
+	usr/lib/qt4/plugins/designer/cygqwebview.dll
 "
 libQtXml4_SUMMARY="Qt4 XML library (runtime)"
 libQtXml4_CONTENTS="usr/bin/cygQtXml-4.dll"
 libQtXml4_devel_SUMMARY="Qt4 XML library (development)"
 libQtXml4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtXml
-	${QINCLUDEDIR#/}/Qt/qdom.h
-	${QINCLUDEDIR#/}/Qt/qxml.h
-	${QINCLUDEDIR#/}/Qt/qxmlstream.h
-	${QINCLUDEDIR#/}/QtXml/
+	usr/include/qt4/Qt/QtXml
+	usr/include/qt4/Qt/qdom.h
+	usr/include/qt4/Qt/qxml.h
+	usr/include/qt4/Qt/qxmlstream.h
+	usr/include/qt4/QtXml/
+	usr/lib/libQtXml.*
 	usr/lib/pkgconfig/QtXml.pc
-	${QLIBDIR#/}/libQtXml.*
 "
 libQtXmlPatterns4_SUMMARY="Qt4 XmlPatterns library (runtime)"
 libQtXmlPatterns4_CONTENTS="usr/bin/cygQtXmlPatterns-4.dll"
 libQtXmlPatterns4_devel_SUMMARY="Qt4 XmlPatterns library (development)"
 libQtXmlPatterns4_devel_CONTENTS="
-	${QINCLUDEDIR#/}/Qt/QtXmlPatterns
-	${QINCLUDEDIR#/}/Qt/qabstractmessagehandler.h
-	${QINCLUDEDIR#/}/Qt/qabstracturiresolver.h
-	${QINCLUDEDIR#/}/Qt/qabstractxmlnodemodel.h
-	${QINCLUDEDIR#/}/Qt/qabstractxmlreceiver.h
-	${QINCLUDEDIR#/}/Qt/qsimplexmlnodemodel.h
-	${QINCLUDEDIR#/}/Qt/qsourcelocation.h
-	${QINCLUDEDIR#/}/Qt/qxmlformatter.h
-	${QINCLUDEDIR#/}/Qt/qxmlname.h
-	${QINCLUDEDIR#/}/Qt/qxmlnamepool.h
-	${QINCLUDEDIR#/}/Qt/qxmlquery.h
-	${QINCLUDEDIR#/}/Qt/qxmlresultitems.h
-	${QINCLUDEDIR#/}/Qt/qxmlschema.h
-	${QINCLUDEDIR#/}/Qt/qxmlschemavalidator.h
-	${QINCLUDEDIR#/}/Qt/qxmlserializer.h
-	${QINCLUDEDIR#/}/QtXmlPatterns/
+	usr/include/qt4/Qt/QtXmlPatterns
+	usr/include/qt4/Qt/qabstractmessagehandler.h
+	usr/include/qt4/Qt/qabstracturiresolver.h
+	usr/include/qt4/Qt/qabstractxmlnodemodel.h
+	usr/include/qt4/Qt/qabstractxmlreceiver.h
+	usr/include/qt4/Qt/qsimplexmlnodemodel.h
+	usr/include/qt4/Qt/qsourcelocation.h
+	usr/include/qt4/Qt/qxmlformatter.h
+	usr/include/qt4/Qt/qxmlname.h
+	usr/include/qt4/Qt/qxmlnamepool.h
+	usr/include/qt4/Qt/qxmlquery.h
+	usr/include/qt4/Qt/qxmlresultitems.h
+	usr/include/qt4/Qt/qxmlschema.h
+	usr/include/qt4/Qt/qxmlschemavalidator.h
+	usr/include/qt4/Qt/qxmlserializer.h
+	usr/include/qt4/QtXmlPatterns/
+	usr/lib/libQtXmlPatterns.*
 	usr/lib/pkgconfig/QtXmlPatterns.pc
-	${QLIBDIR#/}/libQtXmlPatterns.*
 "
 qt4_devel_tools_SUMMARY="Qt4 Assistant, Designer, and Linguist"
 qt4_devel_tools_CONTENTS="
 	usr/bin/assistant-qt4
 	usr/bin/designer-qt4
 	usr/bin/linguist-qt4
-	usr/bin/pixeltool
-	usr/bin/qcollectiongenerator
-	usr/bin/qdbusviewer
-	usr/bin/qdoc3
-	usr/bin/qhelp*
-	usr/bin/qml*
-	usr/bin/qttracereplay
-	usr/bin/xmlpatterns*
-	${QBINDIR#/}/assistant.exe
-	${QBINDIR#/}/designer.exe
-	${QBINDIR#/}/linguist.exe
-	${QBINDIR#/}/pixeltool.exe
-	${QBINDIR#/}/qcollectiongenerator.exe
-	${QBINDIR#/}/qdbusviewer.exe
-	${QBINDIR#/}/qdoc3.exe
-	${QBINDIR#/}/qhelp*
-	${QBINDIR#/}/qml*
-	${QBINDIR#/}/qttracereplay.exe
-	${QBINDIR#/}/xmlpatterns*
+	usr/bin/pixeltool-qt4
+	usr/bin/qcollectiongenerator-qt4
+	usr/bin/qdbusviewer-qt4
+	usr/bin/qdoc3-qt4
+	usr/bin/qhelp*-qt4
+	usr/bin/qml*-qt4
+	usr/bin/qttracereplay-qt4
+	usr/bin/xmlpatterns*-qt4
+	usr/lib/qt4/bin/assistant.exe
+	usr/lib/qt4/bin/designer.exe
+	usr/lib/qt4/bin/linguist.exe
+	usr/lib/qt4/bin/pixeltool.exe
+	usr/lib/qt4/bin/qcollectiongenerator.exe
+	usr/lib/qt4/bin/qdbusviewer.exe
+	usr/lib/qt4/bin/qdoc3.exe
+	usr/lib/qt4/bin/qhelp*
+	usr/lib/qt4/bin/qml*
+	usr/lib/qt4/bin/qttracereplay.exe
+	usr/lib/qt4/bin/xmlpatterns*
 	usr/share/applications/assistant-qt4.desktop
 	usr/share/applications/designer-qt4.desktop
 	usr/share/applications/linguist-qt4.desktop
+	usr/share/applications/qdbusviewer-qt4.desktop
 	usr/share/pixmaps/assistant-qt4.png
 	usr/share/pixmaps/designer-qt4.png
 	usr/share/pixmaps/linguist-qt4.png
-	${QDATADIR#/}/phrasebooks/
-	${QTRANSLATIONSDIR#/}/assistant_*
-	${QTRANSLATIONSDIR#/}/designer_*
-	${QTRANSLATIONSDIR#/}/linguist_*
+	usr/share/pixmaps/qdbusviewer-qt4.png
+	usr/share/qt4/phrasebooks/
+	usr/share/qt4/translations/assistant_*
+	usr/share/qt4/translations/designer_*
+	usr/share/qt4/translations/linguist_*
 "
 qt4_doc_SUMMARY="Qt4 API documentation"
-qt4_doc_CONTENTS="${QDOCDIR#/}/"
+qt4_doc_CONTENTS="usr/share/qt4/doc/"
 qt4_qtconfig_SUMMARY="Qt4 desktop configuration app"
 qt4_qtconfig_CONTENTS="
 	usr/bin/qtconfig-qt4
-	${QBINDIR#/}/qtconfig.exe
+	usr/lib/qt4/bin/qtconfig.exe
 	usr/share/applications/qtconfig-qt4.desktop
 	usr/share/pixmaps/qtconfig-qt4.png
-	${QTRANSLATIONSDIR#/}/qtconfig_*
-"
-qt4_qtdemo_SUMMARY="Qt4 demos and examples"
-qt4_qtdemo_CONTENTS="
-	usr/bin/qtdemo-qt4
-	${QBINDIR#/}/qtdemo.exe
-	${QDEMOSDIR#/}/
-	${QEXAMPLESDIR#/}/
-	${QPLUGINDIR#/}/designer/cygarthurplugin.dll
-	${QPLUGINDIR#/}/designer/cygcontainerextension.dll
-	${QPLUGINDIR#/}/designer/cygcustomwidgetplugin.dll
-	${QPLUGINDIR#/}/designer/cygtaskmenuextension.dll
-	${QPLUGINDIR#/}/designer/cygworldtimeclockplugin.dll
-	usr/share/applications/qtdemo-qt4.desktop
-	usr/share/pixmaps/qtdemo-qt4.png
+	usr/share/qt4/translations/qtconfig_*
 "
 PKG_IGNORE="
-	${QINCLUDEDIR#/}/Qt/qt_windows.h
-	${QINCLUDEDIR#/}/Qt/*qws*.h
-	${QINCLUDEDIR#/}/Qt/*_mac.h
-	${QINCLUDEDIR#/}/Qt/*_win.h
-	${QTRANSLATIONSDIR#/}/qvfb_*
+	usr/include/qt4/Qt/qt_windows.h
+	usr/include/qt4/Qt/*qws*.h
+	usr/include/qt4/Qt/*_mac.h
+	usr/include/qt4/Qt/*_win.h
+	usr/share/qt4/translations/qvfb_*
 "
 
 # webkit is in 3rdparty
