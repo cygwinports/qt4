@@ -120,7 +120,7 @@ src_install() {
 
 	# fix pkg-config metadata
 	sed -e "s| -L[\./][^ ]*||g" \
-		-e "/_location=/ s|=.*/bin/|=${QBINDIR}/|g" \
+		-e "/_location=/ s|=.*/bin/|=/usr/lib/qt4/bin/|g" \
 		-i ${D}/usr/lib/pkgconfig/*.pc
 
 	sed -e "s| -lwebcore -ljscore | |" \
