@@ -1,6 +1,6 @@
 NAME="qt4"
 VERSION=4.8.5
-RELEASE=1
+RELEASE=2
 CATEGORY="Libs"
 SUMMARY="Qt C++ application framework"
 DESCRIPTION="Qt is a cross-platform application framework for desktop and
@@ -30,8 +30,8 @@ PATCH_URI="
 	fedora/qt-everywhere-opensource-src-4.8.3-icu_no_debug.patch
 	fedora/qt-everywhere-opensource-src-4.8.2--assistant-crash.patch
 	fedora/qt-everywhere-opensource-src-4.8.1-qtgahandle.patch
-	fedora/qt-everywhere-opensource-src-4.8.5-QTBUG-30076.patch
 	fedora/qt-everywhere-opensource-src-4.8.5-qgtkstyle_disable_gtk_theme_check.patch
+	fedora/QTBUG-15319-fix-shortcuts-with-secondary-Xkb-layout.patch
 	fedora/qt-everywhere-opensource-src-4.8.5-QTBUG-22829.patch
 	4.8.1-dlopen.patch
 	4.8.1-mkspecs.patch
