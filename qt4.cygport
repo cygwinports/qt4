@@ -684,6 +684,7 @@ libQtMultimedia4_devel_CONTENTS="
 	usr/lib/pkgconfig/QtMultimedia.pc
 "
 libQtNetwork4_SUMMARY="Qt4 Network library (runtime)"
+libQtNetwork4_REQUIRES="ca-certificates"
 libQtNetwork4_CONTENTS="usr/bin/cygQtNetwork-4.dll usr/lib/qt4/plugins/bearer/"
 libQtNetwork4_devel_SUMMARY="Qt4 Network library (development)"
 libQtNetwork4_devel_CONTENTS="
