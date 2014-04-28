@@ -17,7 +17,7 @@
  
 -void QT_WIN_CALLBACK QAudioInputPrivate::waveInProc( HWAVEIN hWaveIn, UINT uMsg,
 +void CALLBACK QAudioInputPrivate::waveInProc( HWAVEIN hWaveIn, UINT uMsg,
-         DWORD dwInstance, DWORD dwParam1, DWORD dwParam2 )
+         DWORD_PTR dwInstance, DWORD_PTR dwParam1, DWORD_PTR dwParam2 )
  {
      Q_UNUSED(dwParam1)
 --- origsrc/qt-everywhere-opensource-src-4.7.1/src/multimedia/audio/qaudioinput_win32_p.h	2010-11-05 20:55:19.000000000 -0500
@@ -28,7 +28,7 @@
      QMutex mutex;
 -    static void QT_WIN_CALLBACK waveInProc( HWAVEIN hWaveIn, UINT uMsg,
 +    static void CALLBACK waveInProc( HWAVEIN hWaveIn, UINT uMsg,
-             DWORD dwInstance, DWORD dwParam1, DWORD dwParam2 );
+             DWORD_PTR dwInstance, DWORD_PTR dwParam1, DWORD_PTR dwParam2 );
  
      WAVEHDR* allocateBlocks(int size, int count);
 --- origsrc/qt-everywhere-opensource-src-4.7.1/src/multimedia/audio/qaudiooutput_win32_p.h	2010-11-05 20:55:19.000000000 -0500
@@ -39,6 +39,6 @@
      int intervalTime;
 -    static void QT_WIN_CALLBACK waveOutProc( HWAVEOUT hWaveOut, UINT uMsg,
 +    static void CALLBACK waveOutProc( HWAVEOUT hWaveOut, UINT uMsg,
-             DWORD dwInstance, DWORD dwParam1, DWORD dwParam2 );
+             DWORD_PTR dwInstance, DWORD_PTR dwParam1, DWORD_PTR dwParam2 );
  
      QMutex mutex;
