@@ -8,3 +8,14 @@ iconv(3) is const char **; we have GNU libiconv but use the POSIX char **.
  CONFIG -= qt dylib app_bundle
 -mac|win32-g++*|qnx:LIBS += -liconv
 +mac|cygwin-g++*|win32-g++*|qnx:LIBS += -liconv
+--- origsrc/qt-everywhere-opensource-src-4.8.6/src/corelib/codecs/qiconvcodec.cpp	2014-04-10 13:37:11.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.8.6/src/corelib/codecs/qiconvcodec.cpp	2014-09-10 15:20:52.730805500 -0500
+@@ -465,7 +465,7 @@ iconv_t QIconvCodec::createIconv_t(const
+     Q_ASSERT((to == 0 && from != 0) || (to != 0 && from == 0));
+ 
+     iconv_t cd = (iconv_t) -1;
+-#if defined(__GLIBC__) || defined(GNU_LIBICONV) || defined(Q_OS_QNX)
++#if defined(__GLIBC__) || defined(GNU_LIBICONV) || defined(Q_OS_QNX) || defined(Q_OS_CYGWIN)
+ #if defined(Q_OS_QNX)
+     // on QNX the default locale is UTF-8, and an empty string will cause iconv_open to fail
+     static const char empty_codeset[] = "UTF-8";

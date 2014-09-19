@@ -1,0 +1,68 @@
+--- origsrc/qt-everywhere-opensource-src-4.8.6/src/src.pro	2014-04-10 13:37:12.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.8.6/src/src.pro	2014-09-11 13:50:45.153037000 -0500
+@@ -21,9 +21,6 @@ contains(QT_CONFIG, multimedia): SRC_SUB
+ contains(QT_CONFIG, svg): SRC_SUBDIRS += src_svg
+ contains(QT_CONFIG, script): SRC_SUBDIRS += src_script
+ contains(QT_CONFIG, declarative): SRC_SUBDIRS += src_declarative
+-contains(QT_CONFIG, webkit)  {
+-    SRC_SUBDIRS += src_webkit
+-}
+ !contains(QT_CONFIG, no-gui):contains(QT_CONFIG, scripttools): SRC_SUBDIRS += src_scripttools
+ SRC_SUBDIRS += src_plugins
+ contains(QT_CONFIG, declarative): SRC_SUBDIRS += src_imports
+@@ -76,8 +73,6 @@ src_imports.subdir = $$QT_SOURCE_TREE/sr
+ src_imports.target = sub-imports
+ src_testlib.subdir = $$QT_SOURCE_TREE/src/testlib
+ src_testlib.target = sub-testlib
+-src_webkit.file = $$QT_SOURCE_TREE/src/3rdparty/webkit/Source/WebKit.pro
+-src_webkit.target = sub-webkit
+ src_declarative.subdir = $$QT_SOURCE_TREE/src/declarative
+ src_declarative.target = sub-declarative
+ 
+@@ -111,11 +106,6 @@ src_declarative.target = sub-declarative
+    src_s60installs.depends = $$TOOLS_SUBDIRS $$SRC_SUBDIRS
+    src_s60installs.depends -= src_s60installs
+    src_imports.depends = src_gui src_declarative
+-   contains(QT_CONFIG, webkit)  {
+-      src_webkit.depends = src_gui src_sql src_network
+-      contains(QT_CONFIG, xmlpatterns): src_webkit.depends += src_xmlpatterns
+-      src_imports.depends += src_webkit
+-   }
+    contains(QT_CONFIG, qt3support): src_plugins.depends += src_qt3support
+    contains(QT_CONFIG, dbus):{
+       src_plugins.depends += src_dbus
+@@ -124,11 +114,9 @@ src_declarative.target = sub-declarative
+    contains(QT_CONFIG, opengl)|contains(QT_CONFIG, opengles1)|contains(QT_CONFIG, opengles2) {
+       src_plugins.depends += src_opengl
+       src_declarative.depends += src_opengl
+-      src_webkit.depends += src_opengl
+    }
+    contains(QT_CONFIG, xmlpatterns) {
+       src_declarative.depends += src_xmlpatterns
+-      src_webkit.depends += src_xmlpatterns
+    }
+    contains(QT_CONFIG, svg) {
+       src_declarative.depends += src_svg
+--- origsrc/qt-everywhere-opensource-src-4.8.6/tools/assistant/tools/assistant/assistant.pro	2014-04-10 13:37:12.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.8.6/tools/assistant/tools/assistant/assistant.pro	2014-09-11 14:56:13.104323500 -0500
+@@ -2,7 +2,6 @@ include(../../../shared/fontpanel/fontpa
+ TEMPLATE = app
+ LANGUAGE = C++
+ TARGET = assistant
+-contains(QT_CONFIG, webkit):QT += webkit
+ CONFIG += qt \
+     warn_on \
+     help
+@@ -85,11 +84,8 @@ SOURCES += aboutdialog.cpp \
+     openpageswidget.cpp \
+     openpagesmanager.cpp \
+     openpagesswitcher.cpp
+-contains(QT_CONFIG, webkit) {
+-    SOURCES += helpviewer_qwv.cpp
+-} else {
++
+     SOURCES += helpviewer_qtb.cpp
+-}
+ 
+ FORMS += bookmarkdialog.ui \
+     bookmarkmanagerwidget.ui \
