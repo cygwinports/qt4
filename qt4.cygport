@@ -1,6 +1,6 @@
 NAME="qt4"
 VERSION=4.8.6
-RELEASE=2
+RELEASE=3
 CATEGORY="Libs"
 SUMMARY="Qt C++ application framework"
 DESCRIPTION="Qt is a cross-platform application framework for desktop and
@@ -36,9 +36,13 @@ PATCH_URI="
 	fedora/qt-everywhere-opensource-src-4.8.6-QTBUG-34614.patch
 	fedora/qt-everywhere-opensource-src-4.8.6-QTBUG-38585.patch
 	fedora/0010-QDbus-Fix-a-b-comparison.patch
+	fedora/0023-Don-t-crash-on-broken-GIF-images.patch
 	fedora/0025-Fix-visual-index-lookup-in-QTreeViewPrivate-adjustVi.patch
+	fedora/0030-Memory-and-file-descriptor-leak-in-QFontCache.patch
 	fedora/0034-Fix-raster-graphics-on-X11-RGB30.patch
-	fedora/qt-everywhere-opensource-src-4.8.6-QTBUG-38367.patch
+	fedora/0047-QSslCertificate-blacklist-NIC-certificates-from-Indi.patch
+	fedora/0065-Fix-QPainter-drawPolyline-painting-errors-with-cosme.patch
+	fedora/0072-Fix-font-cache-check-in-QFontEngineFT-recalcAdvances.patch
 	4.8.1-dlopen.patch
 	4.8.1-mkspecs.patch
 	4.8.1-not-windows.patch
