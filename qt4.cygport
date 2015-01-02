@@ -1,6 +1,6 @@
 NAME="qt4"
 VERSION=4.8.6
-RELEASE=3
+RELEASE=4
 CATEGORY="Libs"
 SUMMARY="Qt C++ application framework"
 DESCRIPTION="Qt is a cross-platform application framework for desktop and
