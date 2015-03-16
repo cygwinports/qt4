@@ -1,6 +1,6 @@
 NAME="qt4"
 VERSION=4.8.6
-RELEASE=4
+RELEASE=5
 CATEGORY="Libs"
 SUMMARY="Qt C++ application framework"
 DESCRIPTION="Qt is a cross-platform application framework for desktop and
@@ -14,12 +14,15 @@ SRC_URI="http://download.qt-project.org/official_releases/qt/${VERSION%.*}/${VER
 
 PATCH_URI="
 	fedora/qt-everywhere-opensource-src-4.8.5-webcore_debuginfo.patch
+	fedora/qt-prefer_adwaita_on_gnome.patch
 	fedora/qt-x11-opensource-src-4.5.1-enable_ft_lcdfilter.patch
 	fedora/qt-everywhere-opensource-src-4.6.3-glib_eventloop_nullcheck.patch
 	fedora/qt-everywhere-opensource-src-4.8.3-qdbusconnection_no_debug.patch
 	fedora/qt-everywhere-opensource-src-4.8.1-qt3support_debuginfo.patch
 	fedora/qt-everywhere-opensource-src-4.8.5-qt_plugin_path.patch
 	fedora/qt-everywhere-opensource-src-4.8.4-qmake_pkgconfig_requires_private.patch
+	fedora/qt-fix_detection_of_gcc5.patch
+	fedora/qt-gcc5_compat_qt_build_key.patch
 	fedora/qt-x11-opensource-src-4.5.0-fix-qatomic-inline-asm.patch
 	fedora/qt-everywhere-opensource-src-4.8.5-QTBUG-14467.patch
 	fedora/qt-everywhere-opensource-src-4.8.0-tp-qtreeview-kpackagekit-crash.patch
@@ -30,7 +33,7 @@ PATCH_URI="
 	fedora/qt-everywhere-opensource-src-4.8.3-icu_no_debug.patch
 	fedora/qt-everywhere-opensource-src-4.8.2--assistant-crash.patch
 	fedora/qt-everywhere-opensource-src-4.8.5-qgtkstyle_disable_gtk_theme_check.patch
-	fedora/qt-everywhere-opensource-src-4.8.5-QTBUG-22829.patch
+	fedora/qt-everywhere-opensource-src-4.8.6-QTBUG-22829.patch
 	fedora/qt-everywhere-opensource-src-4.8.5-QTBUG-35459.patch
 	fedora/qt-everywhere-opensource-src-4.8.6-QTBUG-37380.patch
 	fedora/qt-everywhere-opensource-src-4.8.6-QTBUG-34614.patch
@@ -43,6 +46,7 @@ PATCH_URI="
 	fedora/0047-QSslCertificate-blacklist-NIC-certificates-from-Indi.patch
 	fedora/0065-Fix-QPainter-drawPolyline-painting-errors-with-cosme.patch
 	fedora/0072-Fix-font-cache-check-in-QFontEngineFT-recalcAdvances.patch
+	fedora/0137-Fix-a-division-by-zero-when-processing-malformed-BMP.patch
 	4.8.1-dlopen.patch
 	4.8.1-mkspecs.patch
 	4.8.1-not-windows.patch
