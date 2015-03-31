@@ -1,6 +1,6 @@
 NAME="qt4"
 VERSION=4.8.6
-RELEASE=5
+RELEASE=6
 CATEGORY="Libs"
 SUMMARY="Qt C++ application framework"
 DESCRIPTION="Qt is a cross-platform application framework for desktop and
@@ -51,11 +51,12 @@ PATCH_URI="
 	4.8.1-mkspecs.patch
 	4.8.1-not-windows.patch
 	4.8.1-qmake.patch
-	4.8.1-webkit.patch
+	4.8.1-javascriptcore.patch
 	4.5.3-makedepend.patch
 	4.7.1-multimedia.patch
 	4.6.2-gtkstyle.patch
 	4.8.5-libiconv.patch
+	4.8.6-no-webkit.patch
 "
 
 CFLAGS+=" -DFD_SETSIZE=1024"
@@ -91,7 +92,7 @@ src_compile() {
 		-exceptions \
 		-accessibility \
 		-stl \
-		-glib -qdbus -qt3support -no-phonon \
+		-glib -qdbus -qt3support -no-phonon -no-webkit \
 		-no-sql-ibase \
 		-plugin-sql-mysql \
 		-plugin-sql-odbc \
@@ -135,9 +136,6 @@ src_install() {
 		-e "/_location=/ s|=.*/bin/|=/usr/lib/qt4/bin/|g" \
 		-i ${D}/usr/lib/pkgconfig/*.pc
 
-	sed -e "s| -lwebcore -ljscore | |" \
-	    -i ${D}/usr/lib/pkgconfig/QtWebKit.pc
-
 	rm -fr ${D}/usr/tests/
 
 	# remove libtool libs
@@ -151,6 +149,19 @@ src_install() {
 	done
 
 	dosym ../../include/qt4 /usr/lib/qt4/include
+
+	pushd ${D}/usr/share/qt4/mkspecs
+	# remove all mkspecs not required for this host or host_build
+	for d in *
+	do
+		case $d in
+		common|features|modules|cygwin-g*|*.pri) ;;
+		*)      rmdirs+=" $d" ;;
+		esac
+	done
+	rm -fr ${rmdirs}
+	ln -s cygwin-g++ default
+	popd
 
 	newicon ${S}/tools/assistant/tools/assistant/images/assistant.png assistant-qt4.png
 	newicon ${S}/tools/designer/src/designer/images/designer.png designer-qt4.png
@@ -180,9 +191,8 @@ PKG_NAMES="libQt3Support4 libQt3Support4-devel libQtCore4 libQtCore4-devel
            libQtScript4 libQtScript4-devel
            libQtScriptTools4 libQtScriptTools4-devel libQtSql4 libQtSql4-devel
            libQtSvg4 libQtSvg4-devel libQtTest4 libQtTest4-devel
-           libQtWebKit4 libQtWebKit4-devel libQtXml4 libQtXml4-devel
-           libQtXmlPatterns4 libQtXmlPatterns4-devel
-           qt4-devel-tools qt4-doc qt4-qtconfig"
+           libQtXml4 libQtXml4-devel libQtXmlPatterns4 libQtXmlPatterns4-devel
+           qt4-devel-tools qt4-designer-plugin-webkit qt4-doc qt4-qtconfig"
 libQt3Support4_SUMMARY="Qt4 Qt3Support library (runtime)"
 libQt3Support4_CONTENTS="
 	usr/bin/cygQt3Support-4.dll
@@ -791,18 +801,6 @@ libQtTest4_devel_CONTENTS="
 	usr/lib/libQtTest.*
 	usr/lib/pkgconfig/QtTest.pc
 "
-libQtWebKit4_SUMMARY="Qt4 Webkit library (runtime)"
-libQtWebKit4_CONTENTS="usr/bin/cygQtWebKit-4.dll usr/lib/qt4/imports/QtWebKit/"
-libQtWebKit4_devel_SUMMARY="Qt4 Webkit library (development)"
-libQtWebKit4_devel_CONTENTS="
-	usr/include/qt4/Qt/QtWebKit
-	usr/include/qt4/Qt/qgraphicswebview.h
-	usr/include/qt4/Qt/qweb*.h
-	usr/include/qt4/QtWebKit/
-	usr/lib/libQtWebKit.*
-	usr/lib/pkgconfig/QtWebKit.pc
-	usr/lib/qt4/plugins/designer/cygqwebview.dll
-"
 libQtXml4_SUMMARY="Qt4 XML library (runtime)"
 libQtXml4_CONTENTS="usr/bin/cygQtXml-4.dll"
 libQtXml4_devel_SUMMARY="Qt4 XML library (development)"
@@ -875,6 +873,8 @@ qt4_devel_tools_CONTENTS="
 	usr/share/qt4/translations/designer_*
 	usr/share/qt4/translations/linguist_*
 "
+qt4_designer_plugin_webkit_SUMMARY="Qt4 Designer plugin for QtWebKit"
+qt4_designer_plugin_webkit_CONTENTS="usr/lib/qt4/plugins/designer/cygqwebview.dll"
 qt4_doc_SUMMARY="Qt4 API documentation"
 qt4_doc_CONTENTS="usr/share/qt4/doc/"
 qt4_qtconfig_SUMMARY="Qt4 desktop configuration app"
