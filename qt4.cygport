@@ -1,6 +1,6 @@
 NAME="qt4"
 VERSION=4.8.6
-RELEASE=7
+RELEASE=8
 CATEGORY="Libs"
 SUMMARY="Qt C++ application framework"
 DESCRIPTION="Qt is a cross-platform application framework for desktop and
@@ -47,6 +47,7 @@ PATCH_URI="
 	fedora/0065-Fix-QPainter-drawPolyline-painting-errors-with-cosme.patch
 	fedora/0072-Fix-font-cache-check-in-QFontEngineFT-recalcAdvances.patch
 	fedora/0137-Fix-a-division-by-zero-when-processing-malformed-BMP.patch
+	fedora/0163-QNAM-Fix-upload-corruptions-when-server-closes-conne.patch
 	fedora/qt-4.8.6-CVE-2015-1860_CVE-2015-1859_CVE-2015-1858.patch
 	4.8.1-dlopen.patch
 	4.8.1-mkspecs.patch
