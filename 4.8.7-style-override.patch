@@ -1,0 +1,11 @@
+--- origsrc/qt-everywhere-opensource-src-4.8.7/src/gui/kernel/qapplication.cpp	2015-05-07 09:14:43.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.8.7/src/gui/kernel/qapplication.cpp	2015-05-26 13:23:59.484196800 -0500
+@@ -1448,7 +1448,7 @@ QStyle *QApplication::style()
+         // Compile-time search for default style
+         //
+         QString style;
+-#ifdef QT_BUILD_INTERNAL
++#if 1
+         QString envStyle = QString::fromLocal8Bit(qgetenv("QT_STYLE_OVERRIDE"));
+ #else
+         QString envStyle;
