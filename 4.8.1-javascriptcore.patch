@@ -9,6 +9,16 @@
  #define SYMBOL_STRING(name) "_" #name
  #else
  #define SYMBOL_STRING(name) #name
+--- origsrc/qt-everywhere-opensource-src-4.8.7/src/3rdparty/javascriptcore/JavaScriptCore/runtime/Collector.cpp	2015-05-07 09:14:48.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.8.7/src/3rdparty/javascriptcore/JavaScriptCore/runtime/Collector.cpp	2016-07-28 02:02:08.484588700 -0500
+@@ -18,6 +18,7 @@
+  *
+  */
+ 
++#define _GNU_SOURCE	/* for pthread_getattr_np */
+ #include "config.h"
+ #include "Collector.h"
+ 
 --- origsrc/qt-everywhere-opensource-src-4.7.1/src/3rdparty/javascriptcore/JavaScriptCore/wtf/Platform.h	2010-11-05 20:55:22.000000000 -0500
 +++ src/qt-everywhere-opensource-src-4.7.1/src/3rdparty/javascriptcore/JavaScriptCore/wtf/Platform.h	2010-12-25 22:12:19.865685300 -0600
 @@ -340,6 +340,11 @@

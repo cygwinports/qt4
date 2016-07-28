@@ -8,6 +8,17 @@ iconv(3) is const char **; we have GNU libiconv but use the POSIX char **.
  CONFIG -= qt dylib app_bundle
 -mac|win32-g++*|qnx:LIBS += -liconv
 +mac|cygwin-g++*|win32-g++*|qnx:LIBS += -liconv
+--- origsrc/qt-everywhere-opensource-src-4.8.7/src/corelib/codecs/codecs.pri	2015-05-07 09:14:48.000000000 -0500
++++ src/qt-everywhere-opensource-src-4.8.7/src/corelib/codecs/codecs.pri	2016-07-27 20:30:36.003866000 -0500
+@@ -25,7 +25,7 @@ unix {
+         contains(QT_CONFIG,iconv) {
+                 HEADERS += codecs/qiconvcodec_p.h
+                 SOURCES += codecs/qiconvcodec.cpp
+-                qnx:LIBS_PRIVATE *= -liconv
++                cygwin-*|qnx:LIBS_PRIVATE *= -liconv
+         } else:contains(QT_CONFIG,gnu-libiconv) {
+                 HEADERS += codecs/qiconvcodec_p.h
+                 SOURCES += codecs/qiconvcodec.cpp
 --- origsrc/qt-everywhere-opensource-src-4.8.6/src/corelib/codecs/qiconvcodec.cpp	2014-04-10 13:37:11.000000000 -0500
 +++ src/qt-everywhere-opensource-src-4.8.6/src/corelib/codecs/qiconvcodec.cpp	2014-09-10 15:20:52.730805500 -0500
 @@ -465,7 +465,7 @@ iconv_t QIconvCodec::createIconv_t(const
