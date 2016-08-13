@@ -1,6 +1,6 @@
 NAME="qt4"
 VERSION=4.8.7
-RELEASE=2
+RELEASE=3
 CATEGORY="Libs"
 SUMMARY="Qt C++ application framework"
 DESCRIPTION="Qt is a cross-platform application framework for desktop and
@@ -11,9 +11,9 @@ investments made on one platform across many others."
 HOMEPAGE="http://qt-project.org/"
 ORIG_PN="qt-everywhere-opensource-src"
 SRC_URI="http://download.qt-project.org/official_releases/qt/${VERSION%.*}/${VERSION}/${ORIG_PN}-${VERSION}.tar.gz"
+#	fedora/qt-prefer_adwaita_on_gnome.patch
 PATCH_URI="
 	fedora/qt-everywhere-opensource-src-4.8.5-webcore_debuginfo.patch
-	fedora/qt-prefer_adwaita_on_gnome.patch
 	fedora/qt-x11-opensource-src-4.5.1-enable_ft_lcdfilter.patch
 	fedora/qt-everywhere-opensource-src-4.6.3-glib_eventloop_nullcheck.patch
 	fedora/qt-everywhere-opensource-src-4.8.3-qdbusconnection_no_debug.patch
@@ -46,7 +46,7 @@ PATCH_URI="
 	4.6.2-gtkstyle-libs.patch
 	4.8.5-libiconv.patch
 	4.8.6-no-webkit.patch
-	4.8.7-gtkstyle-mate-lxde.patch
+	4.8.7-x11-desktops.patch
 	4.8.7-style-override.patch
 "
 
